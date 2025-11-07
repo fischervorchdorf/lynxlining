@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impressum - LYNX LINING</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-red: #D64545; --dark-red: #B83838; --stone-gray: #54585A;
+            --light-stone: #E8E6E3; --dark-stone: #3A3D3F; --white: #FFFFFF; --text-dark: #2C2C2C;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8;
+            color: var(--text-dark); background: linear-gradient(135deg, #f5f5f5 0%, #e8e6e3 100%);
+        }
+        .back-button {
+            position: fixed; top: 20px; right: 20px; padding: 12px 30px;
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: var(--white); text-decoration: none; border-radius: 50px; font-weight: 600;
+            box-shadow: 0 5px 20px rgba(214, 69, 69, 0.4); transition: all 0.3s ease; z-index: 1000;
+            text-transform: uppercase; letter-spacing: 1px; font-size: 14px;
+        }
+        .back-button:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(214, 69, 69, 0.6); }
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            padding: 100px 40px 60px; text-align: center; color: var(--white);
+        }
+        .page-title { font-size: 56px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
+        .content-section {
+            max-width: 900px; margin: 0 auto; padding: 100px 40px;
+            background: var(--white); border-radius: 25px; box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1); margin-top: 60px; margin-bottom: 60px;
+        }
+        .content-section h2 { font-size: 28px; color: var(--primary-red); margin-bottom: 20px; margin-top: 40px; }
+        .content-section h2:first-child { margin-top: 0; }
+        .content-section p { margin-bottom: 15px; font-size: 16px; }
+        footer {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: var(--white); padding: 40px 40px 20px; text-align: center;
+        }
+        .footer-links { display: flex; justify-content: center; gap: 40px; margin-bottom: 25px; flex-wrap: wrap; }
+        .footer-links a {
+            color: var(--white); text-decoration: none; font-size: 16px; font-weight: 500;
+            transition: all 0.3s ease; padding: 5px 0; border-bottom: 2px solid transparent;
+        }
+        .footer-links a:hover { border-bottom: 2px solid var(--white); }
+        .copyright { font-size: 14px; opacity: 0.9; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.3); }
+        @media (max-width: 768px) { .page-title { font-size: 38px; } }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">← Zurück zur Homepage</a>
+
+    <header class="page-header">
+        <h1 class="page-title">Impressum</h1>
+    </header>
+
+    <div class="content-section">
+        <h2>Angaben gemäß § 5 TMG</h2>
+        <p>LYNX Lining GmbH<br>
+        Musterstraße 123<br>
+        1234 Wien<br>
+        Österreich</p>
+
+        <h2>Vertreten durch</h2>
+        <p>Geschäftsführer: Max Mustermann</p>
+
+        <h2>Kontakt</h2>
+        <p>Telefon: +43 (0) 123 456 789<br>
+        E-Mail: info@lynx-lining.com<br>
+        Website: www.lynx-lining.com</p>
+
+        <h2>Registereintrag</h2>
+        <p>Eintragung im Handelsregister<br>
+        Registergericht: Handelsgericht Wien<br>
+        Registernummer: HRB 12345</p>
+
+        <h2>Umsatzsteuer-ID</h2>
+        <p>Umsatzsteuer-Identifikationsnummer gemäß §27 a Umsatzsteuergesetz:<br>
+        ATU12345678</p>
+
+        <h2>Aufsichtsbehörde</h2>
+        <p>Wirtschaftskammer Österreich<br>
+        Wiedner Hauptstraße 63<br>
+        1045 Wien</p>
+
+        <h2>Berufsbezeichnung</h2>
+        <p>Hersteller und Händler von Verschleißschutzprodukten</p>
+
+        <h2>Haftungsausschluss</h2>
+        <p><strong>Haftung für Inhalte:</strong><br>
+        Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>
+
+        <p><strong>Haftung für Links:</strong><br>
+        Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen.</p>
+
+        <h2>Urheberrecht</h2>
+        <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem österreichischen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+            <a href="agb.html">AGB</a>
+            <a href="kontakt.html">Kontakt</a>
+        </div>
+        <p class="copyright">© 2021 Lynx Lining. All Rights Reserved</p>
+    </footer>
+</body>
+</html>

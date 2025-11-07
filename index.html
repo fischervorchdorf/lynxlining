@@ -3,499 +3,1349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LYNX Lining - Verschleißschutz im Berg-, Maschinen- und Anlagenbau</title>
+    <title>LYNX LINING - Verschleißschutz im Berg-, Maschinen- und Anlagenbau</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
- 
+
+        :root {
+            --primary-red: #D64545;
+            --dark-red: #B83838;
+            --stone-gray: #54585A;
+            --light-stone: #E8E6E3;
+            --medium-stone: #C4C2BF;
+            --dark-stone: #3A3D3F;
+            --white: #FFFFFF;
+            --text-dark: #2C2C2C;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: #333;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e6e3 100%);
         }
- 
-        /* Navigation */
-        nav {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 1rem 0;
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 0;
         }
- 
-        .nav-container {
-            max-width: 1200px;
+
+        .header-container {
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 20px 40px;
         }
- 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
- 
-        .nav-links {
+
+        .logo-container {
             display: flex;
-            list-style: none;
-            gap: 2rem;
+            align-items: center;
+            gap: 15px;
         }
- 
-        .nav-links a {
-            color: white;
+
+        .logo-container img {
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container img:hover {
+            transform: scale(1.05);
+        }
+
+        nav {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--white);
             text-decoration: none;
-            transition: color 0.3s;
+            padding: 12px 25px;
+            border: 2px solid var(--white);
+            border-radius: 5px;
+            transition: all 0.3s ease;
             font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
         }
- 
-        .nav-links a:hover {
-            color: #ffd700;
+
+        nav a:hover,
+        nav a.active {
+            background: var(--white);
+            color: var(--primary-red);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
- 
+
+        .language-switcher {
+            display: flex;
+            gap: 10px;
+            margin-left: 20px;
+        }
+
+        .flag {
+            width: 30px;
+            height: 20px;
+            cursor: pointer;
+            border: 2px solid var(--white);
+            border-radius: 3px;
+            transition: transform 0.3s ease;
+        }
+
+        .flag:hover {
+            transform: scale(1.15);
+        }
+
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
-            padding: 6rem 2rem;
-            text-align: center;
+            position: relative;
+            width: 100%;
+            height: auto;
+            min-height: 600px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-start;
         }
- 
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            font-weight: 300;
-            letter-spacing: 3px;
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: 1;
         }
- 
-        .hero h2 {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            font-weight: 300;
-            opacity: 0.9;
-        }
- 
-        .hero p {
-            font-size: 1.2rem;
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            color: var(--white);
+            padding: 80px 40px 60px 100px;
             max-width: 800px;
-            margin: 0 auto 2rem;
-            line-height: 1.8;
+            animation: fadeInUp 1s ease-out;
+            text-align: left;
         }
- 
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
- 
-        /* Section Titles */
+
+        .hero-title {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 0;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: var(--primary-red);
+            line-height: 1.1;
+        }
+
+        .hero-subtitle {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 0;
+            margin-top: 0;
+            color: #000000;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+            line-height: 1.1;
+        }
+
+        .hero-subtitle-line2 {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            margin-top: 0;
+            color: #000000;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);
+            line-height: 1.1;
+        }
+
+        .hero-description {
+            font-size: 28px;
+            margin-bottom: 50px;
+            color: var(--white);
+            font-weight: 300;
+            line-height: 1.4;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .made-in-austria {
+            position: absolute;
+            top: 80px;
+            right: 60px;
+            background: var(--white);
+            padding: 8px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeIn 2s ease-out;
+            width: 135px;
+            z-index: 3;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 45px;
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(214, 69, 69, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(214, 69, 69, 0.6);
+            background: linear-gradient(135deg, var(--dark-red) 0%, var(--primary-red) 100%);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 100px 40px;
+            max-width: 1400px;
+            margin: 0 auto 80px auto;
+        }
+
+        section:last-of-type {
+            margin-bottom: 0;
+        }
+
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #1e3c72;
-            font-weight: 300;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--dark-stone);
+            text-transform: uppercase;
+            letter-spacing: 3px;
         }
- 
-        /* Product Info */
-        .product-info {
-            background: #f8f9fa;
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 60px;
+            color: var(--stone-gray);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
         }
- 
-        .product-grid {
+
+        /* Application Grid */
+        .application-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 60px;
         }
- 
-        .product-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+
+        .application-card {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .application-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .application-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .application-content {
+            padding: 35px 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
         }
- 
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+
+        .application-button {
+            display: inline-block;
+            padding: 14px 35px;
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: var(--white);
+            border-radius: 50px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(214, 69, 69, 0.3);
+            font-size: 16px;
+            transition: all 0.3s ease;
         }
- 
-        .icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #2a5298;
+
+        .application-card:hover .application-button {
+            box-shadow: 0 8px 20px rgba(214, 69, 69, 0.5);
+            transform: translateY(-2px);
         }
- 
-        .product-card h3 {
-            color: #1e3c72;
-            margin-bottom: 1rem;
-            font-size: 1.3rem;
+
+        .application-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+            width: 100%;
         }
- 
-        /* Benefits Section */
-        .benefits {
-            background: white;
+
+        .application-list li {
+            padding: 5px 0 5px 0;
+            color: var(--stone-gray);
+            font-size: 15px;
+            line-height: 1.4;
+            border-bottom: none;
+            padding-left: 20px;
+            text-indent: -20px;
         }
- 
-        .benefits-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+
+        .application-list li:before {
+            content: "• ";
+            color: var(--primary-red);
+            font-weight: bold;
+            margin-right: 8px;
+            font-size: 18px;
         }
- 
-        .benefit-item {
+
+        /* Revolution Section */
+        .revolution-section {
+            background: linear-gradient(135deg, var(--white) 0%, var(--light-stone) 100%);
+            padding: 80px 60px;
+            border-radius: 30px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+            text-align: center;
             display: flex;
-            align-items: start;
-            gap: 1rem;
-            padding: 1.5rem;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #2a5298;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1000px;
         }
- 
-        .benefit-icon {
-            font-size: 2rem;
-            color: #2a5298;
-            flex-shrink: 0;
+
+        .revolution-content {
+            max-width: 700px;
+            margin: 0 auto;
         }
- 
-        /* Applications Section */
-        .applications {
-            background: #f8f9fa;
+
+        .revolution-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: var(--dark-stone);
         }
- 
-        .applications-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
+
+        .revolution-subtitle {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: var(--primary-red);
         }
- 
-        .application-item {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+        .revolution-logo {
+            margin: 0 auto 40px;
+            text-align: center;
         }
- 
-        .application-item::before {
-            content: "✓";
-            color: #2a5298;
+
+        .revolution-logo-image {
+            width: 100%;
+            max-width: 350px;
+            height: auto;
+        }
+
+        .revolution-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .revolution-list li {
+            padding: 8px 0;
+            font-size: 16px;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        .revolution-list li:before {
+            content: "✓ ";
+            color: var(--primary-red);
             font-weight: bold;
-            margin-right: 0.5rem;
-            font-size: 1.2rem;
+            font-size: 20px;
+            margin-right: 12px;
         }
- 
-        /* Testimonials */
-        .testimonials {
-            background: white;
+
+        /* Advantages Section */
+        #vorteile {
+            background: transparent;
+            border-radius: 0;
+            padding: 80px 40px;
         }
- 
-        .testimonial-grid {
+
+        .advantages-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 30px;
+            margin-top: 60px;
         }
- 
-        .testimonial {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 10px;
-            border-left: 4px solid #ffd700;
-            position: relative;
+
+        .advantage-card {
+            background: var(--white);
+            padding: 40px 25px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
         }
- 
-        .testimonial::before {
-            content: "";
-            position: absolute;
-            top: -10px;
-            left: 20px;
-            font-size: 4rem;
-            color: #2a5298;
-            opacity: 0.2;
+
+        .advantage-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
         }
- 
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 1rem;
-            color: #555;
-        }
- 
-        .testimonial-author {
-            font-weight: bold;
-            color: #1e3c72;
-        }
- 
-        /* Image Placeholder */
-        .image-placeholder {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 300px;
+
+        .advantage-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 25px;
+            background: var(--white);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 1.2rem;
-            border-radius: 10px;
-            margin: 2rem 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
- 
-        /* Contact Section */
-        .contact {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            color: white;
+
+        .advantage-icon img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .advantage-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-red);
+        }
+
+        .advantage-description {
+            font-size: 15px;
+            color: var(--stone-gray);
+            line-height: 1.7;
+        }
+
+        /* Durability Section */
+        .durability-section {
+            background: var(--white);
+            padding: 80px 60px;
+            border-radius: 30px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+
+        .durability-title {
+            font-size: 42px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--dark-stone);
+        }
+
+        .durability-title span {
+            color: var(--primary-red);
+        }
+
+        .durability-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .durability-image-container {
+            position: relative;
             text-align: center;
         }
- 
-        .contact-info {
+
+        .durability-image {
+            width: 50%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin: 0 auto;
+            display: block;
+            opacity: 0;
+            transform: translateX(-100%);
+            transition: none;
+        }
+
+        .durability-image.animate {
+            animation: slideInAndShake 1.5s ease-out forwards;
+        }
+
+        @keyframes slideInAndShake {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            60% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            70% {
+                transform: translateX(0) rotate(-3deg);
+            }
+            75% {
+                transform: translateX(0) rotate(3deg);
+            }
+            80% {
+                transform: translateX(0) rotate(-2deg);
+            }
+            85% {
+                transform: translateX(0) rotate(2deg);
+            }
+            90% {
+                transform: translateX(0) rotate(-1deg);
+            }
+            95% {
+                transform: translateX(0) rotate(1deg);
+            }
+            100% {
+                transform: translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .image-caption {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--stone-gray);
+            font-style: italic;
+        }
+
+        .durability-chart {
+            width: 100%;
+            padding: 30px;
+            background: var(--light-stone);
+            border-radius: 15px;
+        }
+
+        /* Testimonials */
+        .testimonials-section {
+            background: linear-gradient(135deg, var(--light-stone) 0%, var(--medium-stone) 100%);
+            padding: 80px 40px;
+            border-radius: 30px;
+            margin: 0 auto;
+        }
+
+        .testimonials-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
         }
- 
-        .contact-item {
-            padding: 2rem;
-            background: rgba(255,255,255,0.1);
+
+        .testimonial-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .testimonial-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            border: 5px solid var(--primary-red);
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .testimonial-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark-stone);
+        }
+
+        .testimonial-text {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--stone-gray);
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .testimonial-role {
+            font-size: 14px;
+            color: var(--primary-red);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .testimonial-company {
+            font-size: 13px;
+            color: var(--stone-gray);
+            margin-top: 5px;
+        }
+
+        /* PDF Download Section */
+        .pdf-section {
+            text-align: center;
+            padding: 60px 40px;
+            background: var(--white);
+            border-radius: 30px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+
+        .pdf-container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .pdf-cover {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
             border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            transition: transform 0.3s ease;
         }
- 
-        .contact-item h3 {
-            margin-bottom: 1rem;
-            color: #ffd700;
+
+        .pdf-cover:hover {
+            transform: scale(1.02);
         }
- 
+
+        .pdf-button {
+            display: inline-block;
+            padding: 20px 50px;
+            background: linear-gradient(135deg, #4A90E2 0%, #357ABD 100%);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .pdf-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(74, 144, 226, 0.6);
+        }
+
+        .pdf-description {
+            margin-top: 20px;
+            font-size: 16px;
+            color: var(--stone-gray);
+            line-height: 1.6;
+        }
+
+        /* Gallery Section */
+        .gallery-section {
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .gallery-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            overflow: hidden;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .gallery-image.active {
+            opacity: 1;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--primary-red);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .gallery-nav:hover {
+            background: var(--primary-red);
+            color: var(--white);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .gallery-prev {
+            left: 30px;
+        }
+
+        .gallery-next {
+            right: 30px;
+        }
+
         /* Footer */
         footer {
-            background: #1a1a1a;
-            color: white;
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: var(--white);
+            padding: 40px 40px 20px;
             text-align: center;
-            padding: 2rem;
         }
- 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .footer-links a:hover {
+            border-bottom: 2px solid var(--white);
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            font-size: 14px;
+            opacity: 0.9;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .advantages-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 25px;
             }
- 
-            .nav-links {
+
+            .hero-content {
+                padding: 60px 30px 50px 60px;
+            }
+
+            .hero-title {
+                font-size: 56px;
+            }
+
+            .hero-subtitle,
+            .hero-subtitle-line2 {
+                font-size: 56px;
+            }
+
+            .hero-description {
+                font-size: 22px;
+            }
+
+            .made-in-austria {
+                width: 110px;
+                top: 60px;
+                right: 40px;
+            }
+
+            .application-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+
+            .application-image {
+                height: 240px;
+            }
+
+            .revolution-section {
                 flex-direction: column;
-                gap: 1rem;
             }
- 
-            .section-title {
-                font-size: 2rem;
+
+            .durability-content {
+                grid-template-columns: 1fr;
             }
         }
- 
-        /* Smooth Scroll */
-        html {
-            scroll-behavior: smooth;
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero {
+                min-height: 500px;
+            }
+
+            .hero-content {
+                padding: 40px 20px 40px 30px;
+            }
+
+            .hero-title {
+                font-size: 38px;
+            }
+
+            .hero-subtitle,
+            .hero-subtitle-line2 {
+                font-size: 38px;
+            }
+
+            .hero-description {
+                font-size: 16px;
+                margin-bottom: 30px;
+            }
+
+            .made-in-austria {
+                width: 90px;
+                top: 40px;
+                right: 20px;
+                padding: 6px;
+            }
+
+            .cta-button {
+                padding: 15px 35px;
+                font-size: 16px;
+            }
+
+            .application-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+
+            .advantages-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-container {
+                height: 400px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .section-subtitle {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .advantages-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .hero-content {
+                padding: 30px 15px 30px 20px;
+            }
+
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .hero-subtitle,
+            .hero-subtitle-line2 {
+                font-size: 28px;
+            }
+
+            .hero-description {
+                font-size: 14px;
+            }
+
+            .made-in-austria {
+                width: 70px;
+                top: 30px;
+                right: 15px;
+            }
+
+            .cta-button {
+                padding: 12px 25px;
+                font-size: 14px;
+            }
+
+            .gallery-container {
+                height: 300px;
+            }
+
+            .application-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-20px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+
+        .scroll-arrow {
+            color: var(--white);
+            font-size: 40px;
+            opacity: 0.8;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <div class="logo">LYNX LINING</div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#produkte">Produkte</a></li>
-                <li><a href="#vorteile">Vorteile</a></li>
-                <li><a href="#anwendungen">Anwendungen</a></li>
-                <li><a href="#kontakt">Kontakt</a></li>
-            </ul>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="logo_lynx.png" alt="Lynx Lining Logo" style="height: 60px; width: auto;">
+            </div>
+            <nav>
+                <a href="index.html" class="active">Home</a>
+                <a href="produkte.html">Produkte</a>
+                <a href="vorteile.html">Vorteile</a>
+                <a href="referenzen.html">Referenzen</a>
+                <a href="kontakt.html">Kontakt</a>
+                <div class="language-switcher">
+                    <!-- Platzhalter für Flaggen -->
+                    <img src="flag_de.png" alt="Deutsch" class="flag">
+                    <img src="flag_en.png" alt="English" class="flag">
+                </div>
+            </nav>
         </div>
-    </nav>
- 
+    </header>
+
     <!-- Hero Section -->
-    <section id="home" class="hero">
-        <h1>LYNX-LINING</h1>
-        <h2>VERSCHLEISSSCHUTZ IM BERG-, MASCHINEN- UND ANLAGENBAU</h2>
-        <p>LYNX Lining's sind verschleißfeste Folien aus thermoplastischen Polyurethan. Unsere Produkte unterscheiden sich durch ihre einzigartigen Eigenschaften hinsichtlich Verschleißfestigkeit, Durchdringungsresistenz und Antihafteigenschaften von bisher am Markt erhältlichen Produkten.</p>
-    </section>
- 
-    <!-- Product Features -->
-    <section id="produkte" class="product-info">
-        <div class="container">
-            <h2 class="section-title">Unsere Produkteigenschaften</h2>
-            <div class="product-grid">
-                <div class="product-card">
-                    <div class="icon">🛡️</div>
-                    <h3>Antihaft</h3>
-                    <p>Kein Verkleben mehr von Förderrinnen oder LKW-Kippern. Die Antihafteigenschaft ist auch bekannt als "Lotuseffekt".</p>
-                </div>
-                <div class="product-card">
-                    <div class="icon">💪</div>
-                    <h3>Verschleißfest</h3>
-                    <p>Unsere LYNX Lining Produkte überzeugen durch eine enorme Verschleißfestigkeit, welche die Lebensdauer und Kosteneinsparungen positiv verstärken.</p>
-                </div>
-                <div class="product-card">
-                    <div class="icon">📉</div>
-                    <h3>Vibrationsreduktion</h3>
-                    <p>Vibrationen werden durch die Beschichtung mit LYNX Lining Produkten deutlich vermindert. Ihre Produktionsausrüstung hält dadurch um ein Vielfaches länger.</p>
-                </div>
-                <div class="product-card">
-                    <div class="icon">🔇</div>
-                    <h3>Schalldämpfung</h3>
-                    <p>Durch Verwendung unserer LYNX Lining Produkte können bestehende Lärmemissionen um bis zu 21dB reduziert werden.</p>
-                </div>
-                <div class="product-card">
-                    <div class="icon">♻️</div>
-                    <h3>100% Recyclebar</h3>
-                    <p>Unsere LYNX Lining Produkte werden in Österreich mit höchster Qualität produziert und sind zu 100% recyclebar.</p>
-                </div>
-                <div class="product-card">
-                    <div class="icon">⏱️</div>
-                    <h3>Langlebig</h3>
-                    <p>Bis zu 30x längere Lebensdauer als herkömmlich eingesetzte Verschleißschutzmaterialien.</p>
-                </div>
-            </div>
-            <div class="image-placeholder">
-                [Produktbild: LYNX Lining in Anwendung]
-            </div>
+    <section class="hero">
+        <!-- Hero Background Image -->
+        <img src="hero_background.jpg" alt="Berg- und Maschinenbau" class="hero-background">
+        
+        <div class="made-in-austria">
+            <img src="made_in_austria.png" alt="Made in Austria" style="width: 100%; height: auto;">
+        </div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">LYNX LINING</h1>
+            <h2 class="hero-subtitle">VERSCHLEISSSCHUTZ</h2>
+            <h2 class="hero-subtitle-line2">IM BERG-, MASCHINEN-<br>UND ANLAGENBAU</h2>
+            <p class="hero-description">LYNX Lining's sind verschleißfeste Folien<br>aus thermoplastischen Polyurethan</p>
+            <a href="#vorteile" class="cta-button">Mehr erfahren</a>
         </div>
     </section>
- 
-    <!-- Benefits -->
-    <section id="vorteile" class="benefits">
-        <div class="container">
-            <h2 class="section-title">LYNX Lining steht für</h2>
-            <div class="benefits-list">
-                <div class="benefit-item">
-                    <div class="benefit-icon">✓</div>
-                    <div>
-                        <strong>Extrem verschleißfester & langlebiger Schutz</strong> für hoch beanspruchte Ausrüstungsgegenstände.
-                    </div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">✓</div>
-                    <div>
-                        <strong>Hohe Beständigkeit</strong> gegen Abrieb, Impact großer und spitzer Gegenstände, Öle und Fette.
-                    </div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">✓</div>
-                    <div>
-                        <strong>Beständigkeit</strong> gegen witterungsbedingte Einflüsse, Wärme und UV-Einstrahlung.
-                    </div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">✓</div>
-                    <div>
-                        Eine bis zu <strong>30x längere Lebensdauer</strong> als herkömmlich eingesetzte Verschleißschutzmaterialien.
-                    </div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">✓</div>
-                    <div>
-                        <strong>Hohes Kosteneinsparungspotential</strong> aufgrund erhöhter Produktivität.
-                    </div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">✓</div>
-                    <div>
-                        <strong>Ressourceneinsparung</strong> und Reduktion des CO2-Fußabdrucks.
-                    </div>
-                </div>
-                <div class="benefit-item">
-                    <div class="benefit-icon">✓</div>
-                    <div>
-                        <strong>Höchste Qualität</strong> durch Produktion in Österreich.
-                    </div>
+
+    <!-- Application Examples Section -->
+    <section>
+        <h2 class="section-title">Anwendungsbeispiele</h2>
+        <p class="section-subtitle">Unsere Folien und Platten unterscheiden sich durch ihre einzigartigen Eigenschaften hinsichtlich Verschleißfestigkeit, Durchdringungsresistenz und Antihafteigenschaften von bisher am Markt erhältlichen Produkten</p>
+
+        <div class="application-grid">
+            <!-- Bergbau -->
+            <div class="application-card">
+                <!-- Platzhalter für Bergbau Bild -->
+                <img src="application_bergbau.jpg" alt="Bergbau" class="application-image">
+                <div class="application-content">
+                    <span class="application-button">Bergbau</span>
+                    <ul class="application-list">
+                        <li>Aufgabebunker</li>
+                        <li>Hochabrasive, feuchte und klebrige Materialien</li>
+                    </ul>
                 </div>
             </div>
-        </div>
-    </section>
- 
-    <!-- Applications -->
-    <section id="anwendungen" class="applications">
-        <div class="container">
-            <h2 class="section-title">Anwendungsbeispiele</h2>
-            <div class="applications-grid">
-                <div class="application-item">Auskleidung von Trichtern</div>
-                <div class="application-item">Verschleißschutz bei Übergabepunkten</div>
-                <div class="application-item">Abdichtungen bei Förderbändern</div>
-                <div class="application-item">Staubkapselung</div>
-                <div class="application-item">Aufgabebunker</div>
-                <div class="application-item">Hochabrasive, feuchte und klebrige Materialien</div>
-                <div class="application-item">Verschleißauskleidung für feste, staubförmige und flüssige Materialförderung</div>
-                <div class="application-item">Schleifstaubabsaugungen</div>
-                <div class="application-item">Förderbänder mit Aufpanzerung</div>
-                <div class="application-item">Oberflächenschutz</div>
-                <div class="application-item">Übergabepunkte und Verkleidungen in der Betonproduktion</div>
-                <div class="application-item">Aufgabetrichter bei verschiedenen Recyclinganlagen</div>
-                <div class="application-item">Recycling und Aufbereitung von Bauschutt</div>
-                <div class="application-item">Gesteinsmaterial für Kiesproduktion</div>
-                <div class="application-item">Verschleißauskleidung für Schienenbearbeitungszüge</div>
-                <div class="application-item">Auskleidungen für Kippermulden und Kehrmaschinen</div>
-            </div>
-            <div class="image-placeholder">
-                [Bildergalerie: Verschiedene Anwendungen]
-            </div>
-        </div>
-    </section>
- 
-    <!-- Testimonials -->
-    <section class="testimonials">
-        <div class="container">
-            <h2 class="section-title">Was unsere Kunden sagen</h2>
-            <p style="text-align: center; margin-bottom: 3rem; font-size: 1.1rem;">Ein Unternehmen kann nur so gut sein, wie seine Kunden zufrieden sind.</p>
-            <div class="testimonial-grid">
-                <div class="testimonial">
-                    <p class="testimonial-text">Ich bin überwältigt von der Widerstandsfähigkeit der LYNX Lining Produkte. Dadurch verringert sich der Aufwand für Wartung und senkt die Kosten!</p>
-                    <p class="testimonial-author">— Johann Arthofer</p>
+
+            <!-- Industrie -->
+            <div class="application-card">
+                <!-- Platzhalter für Industrie Bild -->
+                <img src="application_industrie.jpg" alt="Industrie" class="application-image">
+                <div class="application-content">
+                    <span class="application-button">Industrie</span>
+                    <ul class="application-list">
+                        <li>Verschleißauskleidung für feste, staubförmige und flüssige Materialförderung</li>
+                        <li>Schleifstaubabsaugungen</li>
+                        <li>Förderbänder mit Aufpanzerung</li>
+                        <li>Oberflächenschutz</li>
+                    </ul>
                 </div>
-                <div class="testimonial">
-                    <p class="testimonial-text">LYNX Lining hat uns auf Anhieb überzeugt. Zuvor hatten wir eine Verschleißauskleidung, die nach wenigen Monaten wieder zum Wechseln war.</p>
-                    <p class="testimonial-author">— Andreas Grabner</p>
+            </div>
+
+            <!-- Maschinen- und Anlagenbau -->
+            <div class="application-card">
+                <!-- Platzhalter für Maschinen- und Anlagenbau Bild -->
+                <img src="application_maschinen.jpg" alt="Maschinen- und Anlagenbau" class="application-image">
+                <div class="application-content">
+                    <span class="application-button">Maschinen- und Anlagenbau</span>
+                    <ul class="application-list">
+                        <li>Übergabepunkte und Verkleidungen in der Betonproduktion</li>
+                        <li>Aufgabetrichter bei verschiedenen Recyclinganlagen</li>
+                    </ul>
                 </div>
-                <div class="testimonial">
-                    <p class="testimonial-text">Die Vorteile von LYNX Lining haben uns überzeugt, da es unseren Kunden half, Störungen im Betrieb zu beseitigen und damit Kosten zu sparen.</p>
-                    <p class="testimonial-author">— Rudolf Mandorfer</p>
+            </div>
+
+            <!-- Recycling & Aufbereitung -->
+            <div class="application-card">
+                <!-- Platzhalter für Recycling Bild -->
+                <img src="application_recycling.jpg" alt="Recycling & Aufbereitung" class="application-image">
+                <div class="application-content">
+                    <span class="application-button">Recycling & Aufbereitung</span>
+                    <ul class="application-list">
+                        <li>Recycling und Aufbereitung von Bauschutt, Gesteinsmaterial für Kiesproduktion und andere organische Stoffe</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Schienenfahrzeuge & Transportwirtschaft -->
+            <div class="application-card">
+                <!-- Platzhalter für Schienenfahrzeuge Bild -->
+                <img src="application_schienen.jpg" alt="Schienenfahrzeuge" class="application-image">
+                <div class="application-content">
+                    <span class="application-button">Schienenfahrzeuge & Transportwirtschaft</span>
+                    <ul class="application-list">
+                        <li>Verschleißauskleidung für Schienenbearbeitungszüge (Schotterbunker und Silos)</li>
+                        <li>Auskleidungen für Kippermulden und Kehrmaschinen</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Schüttgutaufbereitung -->
+            <div class="application-card">
+                <!-- Platzhalter für Schüttgut Bild -->
+                <img src="application_schuettgut.jpg" alt="Schüttgutaufbereitung" class="application-image">
+                <div class="application-content">
+                    <span class="application-button">Schüttgutaufbereitung</span>
+                    <ul class="application-list">
+                        <li>Auskleidung von Trichtern</li>
+                        <li>Verschleißschutz bei Übergabepunkten</li>
+                        <li>Abdichtungen bei Förderbändern</li>
+                        <li>Staubkapselung</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </section>
- 
-    <!-- Contact -->
-    <section id="kontakt" class="contact">
-        <div class="container">
-            <h2 class="section-title" style="color: white;">Kontaktieren Sie uns</h2>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <h3>📍 Adresse</h3>
-                    <p>[Ihre Firmenadresse]<br>
-                    [PLZ Ort]<br>
-                    Österreich</p>
+
+    <!-- Revolution Section -->
+    <section class="revolution-section">
+        <h2 class="revolution-title">Wir bieten Ihnen ein revolutionäres Produkt<br>inklusive kundenorientierter Lösungen.</h2>
+        
+        <div class="revolution-logo">
+            <img src="logo_lynx_large.png" alt="Lynx Lining Logo" class="revolution-logo-image">
+        </div>
+        
+        <h3 class="revolution-subtitle">steht für</h3>
+        
+        <ul class="revolution-list">
+            <li>Extrem verschleißfester & langlebiger Schutz für hoch beanspruchte Ausrüstungsgegenstände.</li>
+            <li>Hohe Beständigkeit geben Abrieb, Impact großer und spitzer Gegenstände, Öle und Fette.</li>
+            <li>Beständigkeit gegen witterungsbedingte Einflüsse, Wärme und UV-Einstrahlung.</li>
+            <li>Eine bis zu 30x längere Lebensdauer als herkömmlich eingesetzte Verschleißschutzmaterialien.</li>
+            <li>Hohes Kosteneinsparungspotential aufgrund erhöhter Produktivität.</li>
+            <li>Ressourceneinsparung und Reduktion des CO2-Fußabdrucks.</li>
+            <li>Höchste Qualität durch Produktion in Österreich.</li>
+        </ul>
+    </section>
+
+    <!-- Advantages Section -->
+    <section id="vorteile">
+        <h2 class="section-title">Vorteile</h2>
+
+        <div class="advantages-grid">
+            <!-- Antihaft -->
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <img src="anithaft.png" alt="Antihaft">
                 </div>
-                <div class="contact-item">
-                    <h3>📞 Telefon</h3>
-                    <p>[Ihre Telefonnummer]</p>
+                <h3 class="advantage-title">Antihaft</h3>
+                <p class="advantage-description">Kein Verkleben mehr von Förderinnen oder LKW-Kippern. Die Antihafteigenschaft ist auch bekannt als "Lotuseffekt".</p>
+            </div>
+
+            <!-- Verschleissfest -->
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <img src="verschleissfest.png" alt="Verschleissfest">
                 </div>
-                <div class="contact-item">
-                    <h3>✉️ E-Mail</h3>
-                    <p>[Ihre E-Mail-Adresse]</p>
+                <h3 class="advantage-title">Verschleissfest</h3>
+                <p class="advantage-description">Unsere LYNX Lining Produkte überzeugen durch eine enorme Verschleißfestigkeit, welche die Lebensdauer und die Kosteneinsparungen jeweils positiv verstärken.</p>
+            </div>
+
+            <!-- Vibrationsreduktion -->
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <img src="vibrations.png" alt="Vibrationsreduktion">
                 </div>
+                <h3 class="advantage-title">Vibrationsreduktion</h3>
+                <p class="advantage-description">Vibrationen werden durch die Beschichtung mit LYNX Lining Produkten deutlich vermindert. Dadurch hält Ihre Produktionsausrüstung um ein Vielfaches länger.</p>
+            </div>
+
+            <!-- Schalldämpfung -->
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <img src="schalldämpfung.png" alt="Schalldämpfung">
+                </div>
+                <h3 class="advantage-title">Schalldämpfung</h3>
+                <p class="advantage-description">Durch Verwendung unserer LYNX Lining Produkte können bestehende Lärmemissionen um bis zu 21DB reduziert werden.</p>
+            </div>
+
+            <!-- 100% Recyclebar -->
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <img src="recyclebar.png" alt="100% Recyclebar">
+                </div>
+                <h3 class="advantage-title">100% Recyclebar</h3>
+                <p class="advantage-description">Unsere LYNX Lining Produkte werden in Österreich mit höchster Qualität produziert und sind zu 100% recyclebar, was einen enormen Vorteil für unsere Umwelt darstellt.</p>
             </div>
         </div>
     </section>
- 
+
+    <!-- Durability Section -->
+    <section class="durability-section">
+        <h2 class="durability-title"><span>LYNX LINING</span> Lebensdauer</h2>
+        
+        <div class="durability-content">
+            <div class="durability-image-container">
+                <img src="kipper_nach_30_monaten.JPG" alt="Kipper mit Lynx Lining" class="durability-image">
+                <p class="image-caption">Kipper mit Lynx Lining nach 43 Monaten und ca. 50.000 Fuhren<br>(Foto Neubeklebung)</p>
+            </div>
+
+            <div class="durability-chart">
+                <img src="lebensdauer.JPG" alt="TPU Lebensdauer Vergleich" style="width: 100%;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <h2 class="section-title" style="color: var(--dark-stone);">Was unsere Kunden sagen...</h2>
+        <p class="section-subtitle" style="color: var(--stone-gray);">Ein Unternehmen kann nur so gut sein, wie seine Kunden zufrieden sind.</p>
+
+        <div class="testimonials-grid">
+            <!-- Testimonial 1 -->
+            <div class="testimonial-card">
+                <img src="arthofer.webp" alt="Johann Arthofer" class="testimonial-photo">
+                <h3 class="testimonial-name">Johann Arthofer</h3>
+                <p class="testimonial-text">Ich bin überwältigt von der Widerstandsfähigkeit der LYNX Lining Produkte. Dadurch verringert sich der Aufwand für Wartung und senkt die Kosten.</p>
+                <p class="testimonial-role">Bauunternehmer</p>
+                <p class="testimonial-company">Wir betonieren Qualität<br>www.arthofer-bau.at</p>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="testimonial-card">
+                <img src="Andreas-Grabner.jpg" alt="Andreas Grabner" class="testimonial-photo">
+                <h3 class="testimonial-name">Andreas Grabner</h3>
+                <p class="testimonial-text">LYNX Lining hat uns auf Anhieb überzeugt. Zuvor hatten wir eine Verschleißauskleidung, die nach wenigen Monaten wieder zum Wechseln war.</p>
+                <p class="testimonial-role">Betriebsleiter</p>
+                <p class="testimonial-company">Quarzsande<br>www.quarzsande.at</p>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="testimonial-card">
+                <img src="mandorfer.jpg" alt="Rudolf Mandorfer" class="testimonial-photo">
+                <h3 class="testimonial-name">Rudolf Mandorfer</h3>
+                <p class="testimonial-text">Die Vorteile von LYNX Lining haben uns überzeugt, da es unseren Kunden half, Störungen im Betrieb zu beseitigen und damit Kosten zu sparen.</p>
+                <p class="testimonial-role">Seniorkonstrukteur</p>
+                <p class="testimonial-company">SBM-MP<br>www.sbm-mp.at</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PDF Download Section -->
+    <section class="pdf-section">
+        <div class="pdf-container">
+            <img src="6932b955f9c2ea81790ec6c051a31958d316cd4b0c162530eac377eb2033324c.png" alt="Stein & Kies Ausgabe 09-10/2023" class="pdf-cover">
+            <a href="stein_kies_186_web_3_.pdf" download class="pdf-button">Stein & Kies Ausgabe 09-10/2023</a>
+            <p class="pdf-description">Forum Mineralische Rohstoffe - ein Bericht über unsere Produkte (Seite 6-7)</p>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <div class="gallery-container">
+            <img src="a3183243432433ffe038e441f7b456f45f9d4c923a12eae29b9bf2f0497d73c2.jpg" alt="LYNX Lining Anwendung 1" class="gallery-image active">
+            <img src="d0c6a9c7f4609e4f74a073c912668775b7777bba9912fc82567dc82bd0565b9d.jpg" alt="LYNX Lining Anwendung 2" class="gallery-image">
+            <img src="Drei-Seiten-Kipper-3_5T-05.jpg" alt="LYNX Lining Anwendung 3" class="gallery-image">
+            <img src="holz12.JPG" alt="LYNX Lining Anwendung 4" class="gallery-image">
+            <img src="IMG-20190417-WA0010.jpg" alt="LYNX Lining Anwendung 5" class="gallery-image">
+            <img src="Mass-Flow-Transition-Hopper-TIVAR-88-2-Liner-722x368.jpg" alt="LYNX Lining Anwendung 6" class="gallery-image">
+            <img src="plastik1.JPG" alt="LYNX Lining Anwendung 7" class="gallery-image">
+            <img src="stutzen2.JPG" alt="LYNX Lining Anwendung 8" class="gallery-image">
+            <img src="1d14e5c3642823fbe39f194aadd76b38eb2a8daa2c76c7eb090b7448822826ee.jpg" alt="LYNX Lining Anwendung 9" class="gallery-image">
+            <img src="82d744ceac09e63ef4f93b043a6c9fb1e5c074a48e0fc6804f1379004eb83921.jpg" alt="LYNX Lining Anwendung 10" class="gallery-image">
+            <img src="916b0ac3ca6c5b2faf4c5fb7181b93a924f71a7e1f3c71e80c3687439c4b4abe.jpg" alt="LYNX Lining Anwendung 11" class="gallery-image">
+            <img src="11548f89cb21e91ce1beb1f9e6dbffa25d8b9838866516230cedaff3d6b0e81b.jpg" alt="LYNX Lining Anwendung 12" class="gallery-image">
+            <img src="20190128_154823.jpg" alt="LYNX Lining Anwendung 13" class="gallery-image">
+            <img src="a10518e83934f925b5952d598c18501a45961db69d9cd4c9487c894625577ed0.jpg" alt="LYNX Lining Anwendung 14" class="gallery-image">
+
+            <button class="gallery-nav gallery-prev" onclick="changeImage(-1)">‹</button>
+            <button class="gallery-nav gallery-next" onclick="changeImage(1)">›</button>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer>
-        <p>&copy; 2025 LYNX Lining. Alle Rechte vorbehalten. | Produktion in Österreich mit höchster Qualität</p>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+            <a href="agb.html">AGB</a>
+            <a href="kontakt.html">Kontakt</a>
+        </div>
+        <p class="copyright">© 2021 Lynx Lining. All Rights Reserved</p>
     </footer>
- 
+
+    <!-- JavaScript for Gallery Auto-Slide and Navigation -->
+    <script>
+        let currentImage = 0;
+        const images = document.querySelectorAll('.gallery-image');
+        const totalImages = images.length;
+
+        function showImage(index) {
+            images.forEach((img, i) => {
+                img.classList.remove('active');
+                if (i === index) {
+                    img.classList.add('active');
+                }
+            });
+        }
+
+        function changeImage(direction) {
+            currentImage += direction;
+            if (currentImage >= totalImages) currentImage = 0;
+            if (currentImage < 0) currentImage = totalImages - 1;
+            showImage(currentImage);
+        }
+
+        // Auto-slide every 3 seconds
+        setInterval(() => {
+            changeImage(1);
+        }, 3000);
+
+        // Animation für Kipper-Bild beim Scrollen
+        const observerOptions = {
+            threshold: 0.3,
+            rootMargin: '0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Beobachte das Kipper-Bild
+        const kipperImage = document.querySelector('.durability-image');
+        if (kipperImage) {
+            observer.observe(kipperImage);
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Galerie - LYNX LINING</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --stone-dark: #2c2c2c;
+            --stone-medium: #4a4a4a;
+            --accent-gold: #c9a961;
+            --accent-bronze: #a67c52;
+            --bg-gradient: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 50%, #3a3a3a 100%);
+            --text-white: #ffffff;
+            --text-light: #e8e8e8;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            min-height: 100vh;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-bronze));
+            color: var(--stone-dark);
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 25px rgba(201, 169, 97, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(201, 169, 97, 0.6);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: var(--text-white);
+            text-align: center;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 4rem;
+            font-weight: 300;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+        }
+
+        .video-card {
+            background: var(--bg-gradient);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 50px rgba(201, 169, 97, 0.3);
+        }
+
+        .video-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, var(--stone-medium), var(--stone-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .play-button {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-bronze));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--stone-dark);
+            transition: all 0.3s ease;
+        }
+
+        .video-placeholder:hover .play-button {
+            transform: scale(1.1);
+        }
+
+        .video-info {
+            padding: 2rem;
+        }
+
+        .video-card h3 {
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .video-card p {
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .back-button {
+                top: 1rem;
+                right: 1rem;
+                padding: 0.8rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">← Zurück zur Homepage</a>
+
+    <div class="container">
+        <h1>Video Galerie</h1>
+        <p class="subtitle">LYNX Lining Produkte in Aktion</p>
+
+        <div class="video-grid">
+            <div class="video-card">
+                <div class="video-placeholder">
+                    [VIDEO 1 - Produktionsverfahren]
+                    <div class="play-button">▶</div>
+                </div>
+                <div class="video-info">
+                    <h3>Produktionsverfahren</h3>
+                    <p>Einblick in die Herstellung unserer hochwertigen LYNX Lining Produkte in Österreich.</p>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-placeholder">
+                    [VIDEO 2 - Installation]
+                    <div class="play-button">▶</div>
+                </div>
+                <div class="video-info">
+                    <h3>Installation und Montage</h3>
+                    <p>Schritt-für-Schritt Anleitung zur professionellen Montage von LYNX Lining.</p>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-placeholder">
+                    [VIDEO 3 - Praxistest]
+                    <div class="play-button">▶</div>
+                </div>
+                <div class="video-info">
+                    <h3>Praxistest im Steinbruch</h3>
+                    <p>LYNX Lining im harten Einsatz unter extremen Bedingungen im Bergbau.</p>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-placeholder">
+                    [VIDEO 4 - Kundenprojekt]
+                    <div class="play-button">▶</div>
+                </div>
+                <div class="video-info">
+                    <h3>Kundenprojekt - Kipper</h3>
+                    <p>Dokumentation eines erfolgreichen Projekts mit LKW-Kippern im Dauereinsatz.</p>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-placeholder">
+                    [VIDEO 5 - Materialtests]
+                    <div class="play-button">▶</div>
+                </div>
+                <div class="video-info">
+                    <h3>Materialtests und Qualitätssicherung</h3>
+                    <p>Unsere strengen Qualitätskontrollen und Belastungstests im Labor.</p>
+                </div>
+            </div>
+
+            <div class="video-card">
+                <div class="video-placeholder">
+                    [VIDEO 6 - Vergleichstest]
+                    <div class="play-button">▶</div>
+                </div>
+                <div class="video-info">
+                    <h3>Vergleichstest mit anderen Materialien</h3>
+                    <p>LYNX Lining im direkten Vergleich mit herkömmlichen Verschleißschutzmaterialien.</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 5rem; padding: 3rem; background: var(--bg-gradient); border-radius: 15px;">
+            <h2 style="color: var(--accent-gold); font-size: 2rem; margin-bottom: 1rem;">
+                Individuelle Präsentation gewünscht?
+            </h2>
+            <p style="font-size: 1.2rem; color: var(--text-light); line-height: 1.8; margin-bottom: 2rem;">
+                Gerne stellen wir Ihnen unsere Produkte in einer persönlichen Video-Präsentation vor 
+                und zeigen Ihnen Anwendungsbeispiele speziell für Ihre Branche.
+            </p>
+            <a href="kontakt.html" style="display: inline-block; padding: 1.2rem 3rem; background: linear-gradient(135deg, var(--accent-gold), var(--accent-bronze)); color: var(--stone-dark); text-decoration: none; font-weight: 700; border-radius: 50px; text-transform: uppercase; letter-spacing: 2px; box-shadow: 0 6px 25px rgba(201, 169, 97, 0.4); transition: all 0.3s ease;">
+                Termin vereinbaren
+            </a>
+        </div>
+    </div>
+</body>
+</html>

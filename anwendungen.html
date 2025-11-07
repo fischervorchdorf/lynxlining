@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anwendungen - LYNX LINING</title>
+    <link rel="stylesheet" href="styles-subpage.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #e67e22;
+            --stone-light: #ecf0f1;
+            --stone-dark: #95a5a6;
+            --text-dark: #2c3e50;
+            --text-light: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: var(--text-light);
+            padding: 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-placeholder {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
+
+        nav {
+            padding: 0 5%;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 0;
+        }
+
+        nav ul li {
+            position: relative;
+        }
+
+        nav ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 1.2rem 2rem;
+            display: block;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            background: rgba(255,255,255,0.1);
+            border-bottom: 3px solid var(--accent-color);
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 150px;
+            right: 30px;
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(230, 126, 34, 0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(230, 126, 34, 0.6);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 140px;
+            background: linear-gradient(135deg, rgba(44, 62, 80, 0.95), rgba(52, 73, 94, 0.95));
+            color: var(--text-light);
+            padding: 5rem 5% 3rem;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        /* Content Section */
+        .content-section {
+            padding: 6rem 5%;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 4rem;
+            color: var(--stone-dark);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .applications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .application-item {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .application-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .application-item h3 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .application-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .application-item li {
+            padding: 0.7rem 0;
+            padding-left: 1.8rem;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .application-item li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #2c3e50, #1a252f);
+            color: var(--text-light);
+            padding: 3rem 5% 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--stone-light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 0.3rem 0;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+            padding-left: 10px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: var(--stone-dark);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            .back-button {
+                top: auto;
+                bottom: 30px;
+                right: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-top">
+            <div class="logo-container">
+                <div class="logo-placeholder">
+                    <img src="logo-luchs.png" alt="LYNX Logo" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+                </div>
+                <div class="logo-text">LYNX LINING</div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="produkte.html">PRODUKTE</a></li>
+                <li><a href="anwendungen.html" class="active">ANWENDUNGEN</a></li>
+                <li><a href="vorteile.html">VORTEILE</a></li>
+                <li><a href="kontakt.html">KONTAKT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Back Button -->
+    <a href="index.html" class="back-button">← Zurück zur Homepage</a>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Anwendungsgebiete</h1>
+        <p>Vielseitige Einsatzmöglichkeiten für höchste Anforderungen</p>
+    </section>
+
+    <!-- Content Section -->
+    <section class="content-section">
+        <h2 class="section-title">Wo LYNX LINING zum Einsatz kommt</h2>
+        <p class="section-subtitle">
+            Von Bergbau über Recycling bis hin zu speziellen Industrieanwendungen - 
+            unsere Verschleißschutzlösungen bewähren sich in den anspruchsvollsten Umgebungen.
+        </p>
+        
+        <div class="applications-grid">
+            <div class="application-item">
+                <h3>Bergbau & Förderanlagen</h3>
+                <ul>
+                    <li>Auskleidung von Trichtern und Bunkern</li>
+                    <li>Verschleißschutz bei Übergabepunkten</li>
+                    <li>Aufgabebunker für Schüttgut</li>
+                    <li>Schutz bei hochabrasiven Materialien</li>
+                    <li>Feuchte und klebrige Materialförderung</li>
+                </ul>
+            </div>
+
+            <div class="application-item">
+                <h3>Fördertechnik</h3>
+                <ul>
+                    <li>Abdichtungen bei Förderbändern</li>
+                    <li>Förderbänder mit Aufpanzerung</li>
+                    <li>Verschleißauskleidung für Materialförderung</li>
+                    <li>Staubförmige und flüssige Medien</li>
+                    <li>Schleifstaubabsaugungen</li>
+                </ul>
+            </div>
+
+            <div class="application-item">
+                <h3>Bauindustrie</h3>
+                <ul>
+                    <li>Übergabepunkte in der Betonproduktion</li>
+                    <li>Verkleidungen für Produktionsanlagen</li>
+                    <li>Oberflächenschutz</li>
+                    <li>Schutz vor Abrieb und Impact</li>
+                    <li>Staubkapselung</li>
+                </ul>
+            </div>
+
+            <div class="application-item">
+                <h3>Recycling & Aufbereitung</h3>
+                <ul>
+                    <li>Aufgabetrichter bei Recyclinganlagen</li>
+                    <li>Bauschutt-Aufbereitung</li>
+                    <li>Gesteinsmaterial für Kiesproduktion</li>
+                    <li>Aufbereitung organischer Stoffe</li>
+                    <li>Sortieranlagen</li>
+                </ul>
+            </div>
+
+            <div class="application-item">
+                <h3>Fahrzeuge & Mobile Anlagen</h3>
+                <ul>
+                    <li>Auskleidungen für Kippermulden</li>
+                    <li>LKW-Kipper Beschichtung</li>
+                    <li>Kehrmaschinen</li>
+                    <li>Mobile Brechanlagen</li>
+                    <li>Verschleißauskleidung für Schienenbearbeitungszüge</li>
+                </ul>
+            </div>
+
+            <div class="application-item">
+                <h3>Spezialanwendungen</h3>
+                <ul>
+                    <li>Schotterbunker und Silos</li>
+                    <li>Lärmschutz durch Schalldämpfung</li>
+                    <li>Vibrationsreduktion</li>
+                    <li>Temperaturbeständige Anwendungen</li>
+                    <li>UV-beständige Außenanwendungen</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 style="margin-bottom: 1rem;">LYNX LINING</h3>
+                <p>Ihr Partner für professionellen Verschleißschutz</p>
+            </div>
+            <div class="footer-section">
+                <h4 style="margin-bottom: 1rem;">Navigation</h4>
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="produkte.html">Produkte</a>
+                    <a href="anwendungen.html">Anwendungen</a>
+                    <a href="vorteile.html">Vorteile</a>
+                    <a href="kontakt.html">Kontakt</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4 style="margin-bottom: 1rem;">Rechtliches</h4>
+                <div class="footer-links">
+                    <a href="impressum.html">Impressum</a>
+                    <a href="datenschutz.html">Datenschutz</a>
+                    <a href="agb.html">AGB</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4 style="margin-bottom: 1rem;">Kontakt</h4>
+                <div class="footer-links">
+                    <a href="kontakt.html">Kontaktformular</a>
+                    <a href="tel:+43">Telefon</a>
+                    <a href="mailto:info@lynx-lining.com">E-Mail</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2021 Lynx Lining. All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referenzen - LYNX LINING</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-red: #D64545; --dark-red: #B83838; --stone-gray: #54585A;
+            --light-stone: #E8E6E3; --dark-stone: #3A3D3F; --white: #FFFFFF; --text-dark: #2C2C2C;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6;
+            color: var(--text-dark); background: linear-gradient(135deg, #f5f5f5 0%, #e8e6e3 100%);
+        }
+        .back-button {
+            position: fixed; top: 20px; right: 20px; padding: 12px 30px;
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: var(--white); text-decoration: none; border-radius: 50px; font-weight: 600;
+            box-shadow: 0 5px 20px rgba(214, 69, 69, 0.4); transition: all 0.3s ease; z-index: 1000;
+            text-transform: uppercase; letter-spacing: 1px; font-size: 14px;
+        }
+        .back-button:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(214, 69, 69, 0.6); }
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            padding: 100px 40px 60px; text-align: center; color: var(--white);
+        }
+        .page-title { font-size: 56px; font-weight: 700; letter-spacing: 3px; margin-bottom: 20px; text-transform: uppercase; }
+        .page-subtitle { font-size: 22px; opacity: 0.95; max-width: 800px; margin: 0 auto; }
+        section { padding: 100px 40px; max-width: 1400px; margin: 0 auto; }
+        .references-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 50px; }
+        .reference-card {
+            background: var(--white); border-radius: 25px; padding: 50px 40px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1); transition: all 0.4s ease; text-align: center;
+        }
+        .reference-card:hover { transform: translateY(-15px); box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2); }
+        .reference-logo { width: 150px; height: 150px; margin: 0 auto 30px; border-radius: 50%; border: 5px solid var(--primary-red); }
+        .reference-name { font-size: 26px; font-weight: 700; color: var(--primary-red); margin-bottom: 15px; }
+        .reference-industry { font-size: 16px; color: var(--stone-gray); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .reference-description { font-size: 16px; color: var(--text-dark); line-height: 1.8; }
+        footer {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: var(--white); padding: 40px 40px 20px; text-align: center;
+        }
+        .footer-links { display: flex; justify-content: center; gap: 40px; margin-bottom: 25px; flex-wrap: wrap; }
+        .footer-links a {
+            color: var(--white); text-decoration: none; font-size: 16px; font-weight: 500;
+            transition: all 0.3s ease; padding: 5px 0; border-bottom: 2px solid transparent;
+        }
+        .footer-links a:hover { border-bottom: 2px solid var(--white); }
+        .copyright { font-size: 14px; opacity: 0.9; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.3); }
+        @media (max-width: 768px) { .page-title { font-size: 38px; } .references-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">← Zurück zur Homepage</a>
+
+    <header class="page-header">
+        <h1 class="page-title">Referenzen</h1>
+        <p class="page-subtitle">Vertrauen Sie auf bewährte Qualität - Unsere zufriedenen Kunden</p>
+    </header>
+
+    <section>
+        <div class="references-grid">
+            <div class="reference-card">
+                <img src="reference_arthofer.jpg" alt="Arthofer Bau" class="reference-logo">
+                <h3 class="reference-name">Arthofer Bau</h3>
+                <p class="reference-industry">Bauunternehmen</p>
+                <p class="reference-description">Erfolgreicher Einsatz von LYNX Lining in LKW-Kippern und Betonmischanlagen. Deutliche Reduktion der Wartungskosten und Verlängerung der Lebensdauer der Ausrüstung.</p>
+            </div>
+
+            <div class="reference-card">
+                <img src="reference_quarzsande.jpg" alt="Quarzsande" class="reference-logo">
+                <h3 class="reference-name">Quarzsande</h3>
+                <p class="reference-industry">Rohstoffgewinnung</p>
+                <p class="reference-description">LYNX Lining Auskleidung in Förderanlagen und Aufgabebunkern. Signifikante Verbesserung der Materialfluss-Eigenschaften und Reduktion von Ausfallzeiten.</p>
+            </div>
+
+            <div class="reference-card">
+                <img src="reference_sbm.jpg" alt="SBM-MP" class="reference-logo">
+                <h3 class="reference-name">SBM-MP</h3>
+                <p class="reference-industry">Maschinen- und Anlagenbau</p>
+                <p class="reference-description">Integration von LYNX Lining in Kundenprojekte. Erhöhte Kundenzufriedenheit durch längere Standzeiten und geringere Betriebskosten der ausgelieferten Anlagen.</p>
+            </div>
+
+            <div class="reference-card">
+                <img src="reference_mining.jpg" alt="Bergbauunternehmen" class="reference-logo">
+                <h3 class="reference-name">Internationale Bergbaukonzerne</h3>
+                <p class="reference-industry">Bergbau & Rohstoffe</p>
+                <p class="reference-description">Einsatz in hochbeanspruchten Fördersystemen und Bunkern. Extreme Verschleißfestigkeit auch unter härtesten Bedingungen nachgewiesen.</p>
+            </div>
+
+            <div class="reference-card">
+                <img src="reference_recycling.jpg" alt="Recyclingbetriebe" class="reference-logo">
+                <h3 class="reference-name">Recycling- & Aufbereitungsbetriebe</h3>
+                <p class="reference-industry">Recycling & Umwelt</p>
+                <p class="reference-description">Auskleidung von Recyclinganlagen und Aufbereitungsmaschinen. Verbesserte Durchsatzleistung und längere Wartungsintervalle.</p>
+            </div>
+
+            <div class="reference-card">
+                <img src="reference_transport.jpg" alt="Transportwirtschaft" class="reference-logo">
+                <h3 class="reference-name">Transport & Logistik</h3>
+                <p class="reference-industry">Transportwirtschaft</p>
+                <p class="reference-description">LYNX Lining in Kippermulden und Transportfahrzeugen. Deutlich verlängerte Nutzungsdauer und vereinfachte Entleerung durch Antihaft-Eigenschaften.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+            <a href="agb.html">AGB</a>
+            <a href="kontakt.html">Kontakt</a>
+        </div>
+        <p class="copyright">© 2021 Lynx Lining. All Rights Reserved</p>
+    </footer>
+</body>
+</html>

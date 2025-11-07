@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vorteile - LYNX LINING</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-red: #D64545;
+            --dark-red: #B83838;
+            --stone-gray: #54585A;
+            --light-stone: #E8E6E3;
+            --dark-stone: #3A3D3F;
+            --white: #FFFFFF;
+            --text-dark: #2C2C2C;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e6e3 100%);
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(214, 69, 69, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(214, 69, 69, 0.6);
+        }
+
+        /* Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            padding: 100px 40px 60px;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .page-title {
+            font-size: 56px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .page-subtitle {
+            font-size: 22px;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Content Section */
+        section {
+            padding: 100px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+        }
+
+        .advantage-card {
+            background: var(--white);
+            padding: 50px 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s ease;
+            text-align: center;
+        }
+
+        .advantage-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .advantage-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .advantage-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary-red);
+        }
+
+        .advantage-description {
+            font-size: 17px;
+            color: var(--stone-gray);
+            line-height: 1.8;
+        }
+
+        /* Additional Benefits Section */
+        .benefits-section {
+            background: linear-gradient(135deg, var(--light-stone) 0%, var(--white) 100%);
+            padding: 80px 60px;
+            border-radius: 30px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            margin: 60px 0;
+        }
+
+        .benefits-title {
+            font-size: 38px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 50px;
+            color: var(--dark-stone);
+        }
+
+        .benefits-list {
+            list-style: none;
+            padding: 0;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .benefits-list li {
+            padding: 20px;
+            font-size: 18px;
+            color: var(--text-dark);
+            line-height: 1.8;
+            border-bottom: 2px solid var(--light-stone);
+        }
+
+        .benefits-list li:before {
+            content: "✓ ";
+            color: var(--primary-red);
+            font-weight: bold;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: var(--white);
+            padding: 40px 40px 20px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .footer-links a:hover {
+            border-bottom: 2px solid var(--white);
+        }
+
+        .copyright {
+            font-size: 14px;
+            opacity: 0.9;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .page-title {
+                font-size: 38px;
+            }
+
+            .advantages-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">← Zurück zur Homepage</a>
+
+    <header class="page-header">
+        <h1 class="page-title">Vorteile</h1>
+        <p class="page-subtitle">Entdecken Sie die einzigartigen Eigenschaften von LYNX Lining Produkten</p>
+    </header>
+
+    <section>
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <img src="icon_antihaft.png" alt="Antihaft" style="width: 60px; filter: brightness(0) invert(1);">
+                </div>
+                <h3 class="advantage-title">Antihaft</h3>
+                <p class="advantage-description">Kein Verkleben mehr von Förderinnen oder LKW-Kippern. Die Antihafteigenschaft ist auch bekannt als "Lotuseffekt". Material gleitet mühelos ab und verhindert kostspielige Stillstandszeiten.</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <img src="icon_verschleissfest.png" alt="Verschleissfest" style="width: 60px; filter: brightness(0) invert(1);">
+                </div>
+                <h3 class="advantage-title">Verschleissfest</h3>
+                <p class="advantage-description">Unsere LYNX Lining Produkte überzeugen durch eine enorme Verschleißfestigkeit, welche die Lebensdauer und die Kosteneinsparungen jeweils positiv verstärken. Bis zu 30x längere Lebensdauer als herkömmliche Materialien.</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <img src="icon_vibration.png" alt="Vibrationsreduktion" style="width: 60px; filter: brightness(0) invert(1);">
+                </div>
+                <h3 class="advantage-title">Vibrationsreduktion</h3>
+                <p class="advantage-description">Vibrationen werden durch die Beschichtung mit LYNX Lining Produkten deutlich vermindert. Dadurch hält Ihre Produktionsausrüstung um ein Vielfaches länger und Wartungskosten werden signifikant reduziert.</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <img src="icon_schall.png" alt="Schalldämpfung" style="width: 60px; filter: brightness(0) invert(1);">
+                </div>
+                <h3 class="advantage-title">Schalldämpfung</h3>
+                <p class="advantage-description">Durch Verwendung unserer LYNX Lining Produkte können bestehende Lärmemissionen um bis zu 21DB reduziert werden. Dies verbessert das Arbeitsumfeld erheblich und erfüllt strenge Lärmschutzauflagen.</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <img src="icon_recycling.png" alt="100% Recyclebar" style="width: 60px; filter: brightness(0) invert(1);">
+                </div>
+                <h3 class="advantage-title">100% Recyclebar</h3>
+                <p class="advantage-description">Unsere LYNX Lining Produkte werden in Österreich mit höchster Qualität produziert und sind zu 100% recyclebar, was einen enormen Vorteil für unsere Umwelt darstellt. Nachhaltig und verantwortungsvoll.</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <img src="icon_wetter.png" alt="Wetterbeständig" style="width: 60px; filter: brightness(0) invert(1);">
+                </div>
+                <h3 class="advantage-title">Wetterbeständig</h3>
+                <p class="advantage-description">Beständigkeit gegen witterungsbedingte Einflüsse, Wärme und UV-Einstrahlung. Unsere Produkte halten extremen Bedingungen stand und behalten ihre Eigenschaften über Jahre.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="benefits-section">
+        <h2 class="benefits-title">Weitere Vorteile von LYNX Lining</h2>
+        <ul class="benefits-list">
+            <li>Extrem verschleißfester & langlebiger Schutz für hoch beanspruchte Ausrüstungsgegenstände</li>
+            <li>Hohe Beständigkeit gegen Abrieb, Impact großer und spitzer Gegenstände, Öle und Fette</li>
+            <li>Eine bis zu 30x längere Lebensdauer als herkömmlich eingesetzte Verschleißschutzmaterialien</li>
+            <li>Hohes Kosteneinsparungspotential aufgrund erhöhter Produktivität</li>
+            <li>Ressourceneinsparung und Reduktion des CO2-Fußabdrucks</li>
+            <li>Höchste Qualität durch Produktion in Österreich - Made in Austria</li>
+            <li>Einfache Installation und Wartung</li>
+            <li>Chemikalienbeständig gegen die meisten Säuren, Laugen und Lösungsmittel</li>
+            <li>Temperaturbeständig von -40°C bis +80°C</li>
+            <li>Flexible Anpassung an verschiedene Oberflächen und Formen</li>
+        </ul>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+            <a href="agb.html">AGB</a>
+            <a href="kontakt.html">Kontakt</a>
+        </div>
+        <p class="copyright">© 2021 Lynx Lining. All Rights Reserved</p>
+    </footer>
+</body>
+</html>

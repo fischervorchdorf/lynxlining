@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Förderband Galerie - LYNX LINING</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #e67e22;
+            --stone-light: #ecf0f1;
+            --stone-dark: #95a5a6;
+            --text-dark: #2c3e50;
+            --text-light: #ffffff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .gallery-container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .gallery-header {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .gallery-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gallery-content {
+            padding: 3rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            height: 300px;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Placeholder background for images */
+        .gallery-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 1rem;
+            transform: translateY(100%);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: var(--accent-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+            background: var(--accent-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .modal-nav:hover {
+            background: #d35400;
+        }
+
+        .modal-prev {
+            left: 20px;
+        }
+
+        .modal-next {
+            right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-content {
+                padding: 1.5rem;
+            }
+
+            .gallery-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .back-button {
+                position: static;
+                margin-top: 1rem;
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gallery-container">
+        <div class="gallery-header">
+            <h1>Förderband Galerie</h1>
+            <p>LYNX LINING in der Praxis</p>
+            <a href="index.html" class="back-button">← Zurück</a>
+        </div>
+
+        <div class="gallery-content">
+            <div class="gallery-grid">
+                <div class="gallery-item" onclick="openModal(0)">
+                    <img src="foerderband-1.jpg" alt="Förderband Anwendung 1">
+                    <div class="gallery-caption">Förderband mit LYNX Lining</div>
+                </div>
+                <div class="gallery-item" onclick="openModal(1)">
+                    <img src="foerderband-2.jpg" alt="Förderband Anwendung 2">
+                    <div class="gallery-caption">Verschleißschutz Detail</div>
+                </div>
+                <div class="gallery-item" onclick="openModal(2)">
+                    <img src="foerderband-3.jpg" alt="Förderband Anwendung 3">
+                    <div class="gallery-caption">Übergabepunkt geschützt</div>
+                </div>
+                <div class="gallery-item" onclick="openModal(3)">
+                    <img src="foerderband-4.jpg" alt="Förderband Anwendung 4">
+                    <div class="gallery-caption">Langzeitschutz</div>
+                </div>
+                <div class="gallery-item" onclick="openModal(4)">
+                    <img src="foerderband-5.jpg" alt="Förderband Anwendung 5">
+                    <div class="gallery-caption">Montage Beispiel</div>
+                </div>
+                <div class="gallery-item" onclick="openModal(5)">
+                    <img src="foerderband-6.jpg" alt="Förderband Anwendung 6">
+                    <div class="gallery-caption">Industrielle Anwendung</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal(event)">×</span>
+            <span class="modal-nav modal-prev" onclick="prevImage(event)">‹</span>
+            <span class="modal-nav modal-next" onclick="nextImage(event)">›</span>
+            <img id="modal-image" src="" alt="Full size image">
+        </div>
+    </div>
+
+    <script>
+        const images = [
+            { src: 'foerderband-1.jpg', alt: 'Förderband mit LYNX Lining' },
+            { src: 'foerderband-2.jpg', alt: 'Verschleißschutz Detail' },
+            { src: 'foerderband-3.jpg', alt: 'Übergabepunkt geschützt' },
+            { src: 'foerderband-4.jpg', alt: 'Langzeitschutz' },
+            { src: 'foerderband-5.jpg', alt: 'Montage Beispiel' },
+            { src: 'foerderband-6.jpg', alt: 'Industrielle Anwendung' }
+        ];
+
+        let currentIndex = 0;
+
+        function openModal(index) {
+            currentIndex = index;
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modal-image');
+            modalImage.src = images[currentIndex].src;
+            modalImage.alt = images[currentIndex].alt;
+            modal.classList.add('active');
+        }
+
+        function closeModal(event) {
+            if (event.target.classList.contains('modal') || event.target.classList.contains('modal-close')) {
+                document.getElementById('modal').classList.remove('active');
+            }
+        }
+
+        function prevImage(event) {
+            event.stopPropagation();
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            document.getElementById('modal-image').src = images[currentIndex].src;
+        }
+
+        function nextImage(event) {
+            event.stopPropagation();
+            currentIndex = (currentIndex + 1) % images.length;
+            document.getElementById('modal-image').src = images[currentIndex].src;
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const modal = document.getElementById('modal');
+            if (modal.classList.contains('active')) {
+                if (e.key === 'Escape') {
+                    modal.classList.remove('active');
+                } else if (e.key === 'ArrowLeft') {
+                    prevImage(e);
+                } else if (e.key === 'ArrowRight') {
+                    nextImage(e);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

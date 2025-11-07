@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trichter Video - LYNX LINING</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #e67e22;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .video-container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .video-header {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .video-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-content {
+            padding: 3rem;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .video-description {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            line-height: 1.8;
+        }
+
+        .video-description h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .video-content {
+                padding: 1.5rem;
+            }
+
+            .video-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .back-button {
+                position: static;
+                margin-top: 1rem;
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <div class="video-header">
+            <h1>Trichter mit LYNX LINING</h1>
+            <p>Effiziente Materialförderung ohne Verstopfungen</p>
+            <a href="index.html" class="back-button">← Zurück</a>
+        </div>
+
+        <div class="video-content">
+            <div class="video-wrapper">
+                <!-- Platzhalter für Video -->
+                <video controls>
+                    <source src="videos/trichter-demo.mp4" type="video/mp4">
+                    Ihr Browser unterstützt keine Videos.
+                </video>
+                <div class="video-placeholder">
+                    Trichter Video<br>
+                    <small style="font-size: 1rem;">Video hier platzieren: videos/trichter-demo.mp4</small>
+                </div>
+            </div>
+
+            <div class="video-description">
+                <h2>Trichter-Auskleidung mit LYNX LINING</h2>
+                <p>
+                    Sehen Sie, wie LYNX LINING die Materialförderung in Trichtern revolutioniert. 
+                    Dank der außergewöhnlichen Antihafteigenschaften fließt auch klebriges und 
+                    feuchtes Material problemlos ab - ohne Verstopfungen oder Brückenbildung.
+                </p>
+                <p style="margin-top: 1rem;">
+                    Die Verschleißschutzauskleidung hält extremen Belastungen stand und reduziert 
+                    Wartungskosten und Ausfallzeiten erheblich. Ideal für Bergbau, Recycling und 
+                    Bauindustrie.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

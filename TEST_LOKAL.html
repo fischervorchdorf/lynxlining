@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LYNX LINING - Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #D64545;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .image-test {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        .image-test h3 {
+            color: #54585A;
+            margin-bottom: 15px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #D64545 0%, #B83838 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(214, 69, 69, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 LYNX LINING - Bilder Test</h1>
+        
+        <p style="text-align: center; margin-bottom: 30px;">
+            Diese Seite testet, ob alle Bilder korrekt geladen werden können.
+        </p>
+
+        <div class="image-test">
+            <h3>1. Logo (logo_lynx.png)</h3>
+            <img src="logo_lynx.png" alt="Lynx Logo" style="background: #D64545; padding: 20px;">
+            <p id="logo-status">⏳ Lade...</p>
+        </div>
+
+        <div class="image-test">
+            <h3>2. Hero Background (hero_background.jpg)</h3>
+            <img src="hero_background.jpg" alt="Hero Background">
+            <p id="hero-status">⏳ Lade...</p>
+        </div>
+
+        <div class="image-test">
+            <h3>3. Made in Austria (made_in_austria.png)</h3>
+            <img src="made_in_austria.png" alt="Made in Austria">
+            <p id="austria-status">⏳ Lade...</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="index.html" class="button">▶ Zur Hauptseite</a>
+        </div>
+
+        <div style="margin-top: 40px; padding: 20px; background: #fff9e6; border-left: 4px solid #D64545; border-radius: 5px;">
+            <h3 style="margin-top: 0;">✅ Checkliste:</h3>
+            <ul>
+                <li>Alle drei Bilder oben sollten sichtbar sein</li>
+                <li>Das Logo sollte weiß auf rotem Hintergrund erscheinen</li>
+                <li>Das Hero-Bild zeigt Berge und einen Steinbruch</li>
+                <li>Das Made in Austria Logo zeigt die österreichische Flagge</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Bild-Lade-Status prüfen
+        function checkImage(imgSrc, statusId) {
+            const img = new Image();
+            img.onload = function() {
+                document.getElementById(statusId).innerHTML = '<span class="success">✓ Erfolgreich geladen!</span>';
+            };
+            img.onerror = function() {
+                document.getElementById(statusId).innerHTML = '<span class="error">✗ FEHLER: Bild nicht gefunden!</span>';
+            };
+            img.src = imgSrc;
+        }
+
+        checkImage('logo_lynx.png', 'logo-status');
+        checkImage('hero_background.jpg', 'hero-status');
+        checkImage('made_in_austria.png', 'austria-status');
+    </script>
+</body>
+</html>

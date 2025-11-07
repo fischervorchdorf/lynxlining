@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LYNX Lining - Premium Auskleidungssysteme</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #d9534f;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #d9534f;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #d9534f;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* Vorteile Section */
+        .vorteile {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            background: #d9534f;
+            color: white;
+            display: inline-block;
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .vorteile-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .vorteil-card {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .vorteil-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 25px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .vorteil-icon:hover {
+            transform: translateY(-5px);
+        }
+
+        .vorteil-icon img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .vorteil-card h3 {
+            color: #d9534f;
+            font-size: 18px;
+            margin-bottom: 15px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .vorteil-card p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Anwendungen Section */
+        .anwendungen {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .anwendungen-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .anwendung-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .anwendung-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .anwendung-card h3 {
+            color: #d9534f;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .anwendung-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .anwendung-card li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .anwendung-card li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #d9534f;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .vorteile-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .vorteile-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .vorteile-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">LYNX Lining</div>
+            <ul class="nav-links">
+                <li><a href="#vorteile">Vorteile</a></li>
+                <li><a href="#anwendungen">Anwendungen</a></li>
+                <li><a href="#kontakt">Kontakt</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>LYNX Lining</h1>
+            <p>Premium Auskleidungssysteme für höchste Ansprüche</p>
+            <a href="#kontakt" class="cta-button">Jetzt anfragen</a>
+        </div>
+    </section>
+
+    <!-- Vorteile Section -->
+    <section id="vorteile" class="vorteile">
+        <div class="container">
+            <div class="section-title">
+                <h2>VORTEILE</h2>
+            </div>
+            
+            <div class="vorteile-grid">
+                <!-- Vorteil 1: Antihaft -->
+                <div class="vorteil-card">
+                    <div class="vorteil-icon">
+                        <img src="/mnt/user-data/uploads/anithaft.png" alt="Antihaft">
+                    </div>
+                    <h3>Antihaft</h3>
+                    <p>Kein Verkleben mehr von Förderinnen oder Löw-Köppern. Die Antihafteigenschaft ist auch bekannt als "Lotuseffekt".</p>
+                </div>
+
+                <!-- Vorteil 2: Verschleissfest -->
+                <div class="vorteil-card">
+                    <div class="vorteil-icon">
+                        <img src="/mnt/user-data/uploads/verschleissfest.png" alt="Verschleissfest">
+                    </div>
+                    <h3>Verschleissfest</h3>
+                    <p>Unsere LYNX Lining Produkte überzeugen durch eine enorme Verschleissfestigkeit, welche die Lebensdauer und die Kosteneinsparungen jeweils positiv verstärken.</p>
+                </div>
+
+                <!-- Vorteil 3: Vibrationsreduktion -->
+                <div class="vorteil-card">
+                    <div class="vorteil-icon">
+                        <img src="/mnt/user-data/uploads/vibrations.png" alt="Vibrationsreduktion">
+                    </div>
+                    <h3>Vibrationsreduktion</h3>
+                    <p>Vibrationen werden durch die Beschichtung mit LYNX Lining Produkten deutlich vermindert. Dadurch hält Ihre Produktionsausrüstung um ein Vielfaches länger.</p>
+                </div>
+
+                <!-- Vorteil 4: Schalldämpfung -->
+                <div class="vorteil-card">
+                    <div class="vorteil-icon">
+                        <img src="/mnt/user-data/uploads/schalldämpfung.png" alt="Schalldämpfung">
+                    </div>
+                    <h3>Schalldämpfung</h3>
+                    <p>Durch Verwendung unserer LYNX Lining Produkte werden bestehende Lärmemissionen um bis zu 21DB reduziert werden.</p>
+                </div>
+
+                <!-- Vorteil 5: 100% Recyclebar -->
+                <div class="vorteil-card">
+                    <div class="vorteil-icon">
+                        <img src="/mnt/user-data/uploads/recyclebar.png" alt="100% Recyclebar">
+                    </div>
+                    <h3>100% Recyclebar</h3>
+                    <p>Unsere LYNX Lining Produkte werden in Österreich in höchster Qualität produziert und sind zu 100% recyclebar, was einen enormen Vorteil für unsere Umwelt darstellt.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Anwendungen Section -->
+    <section id="anwendungen" class="anwendungen">
+        <div class="container">
+            <div class="section-title">
+                <h2>ANWENDUNGEN</h2>
+            </div>
+            
+            <div class="anwendungen-grid">
+                <div class="anwendung-card">
+                    <h3>Bergbau</h3>
+                    <ul>
+                        <li>Lkw-Mulden</li>
+                        <li>Bagger-Schaufeln</li>
+                        <li>Förderbänder</li>
+                    </ul>
+                </div>
+
+                <div class="anwendung-card">
+                    <h3>Recycling</h3>
+                    <ul>
+                        <li>Sortieranlagen</li>
+                        <li>Brecher</li>
+                        <li>Siebmaschinen</li>
+                    </ul>
+                </div>
+
+                <div class="anwendung-card">
+                    <h3>Landwirtschaft</h3>
+                    <ul>
+                        <li>Anhänger</li>
+                        <li>Silos</li>
+                        <li>Förderanlagen</li>
+                    </ul>
+                </div>
+
+                <div class="anwendung-card">
+                    <h3>Industrie</h3>
+                    <ul>
+                        <li>Rutschen</li>
+                        <li>Trichter</li>
+                        <li>Bunker</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="kontakt">
+        <div class="container">
+            <p>&copy; 2024 LYNX Lining. Alle Rechte vorbehalten.</p>
+            <p>Kontakt: info@lynxlining.com | Tel: +43 123 456 789</p>
+        </div>
+    </footer>
+</body>
+</html>

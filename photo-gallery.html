@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foto Galerie - LYNX LINING</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --stone-dark: #2c2c2c;
+            --stone-medium: #4a4a4a;
+            --accent-gold: #c9a961;
+            --accent-bronze: #a67c52;
+            --bg-gradient: linear-gradient(135deg, #2c2c2c 0%, #4a4a4a 50%, #3a3a3a 100%);
+            --text-white: #ffffff;
+            --text-light: #e8e8e8;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            min-height: 100vh;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-bronze));
+            color: var(--stone-dark);
+            text-decoration: none;
+            font-weight: 700;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 6px 25px rgba(201, 169, 97, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(201, 169, 97, 0.6);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: var(--text-white);
+            text-align: center;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 4rem;
+            font-weight: 300;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, var(--stone-medium), var(--stone-light));
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(201, 169, 97, 0.3);
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 1.5rem;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-overlay h3 {
+            color: var(--accent-gold);
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .gallery-overlay p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 10px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 3rem;
+            color: var(--accent-gold);
+            cursor: pointer;
+            z-index: 2001;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.2);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 3rem;
+            color: var(--accent-gold);
+            cursor: pointer;
+            padding: 1rem;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .lightbox-nav:hover {
+            transform: translateY(-50%) scale(1.2);
+        }
+
+        .lightbox-prev {
+            left: 2rem;
+        }
+
+        .lightbox-next {
+            right: 2rem;
+        }
+
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-button {
+            padding: 0.8rem 2rem;
+            background: var(--bg-gradient);
+            color: var(--text-light);
+            border: 2px solid var(--stone-medium);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-button:hover,
+        .filter-button.active {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-bronze));
+            color: var(--stone-dark);
+            border-color: var(--accent-gold);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .back-button {
+                top: 1rem;
+                right: 1rem;
+                padding: 0.8rem 1.5rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+
+            .lightbox-nav {
+                font-size: 2rem;
+                padding: 0.5rem;
+            }
+
+            .lightbox-prev {
+                left: 0.5rem;
+            }
+
+            .lightbox-next {
+                right: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">← Zurück zur Homepage</a>
+
+    <div class="container">
+        <h1>Foto Galerie</h1>
+        <p class="subtitle">Unsere Projekte und Produkte im Bild</p>
+
+        <div class="category-filter">
+            <button class="filter-button active" onclick="filterGallery('all')">Alle</button>
+            <button class="filter-button" onclick="filterGallery('bergbau')">Bergbau</button>
+            <button class="filter-button" onclick="filterGallery('transport')">Transport</button>
+            <button class="filter-button" onclick="filterGallery('recycling')">Recycling</button>
+            <button class="filter-button" onclick="filterGallery('produktion')">Produktion</button>
+        </div>
+
+        <div class="gallery-grid" id="gallery">
+            <div class="gallery-item" data-category="bergbau" onclick="openLightbox(0)">
+                <div class="gallery-placeholder">[FOTO 1 - Bergbau Trichter]</div>
+                <div class="gallery-overlay">
+                    <h3>Trichterauskleidung</h3>
+                    <p>Bergbau - Steinbruch</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="transport" onclick="openLightbox(1)">
+                <div class="gallery-placeholder">[FOTO 2 - LKW Kipper]</div>
+                <div class="gallery-overlay">
+                    <h3>LKW Kipper-Auskleidung</h3>
+                    <p>Transport - Nach 43 Monaten</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="recycling" onclick="openLightbox(2)">
+                <div class="gallery-placeholder">[FOTO 3 - Recyclinganlage]</div>
+                <div class="gallery-overlay">
+                    <h3>Recyclinganlage</h3>
+                    <p>Aufgabebunker</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="bergbau" onclick="openLightbox(3)">
+                <div class="gallery-placeholder">[FOTO 4 - Förderband]</div>
+                <div class="gallery-overlay">
+                    <h3>Förderband-Abdichtung</h3>
+                    <p>Bergbau - Förderanlage</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="produktion" onclick="openLightbox(4)">
+                <div class="gallery-placeholder">[FOTO 5 - Produktion]</div>
+                <div class="gallery-overlay">
+                    <h3>Produktionsstätte</h3>
+                    <p>Made in Austria</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="transport" onclick="openLightbox(5)">
+                <div class="gallery-placeholder">[FOTO 6 - Kippermulde Detail]</div>
+                <div class="gallery-overlay">
+                    <h3>Detailaufnahme</h3>
+                    <p>Kippermulde Innenansicht</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="bergbau" onclick="openLightbox(6)">
+                <div class="gallery-placeholder">[FOTO 7 - Übergabepunkt]</div>
+                <div class="gallery-overlay">
+                    <h3>Übergabepunkt</h3>
+                    <p>Verschleißschutz im Einsatz</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="recycling" onclick="openLightbox(7)">
+                <div class="gallery-placeholder">[FOTO 8 - Siebanlage]</div>
+                <div class="gallery-overlay">
+                    <h3>Siebanlage</h3>
+                    <p>Recycling - Bauschutt</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="produktion" onclick="openLightbox(8)">
+                <div class="gallery-placeholder">[FOTO 9 - Materialrolle]</div>
+                <div class="gallery-overlay">
+                    <h3>Materialrolle</h3>
+                    <p>LYNX Lining Folie</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="bergbau" onclick="openLightbox(9)">
+                <div class="gallery-placeholder">[FOTO 10 - Steinbruch Panorama]</div>
+                <div class="gallery-overlay">
+                    <h3>Steinbruch Projekt</h3>
+                    <p>Komplettauskleidung</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="transport" onclick="openLightbox(10)">
+                <div class="gallery-placeholder">[FOTO 11 - Kipper Flotte]</div>
+                <div class="gallery-overlay">
+                    <h3>Kipper Flotte</h3>
+                    <p>Mehrere Fahrzeuge ausgestattet</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="recycling" onclick="openLightbox(11)">
+                <div class="gallery-placeholder">[FOTO 12 - Schredder]</div>
+                <div class="gallery-overlay">
+                    <h3>Schredderanlage</h3>
+                    <p>Verschleißschutz Trichter</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close" onclick="closeLightbox()">×</span>
+        <span class="lightbox-nav lightbox-prev" onclick="event.stopPropagation(); changeImage(-1)">‹</span>
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <div class="lightbox-image gallery-placeholder" id="lightboxImage">
+                [VERGRÖSSERTES BILD]
+            </div>
+        </div>
+        <span class="lightbox-nav lightbox-next" onclick="event.stopPropagation(); changeImage(1)">›</span>
+    </div>
+
+    <script>
+        let currentImageIndex = 0;
+        const totalImages = 12;
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            document.getElementById('lightbox').classList.add('active');
+            updateLightboxImage();
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        function changeImage(direction) {
+            currentImageIndex = (currentImageIndex + direction + totalImages) % totalImages;
+            updateLightboxImage();
+        }
+
+        function updateLightboxImage() {
+            // Hier würden Sie das tatsächliche Bild laden
+            // Für jetzt zeigen wir nur den Platzhalter
+        }
+
+        // Filter Funktionalität
+        function filterGallery(category) {
+            const items = document.querySelectorAll('.gallery-item');
+            const buttons = document.querySelectorAll('.filter-button');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            items.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
+            if (lightbox.classList.contains('active')) {
+                if (e.key === 'ArrowLeft') changeImage(-1);
+                if (e.key === 'ArrowRight') changeImage(1);
+                if (e.key === 'Escape') closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>

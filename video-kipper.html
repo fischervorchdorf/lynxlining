@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kipper Video - LYNX LINING</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #e67e22;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .video-container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .video-header {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .video-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-content {
+            padding: 3rem;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+
+        .video-wrapper video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .video-description {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 15px;
+            line-height: 1.8;
+        }
+
+        .video-description h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .video-content {
+                padding: 1.5rem;
+            }
+
+            .video-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .back-button {
+                position: static;
+                margin-top: 1rem;
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container">
+        <div class="video-header">
+            <h1>Kipper mit LYNX LINING</h1>
+            <p>Sehen Sie die Leistungsfähigkeit in Aktion</p>
+            <a href="index.html" class="back-button">← Zurück</a>
+        </div>
+
+        <div class="video-content">
+            <div class="video-wrapper">
+                <!-- Platzhalter für Video - Ersetzen Sie mit Ihrem Video -->
+                <video controls>
+                    <source src="videos/kipper-demo.mp4" type="video/mp4">
+                    Ihr Browser unterstützt keine Videos.
+                </video>
+                <!-- Falls kein Video verfügbar ist, wird der Platzhalter angezeigt -->
+                <div class="video-placeholder">
+                    Kipper Video<br>
+                    <small style="font-size: 1rem;">Video hier platzieren: videos/kipper-demo.mp4</small>
+                </div>
+            </div>
+
+            <div class="video-description">
+                <h2>Über diese Anwendung</h2>
+                <p>
+                    Dieses Video zeigt einen Kipper mit LYNX LINING Auskleidung nach über 43 Monaten 
+                    und ca. 50.000 Fuhren im Dauereinsatz. Die LYNX LINING Beschichtung zeigt auch 
+                    nach dieser intensiven Nutzung kaum Verschleißspuren und demonstriert die 
+                    außergewöhnliche Langlebigkeit unserer Produkte.
+                </p>
+                <p style="margin-top: 1rem;">
+                    Die Antihafteigenschaften sorgen dafür, dass das Material sauber abgleitet und 
+                    keine Rückstände in der Mulde verbleiben. Dies spart Zeit beim Entladen und 
+                    erhöht die Produktivität erheblich.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

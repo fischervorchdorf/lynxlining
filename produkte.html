@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produktpalette - LYNX LINING</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-red: #D64545;
+            --dark-red: #B83838;
+            --stone-gray: #54585A;
+            --light-stone: #E8E6E3;
+            --medium-stone: #C4C2BF;
+            --dark-stone: #3A3D3F;
+            --white: #FFFFFF;
+            --text-dark: #2C2C2C;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #636B7C;
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(214, 69, 69, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(214, 69, 69, 0.6);
+        }
+
+        /* Header Section */
+        .produktpalette-header {
+            background: var(--white);
+            padding: 80px 40px 60px;
+            text-align: center;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .quality-badge {
+            width: 120px;
+            height: 120px;
+        }
+
+        .header-text {
+            text-align: center;
+        }
+
+        .header-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .header-description {
+            font-size: 16px;
+            color: var(--stone-gray);
+            line-height: 1.8;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lynx-logo {
+            width: 180px;
+            height: auto;
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 60px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+        }
+
+        .product-content {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .product-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+
+        .product-subtitle {
+            font-size: 14px;
+            color: var(--stone-gray);
+            margin-bottom: 25px;
+        }
+
+        .product-button {
+            display: inline-block;
+            padding: 12px 40px;
+            background: var(--stone-gray);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+
+        .product-button:hover {
+            background: var(--dark-stone);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: var(--white);
+            padding: 40px 40px 20px;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .footer-links a:hover {
+            border-bottom: 2px solid var(--white);
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            font-size: 14px;
+            opacity: 0.9;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .header-content {
+                grid-template-columns: 1fr;
+            }
+
+            .quality-badge, .lynx-logo {
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 36px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">← Zurück zur Homepage</a>
+
+    <!-- Header -->
+    <section class="produktpalette-header">
+        <div class="header-content">
+            <img src="quality-badge.png" alt="Qualitätssiegel" class="quality-badge">
+            
+            <div class="header-text">
+                <h1 class="header-title">Produktpalette</h1>
+                <p class="header-description">
+                    LYNX Lining Produkte sind thermoplastische Polyurethanfolien<br>
+                    für Anwendungen mit hoher Beanspruchung im Einsatz.<br><br>
+                    Wir liefern folgende Stärken: 2mm, 3mm, 5mm & 10mm (8mm wird Ende 2021 verfügbar sein).<br>
+                    Standardbreite= 1.515 mm (2.000 mm auf Anfrage möglich).<br>
+                    Verfügbar in Rollenware oder Plattenware (1.515 mm x 3.000 mm).<br>
+                    Die LYNX Lining's in Stärke 2 & 3 & 5 mm sind standardmäßig rot, Stärke 8 & 10 mm blau/rot.<br>
+                    Ab Mengen von 5.000 kg/pro Stärke können sie auch in anderen Farben bestellt werden.
+                </p>
+            </div>
+
+            <img src="logo_lynx_red.png" alt="LYNX LINING Logo" class="lynx-logo">
+        </div>
+    </section>
+
+    <!-- Products -->
+    <section class="products-section">
+        <div class="products-grid">
+            <!-- LYNX Lining Standard -->
+            <div class="product-card">
+                <img src="produkt.JPG" alt="LYNX Lining Standard" class="product-image">
+                <div class="product-content">
+                    <h3 class="product-title">LYNX Lining Standard</h3>
+                    <p class="product-subtitle">Rollenware</p>
+                    <a href="#" class="product-button">Produktinfo</a>
+                </div>
+            </div>
+
+            <!-- LYNX Lining Comfort -->
+            <div class="product-card">
+                <img src="produkt.JPG" alt="LYNX Lining Comfort" class="product-image">
+                <div class="product-content">
+                    <h3 class="product-title">LYNX Lining Comfort</h3>
+                    <p class="product-subtitle">auf Blech bzw. Stahl vorinstalliert</p>
+                    <a href="#" class="product-button">Produktinfo</a>
+                </div>
+            </div>
+
+            <!-- LYNX Lining Ultra -->
+            <div class="product-card">
+                <img src="6675642.jpg" alt="LYNX Lining Ultra" class="product-image">
+                <div class="product-content">
+                    <h3 class="product-title">LYNX Lining Ultra</h3>
+                    <p class="product-subtitle">für spezielle Anforderungen</p>
+                    <a href="#" class="product-button">Produktinfo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="index.html">Home</a>
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+            <a href="agb.html">AGB</a>
+            <a href="kontakt.html">Kontakt</a>
+        </div>
+        <p class="copyright">© 2021 Lynx Lining. All Rights Reserved</p>
+    </footer>
+</body>
+</html>
