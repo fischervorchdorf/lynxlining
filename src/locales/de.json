@@ -149,7 +149,11 @@
     "order_message": "Anmerkungen zur Bestellung",
     "submit_order": "Bestellung absenden",
     "order_success": "Vielen Dank für Ihre Bestellung! Wir melden uns in Kürze bei Ihnen.",
-    "order_error": "Beim Absenden der Bestellung ist ein Fehler aufgetreten."
+    "order_error": "Beim Absenden der Bestellung ist ein Fehler aufgetreten.",
+    "agb_text": "Ich habe die Allgemeinen Geschäftsbedingungen gelesen und akzeptiere diese.",
+    "agb_link": "AGB",
+    "privacy_text": "Ich habe die Datenschutzerklärung zur Kenntnis genommen und stimme der Verarbeitung meiner Daten zu.",
+    "privacy_link": "Datenschutzerklärung"
   },
   "contact_cta": {
     "title": "Bereit für besseren Verschleißschutz?",
@@ -165,7 +169,9 @@
     "submit": "Nachricht senden",
     "required": "Pflichtfeld",
     "success": "Ihre Nachricht wurde erfolgreich gesendet!",
-    "error": "Beim Senden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+    "error": "Beim Senden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "privacy_text": "Ich habe die Datenschutzerklärung zur Kenntnis genommen und stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu.",
+    "privacy_link": "Datenschutzerklärung"
   },
   "footer": {
     "description": "Ihr Partner für professionellen Verschleißschutz im Berg-, Maschinen- und Anlagenbau. Made in Austria.",

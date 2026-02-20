@@ -186,6 +186,26 @@
         </div>
       </div>
 
+      {# DSGVO Checkboxen #}
+      <div class="space-y-3">
+        <div class="flex items-start gap-3">
+          <input type="checkbox" id="shop-agb" name="agb_consent" required
+                 class="mt-1 w-4 h-4 accent-lynx-red rounded shrink-0">
+          <label for="shop-agb" class="text-sm text-stone leading-relaxed">
+            {{ t('shop_page.agb_text') }}
+            <a href="/{{ locale }}/agb" class="text-lynx-red hover:underline" target="_blank">{{ t('shop_page.agb_link') }}</a>. <span class="text-lynx-red">*</span>
+          </label>
+        </div>
+        <div class="flex items-start gap-3">
+          <input type="checkbox" id="shop-privacy" name="privacy_consent" required
+                 class="mt-1 w-4 h-4 accent-lynx-red rounded shrink-0">
+          <label for="shop-privacy" class="text-sm text-stone leading-relaxed">
+            {{ t('shop_page.privacy_text') }}
+            <a href="/{{ locale }}/datenschutz" class="text-lynx-red hover:underline" target="_blank">{{ t('shop_page.privacy_link') }}</a>. <span class="text-lynx-red">*</span>
+          </label>
+        </div>
+      </div>
+
       <button type="submit" id="order-submit-btn" class="btn-lift w-full px-10 py-4 bg-lynx-red text-white rounded-xl font-bold text-base shadow-[0_8px_30px_rgba(214,69,69,0.35)] hover:bg-lynx-red-dark">
         {{ t('shop_page.submit_order') }} &rarr;
       </button>

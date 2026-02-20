@@ -149,7 +149,11 @@
     "order_message": "Order notes",
     "submit_order": "Submit order",
     "order_success": "Thank you for your order! We will get back to you shortly.",
-    "order_error": "An error occurred while submitting the order."
+    "order_error": "An error occurred while submitting the order.",
+    "agb_text": "I have read and accept the General Terms and Conditions.",
+    "agb_link": "Terms & Conditions",
+    "privacy_text": "I have read the Privacy Policy and agree to the processing of my data.",
+    "privacy_link": "Privacy Policy"
   },
   "contact_cta": {
     "title": "Ready for better wear protection?",
@@ -165,7 +169,9 @@
     "submit": "Send message",
     "required": "Required field",
     "success": "Your message has been sent successfully!",
-    "error": "An error occurred while sending. Please try again."
+    "error": "An error occurred while sending. Please try again.",
+    "privacy_text": "I have read the Privacy Policy and agree to the processing of my data for handling my inquiry.",
+    "privacy_link": "Privacy Policy"
   },
   "footer": {
     "description": "Your partner for professional wear protection in mining, machinery and plant construction. Made in Austria.",

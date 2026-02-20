@@ -1,0 +1,235 @@
+=====================================================================
+LYNX LINING WEBSITE – DSGVO / DATENSCHUTZ MASSNAHMEN
+Stand: Februar 2026
+=====================================================================
+
+ZUSAMMENFASSUNG
+===============
+
+Die LYNX Lining Website wurde auf vollständige DSGVO-Konformität geprüft
+und angepasst. Hier eine Übersicht aller umgesetzten Maßnahmen:
+
+
+1. GOOGLE FONTS – LOKAL GEHOSTET
+================================
+
+PROBLEM:
+  Externe Einbindung von Google Fonts (fonts.googleapis.com) überträgt
+  bei jedem Seitenaufruf die IP-Adresse des Besuchers an Google (USA).
+  Die IP-Adresse ist ein personenbezogenes Datum. Ohne Einwilligung
+  des Besuchers ist diese Übertragung ein DSGVO-Verstoß
+  (LG München I, Urteil vom 20.01.2022, Az. 3 O 17493/20).
+
+LÖSUNG:
+  - Schriftarten Montserrat und Inter als WOFF2-Dateien heruntergeladen
+  - Gespeichert unter: src/public/fonts/montserrat-latin.woff2 und
+    src/public/fonts/inter-latin.woff2
+  - @font-face Deklarationen in src/public/css/app.css eingetragen
+  - Alle externen Google Fonts Links entfernt aus:
+    * src/views/layouts/main.njk (öffentliches Layout)
+    * src/views/layouts/admin.njk (Admin-Layout)
+    * src/views/admin/login.njk (Admin-Login)
+  - Keine Datenübertragung an externe Dienste mehr
+
+BETROFFENE DATEIEN:
+  - src/public/fonts/montserrat-latin.woff2 (37KB)
+  - src/public/fonts/inter-latin.woff2 (230KB)
+  - src/public/css/app.css (@font-face Deklarationen)
+  - src/views/layouts/main.njk (Link entfernt)
+  - src/views/layouts/admin.njk (Link entfernt)
+  - src/views/admin/login.njk (Link entfernt)
+
+
+2. KONTAKTFORMULAR – DATENSCHUTZ-CHECKBOX
+=========================================
+
+PROBLEM:
+  Das Kontaktformular hatte keine Einwilligungserklärung für die
+  Verarbeitung der eingegebenen Daten. Ohne explizite Zustimmung
+  dürfen personenbezogene Daten nicht verarbeitet werden (Art. 6 DSGVO).
+
+LÖSUNG:
+  - Pflichtmäßige Datenschutz-Checkbox vor dem Absende-Button eingefügt
+  - Text: "Ich habe die Datenschutzerklärung zur Kenntnis genommen und
+    stimme der Verarbeitung meiner Daten zur Bearbeitung meiner Anfrage zu."
+  - Link zur Datenschutzerklärung integriert
+  - Checkbox ist required – Formular kann ohne Zustimmung nicht abgesendet werden
+  - Übersetzungen in DE und EN vorhanden
+
+BETROFFENE DATEIEN:
+  - src/views/pages/contact.njk (Checkbox hinzugefügt)
+  - src/locales/de.json (contact_form.privacy_text + privacy_link)
+  - src/locales/en.json (contact_form.privacy_text + privacy_link)
+
+
+3. SHOP / BESTELLFORMULAR – AGB + DATENSCHUTZ CHECKBOXEN
+=========================================================
+
+PROBLEM:
+  Beim Shop-Bestellformular fehlten die Einwilligungen für:
+  - AGB-Akzeptanz (für Geschäftsabschluss nötig)
+  - Datenschutzerklärung (für Datenverarbeitung nötig)
+
+LÖSUNG:
+  - Zwei Pflicht-Checkboxen vor dem Absende-Button eingefügt:
+    1. AGB-Checkbox: "Ich habe die AGB gelesen und akzeptiere diese."
+       → Link zu /de/agb bzw. /en/agb
+    2. Datenschutz-Checkbox: "Ich habe die Datenschutzerklärung zur
+       Kenntnis genommen und stimme der Verarbeitung meiner Daten zu."
+       → Link zu /de/datenschutz bzw. /en/datenschutz
+  - Beide Checkboxen sind required
+  - Übersetzungen in DE und EN vorhanden
+
+BETROFFENE DATEIEN:
+  - src/views/pages/shop.njk (2 Checkboxen hinzugefügt)
+  - src/locales/de.json (shop_page.agb_text, agb_link, privacy_text, privacy_link)
+  - src/locales/en.json (shop_page.agb_text, agb_link, privacy_text, privacy_link)
+
+
+4. COOKIE-BANNER (DSGVO-KONFORM)
+=================================
+
+PROBLEM:
+  Ohne Cookie-Banner können keine optionalen Cookies (z.B. Analytics)
+  gesetzt werden. Auch technisch notwendige Cookies sollten transparent
+  kommuniziert werden.
+
+LÖSUNG:
+  - Cookie-Banner als Partial erstellt: src/views/partials/cookie-banner.njk
+  - Wird unten auf jeder Seite angezeigt (fixed bottom)
+  - Zwei Cookie-Kategorien:
+    1. Notwendig (immer aktiv, disabled Checkbox): Session, Sprache
+    2. Statistik/Analytics (optional, Opt-In)
+  - Drei Buttons: "Alle akzeptieren", "Nur notwendige", "Auswahl speichern"
+  - Consent wird in localStorage gespeichert (lynx_cookie_consent)
+  - Banner erscheint nur, wenn noch kein Consent vorhanden ist
+  - Link zur Datenschutzerklärung im Banner
+  - Übersetzungen in DE und EN vorhanden
+
+BETROFFENE DATEIEN:
+  - src/views/partials/cookie-banner.njk (Neues Partial)
+  - src/views/layouts/main.njk (Cookie-Banner eingebunden)
+  - src/locales/de.json (cookie.* Schlüssel)
+  - src/locales/en.json (cookie.* Schlüssel)
+
+
+5. RECHTSSEITEN – VOLLSTÄNDIGE INHALTE
+=======================================
+
+PROBLEM:
+  Impressum, Datenschutzerklärung und AGB hatten nur Platzhalter-Texte
+  mit 1-2 Sätzen. Für eine geschäftliche Website sind vollständige
+  Rechtstexte erforderlich.
+
+LÖSUNG:
+  Die drei Rechtsseiten wurden mit vollständigen, DSGVO-konformen
+  Texten befüllt. Alle Texte in DE + EN:
+
+  a) IMPRESSUM (/de/impressum bzw. /en/impressum)
+     - Angaben gemäß § 5 ECG und Offenlegung gemäß § 25 MedienG
+     - Firmendaten: LYNX Lining, Ing. Kurt Haidecker, Schillerstraße 13, 4020 Linz
+     - Kontaktdaten
+     - Unternehmensgegenstand
+     - Haftungsausschluss (Inhalte, Links, Urheberrecht)
+     - Bildnachweis
+
+  b) DATENSCHUTZERKLÄRUNG (/de/datenschutz bzw. /en/datenschutz)
+     Enthält 10 Abschnitte:
+     1. Verantwortlicher (Name, Adresse, E-Mail)
+     2. Erhebung und Speicherung personenbezogener Daten
+        - Beim Websitebesuch (Server-Logs)
+        - Bei Kontaktformular-Nutzung
+        - Bei Shop-Bestellungen
+     3. Weitergabe von Daten
+     4. Cookies (Notwendig + Analytics mit Opt-In)
+     5. Hosting (Hetzner Online GmbH, Deutschland, DSGVO-konform)
+     6. Keine externen Dienste (expliziter Hinweis: keine Google Fonts,
+        kein Google Analytics, kein Facebook Pixel etc.)
+     7. SSL-Verschlüsselung
+     8. Betroffenenrechte (Auskunft, Berichtigung, Löschung, etc.)
+        inkl. Beschwerdestelle: Österreichische Datenschutzbehörde
+     9. Datenspeicherungsdauer
+     10. Änderungsvorbehalt
+
+  c) AGB (/de/agb bzw. /en/agb)
+     Enthält 11 Abschnitte:
+     1. Geltungsbereich
+     2. Vertragsschluss
+     3. Preise und Zahlung (netto + MwSt, Zahlungsziel 14 Tage)
+     4. Lieferbedingungen (EXW Linz, Incoterms 2020)
+     5. Eigentumsvorbehalt
+     6. Gewährleistung (12 Monate, 8 Werktage Rügefrist)
+     7. Haftungsbeschränkung
+     8. Widerrufsrecht (individuell gefertigte Waren: kein Widerruf.
+        Standardware: 14 Tage freiwillig)
+     9. Datenschutz (Verweis auf Datenschutzerklärung)
+     10. Anwendbares Recht (Österreichisches Recht, Gerichtsstand Linz)
+     11. Salvatorische Klausel
+
+BETROFFENE DATEIEN:
+  - src/utils/seed-legal.js (neues Seed-Script)
+  - Daten direkt in MySQL-Datenbank gespeichert (pages + page_translations)
+
+
+6. HOSTING – DSGVO-KONFORM
+===========================
+
+  - Server: Hetzner Online GmbH, Rechenzentrum in Deutschland
+  - Keine Datenübertragung in Drittländer (USA etc.)
+  - SSL-Verschlüsselung (Let's Encrypt)
+  - Keine externen Tracking-Dienste
+  - Keine externen CDNs oder Ressourcen
+
+
+7. KEINE EXTERNEN DIENSTE
+==========================
+
+  Die Website lädt KEINE externen Ressourcen:
+  ✅ Google Fonts → lokal gehostet
+  ✅ Keine Google Analytics
+  ✅ Kein Facebook Pixel
+  ✅ Kein externes CDN (jQuery, Bootstrap, etc.)
+  ✅ Keine externen Bilder/Videos
+  ✅ Kein reCAPTCHA (stattdessen: Honeypot-Spam-Schutz)
+  ✅ Instagram-Bilder werden lokal gecacht (nicht direkt von Instagram geladen)
+
+
+8. SHOP-PRODUKTE IN DER DATENBANK
+===================================
+
+  8 Beispielprodukte mit Staffelpreisen eingespielt:
+
+  1. LYNX Lining Standard 2mm (LL-STD-2MM)
+     - ab 1 lfm: €18,50 | ab 10 lfm: €16,50 | ab 50 lfm: €14,90
+
+  2. LYNX Lining Standard 3mm (LL-STD-3MM)
+     - ab 1 lfm: €24,90 | ab 10 lfm: €22,50 | ab 50 lfm: €19,90
+
+  3. LYNX Lining Standard 5mm (LL-STD-5MM)
+     - ab 1 lfm: €34,90 | ab 10 lfm: €31,50 | ab 50 lfm: €28,90
+
+  4. LYNX Lining Standard 10mm (LL-STD-10MM)
+     - ab 1 lfm: €52,90 | ab 10 lfm: €48,50 | ab 50 lfm: €44,90
+
+  5. LYNX Lining Comfort 3mm (LL-CMF-3MM)
+     - ab 1 lfm: €32,90 | ab 10 lfm: €29,50 | ab 50 lfm: €26,90
+
+  6. LYNX Lining Comfort 5mm (LL-CMF-5MM)
+     - ab 1 lfm: €44,90 | ab 10 lfm: €40,50 | ab 50 lfm: €36,90
+
+  7. LYNX Lining Ultra 5mm (LL-ULT-5MM)
+     - ab 1 lfm: €54,90 | ab 10 lfm: €49,50 | ab 50 lfm: €44,90
+
+  8. LYNX Lining Ultra 10mm (LL-ULT-10MM)
+     - ab 1 lfm: €72,90 | ab 10 lfm: €66,50 | ab 50 lfm: €59,90
+
+  Alle Produkte haben DE + EN Übersetzungen.
+  Alle Preise netto zzgl. MwSt.
+
+
+=====================================================================
+HINWEIS: Diese Informationen sind eine technische Dokumentation.
+Die Rechtstexte (Impressum, Datenschutzerklärung, AGB) sollten
+idealerweise von einem Rechtsanwalt geprüft werden, bevor die
+Website produktiv geht.
+=====================================================================

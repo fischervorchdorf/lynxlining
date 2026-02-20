@@ -316,6 +316,129 @@ router.post('/instagram/:id/feature', requireAuth, async (req, res) => {
 });
 
 // ============================================================
+// SHOP-PRODUKTE (CRUD mit Staffelpreisen)
+// ============================================================
+
+router.get('/shop-produkte', requireAuth, async (req, res) => {
+  const [products] = await db.query(`
+    SELECT sp.*, spt.name as name_de
+    FROM shop_products sp
+    LEFT JOIN shop_product_translations spt ON sp.id = spt.shop_product_id AND spt.locale = 'de'
+    ORDER BY sp.sort_order
+  `).catch(() => [[]]);
+
+  // Staffelpreise laden
+  for (const prod of products) {
+    const [tiers] = await db.query('SELECT min_quantity, price_per_unit FROM shop_price_tiers WHERE shop_product_id = ? ORDER BY min_quantity', [prod.id]);
+    prod.tiers = tiers;
+    prod.base_price = tiers.length ? tiers[0].price_per_unit : 0;
+  }
+
+  res.render('admin/shop-list.njk', { title: 'Shop-Produkte', adminPage: 'shop-produkte', products });
+});
+
+router.get('/shop-produkte/neu', requireAuth, (req, res) => {
+  res.render('admin/shop-form.njk', { title: 'Neues Shop-Produkt', adminPage: 'shop-produkte', product: null, tiers: [], isNew: true });
+});
+
+router.get('/shop-produkte/:id', requireAuth, async (req, res) => {
+  try {
+    const [products] = await db.query('SELECT * FROM shop_products WHERE id = ?', [req.params.id]);
+    if (!products.length) return res.redirect('/admin/shop-produkte');
+    const product = products[0];
+    const [de] = await db.query('SELECT * FROM shop_product_translations WHERE shop_product_id = ? AND locale = "de"', [req.params.id]);
+    const [en] = await db.query('SELECT * FROM shop_product_translations WHERE shop_product_id = ? AND locale = "en"', [req.params.id]);
+    const [tiers] = await db.query('SELECT * FROM shop_price_tiers WHERE shop_product_id = ? ORDER BY min_quantity', [req.params.id]);
+    product.de = de[0] || {};
+    product.en = en[0] || {};
+    res.render('admin/shop-form.njk', { title: 'Produkt bearbeiten', adminPage: 'shop-produkte', product, tiers, isNew: false });
+  } catch (err) {
+    console.error('Shop-Produkt-Fehler:', err);
+    res.redirect('/admin/shop-produkte');
+  }
+});
+
+router.post('/shop-produkte', requireAuth, upload.single('image'), async (req, res) => {
+  const { slug, sku, unit, sort_order, min_quantity, is_active, name_de, short_desc_de, desc_de, name_en, short_desc_en, desc_en } = req.body;
+  const imagePath = req.file ? '/images/uploads/' + req.file.filename : (req.body.existing_image || '/images/products/produkt.JPG');
+
+  const [result] = await db.query(
+    'INSERT INTO shop_products (slug, sku, image_path, unit, min_quantity, sort_order, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    [slug, sku || '', imagePath, unit || 'lfm', min_quantity || 1, sort_order || 0, is_active ? 1 : 1]
+  );
+  const id = result.insertId;
+
+  await db.query('INSERT INTO shop_product_translations (shop_product_id, locale, name, short_description, description) VALUES (?, "de", ?, ?, ?)',
+    [id, name_de, short_desc_de, desc_de]);
+  await db.query('INSERT INTO shop_product_translations (shop_product_id, locale, name, short_description, description) VALUES (?, "en", ?, ?, ?)',
+    [id, name_en || name_de, short_desc_en || short_desc_de, desc_en || desc_de]);
+
+  // Staffelpreise
+  const tierMins = Array.isArray(req.body.tier_min) ? req.body.tier_min : (req.body.tier_min ? [req.body.tier_min] : []);
+  const tierPrices = Array.isArray(req.body.tier_price) ? req.body.tier_price : (req.body.tier_price ? [req.body.tier_price] : []);
+  for (let i = 0; i < tierMins.length; i++) {
+    if (tierMins[i] && tierPrices[i]) {
+      await db.query('INSERT INTO shop_price_tiers (shop_product_id, min_quantity, price_per_unit) VALUES (?, ?, ?)',
+        [id, parseFloat(tierMins[i]), parseFloat(tierPrices[i])]);
+    }
+  }
+
+  res.redirect('/admin/shop-produkte');
+});
+
+router.post('/shop-produkte/:id', requireAuth, upload.single('image'), async (req, res) => {
+  const { slug, sku, unit, sort_order, min_quantity, is_active, name_de, short_desc_de, desc_de, name_en, short_desc_en, desc_en } = req.body;
+  const imagePath = req.file ? '/images/uploads/' + req.file.filename : req.body.existing_image;
+
+  await db.query('UPDATE shop_products SET slug = ?, sku = ?, image_path = ?, unit = ?, min_quantity = ?, sort_order = ?, is_active = ? WHERE id = ?',
+    [slug, sku || '', imagePath, unit || 'lfm', min_quantity || 1, sort_order || 0, is_active ? 1 : 0, req.params.id]);
+
+  // Übersetzungen updaten/einfügen
+  const [deExists] = await db.query('SELECT id FROM shop_product_translations WHERE shop_product_id = ? AND locale = "de"', [req.params.id]);
+  if (deExists.length) {
+    await db.query('UPDATE shop_product_translations SET name = ?, short_description = ?, description = ? WHERE shop_product_id = ? AND locale = "de"',
+      [name_de, short_desc_de, desc_de, req.params.id]);
+  } else {
+    await db.query('INSERT INTO shop_product_translations (shop_product_id, locale, name, short_description, description) VALUES (?, "de", ?, ?, ?)',
+      [req.params.id, name_de, short_desc_de, desc_de]);
+  }
+
+  const [enExists] = await db.query('SELECT id FROM shop_product_translations WHERE shop_product_id = ? AND locale = "en"', [req.params.id]);
+  if (enExists.length) {
+    await db.query('UPDATE shop_product_translations SET name = ?, short_description = ?, description = ? WHERE shop_product_id = ? AND locale = "en"',
+      [name_en || name_de, short_desc_en || short_desc_de, desc_en || desc_de, req.params.id]);
+  } else {
+    await db.query('INSERT INTO shop_product_translations (shop_product_id, locale, name, short_description, description) VALUES (?, "en", ?, ?, ?)',
+      [req.params.id, name_en || name_de, short_desc_en || short_desc_de, desc_en || desc_de]);
+  }
+
+  // Staffelpreise: Alte löschen, neue einfügen
+  await db.query('DELETE FROM shop_price_tiers WHERE shop_product_id = ?', [req.params.id]);
+  const tierMins = Array.isArray(req.body.tier_min) ? req.body.tier_min : (req.body.tier_min ? [req.body.tier_min] : []);
+  const tierPrices = Array.isArray(req.body.tier_price) ? req.body.tier_price : (req.body.tier_price ? [req.body.tier_price] : []);
+  for (let i = 0; i < tierMins.length; i++) {
+    if (tierMins[i] && tierPrices[i]) {
+      await db.query('INSERT INTO shop_price_tiers (shop_product_id, min_quantity, price_per_unit) VALUES (?, ?, ?)',
+        [req.params.id, parseFloat(tierMins[i]), parseFloat(tierPrices[i])]);
+    }
+  }
+
+  res.redirect('/admin/shop-produkte');
+});
+
+router.post('/shop-produkte/:id/toggle', requireAuth, async (req, res) => {
+  await db.query('UPDATE shop_products SET is_active = NOT is_active WHERE id = ?', [req.params.id]);
+  res.redirect('/admin/shop-produkte');
+});
+
+router.post('/shop-produkte/:id/delete', requireAuth, async (req, res) => {
+  await db.query('DELETE FROM shop_price_tiers WHERE shop_product_id = ?', [req.params.id]);
+  await db.query('DELETE FROM shop_product_translations WHERE shop_product_id = ?', [req.params.id]);
+  await db.query('DELETE FROM shop_products WHERE id = ?', [req.params.id]);
+  res.redirect('/admin/shop-produkte');
+});
+
+// ============================================================
 // FOTOS WECHSELN (Image Management)
 // ============================================================
 
