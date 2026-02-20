@@ -1,0 +1,91 @@
+{% extends "layouts/admin.njk" %}
+
+{% block admin_content %}
+
+<a href="/admin/linkedin" class="inline-flex items-center gap-1.5 text-sm text-stone hover:text-[#D64545] transition-colors mb-6">
+  &larr; Zurück zur Liste
+</a>
+
+<form method="POST" action="/admin/linkedin{% if not isNew %}/{{ post.id }}{% endif %}" enctype="multipart/form-data" class="space-y-8">
+
+  {# LinkedIn URL + Grunddaten #}
+  <div class="bg-white rounded-xl border border-black/5 shadow-sm p-6">
+    <h2 class="text-lg font-bold text-[#1E1E1E] mb-4">LinkedIn-Beitrag</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-stone-dark mb-1">LinkedIn URL *</label>
+        <input type="url" name="linkedin_url" value="{{ post.linkedin_url if post else '' }}" required placeholder="https://www.linkedin.com/posts/..." class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545]">
+        <p class="text-xs text-stone/50 mt-1">Den Link zum LinkedIn-Beitrag hier einfügen</p>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-stone-dark mb-1">Autor</label>
+        <input type="text" name="author_name" value="{{ post.author_name if post else 'Martin F. Heidecker' }}" placeholder="Martin F. Heidecker" class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545]">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-stone-dark mb-1">Sortierung</label>
+        <input type="number" name="sort_order" value="{{ post.sort_order if post else 0 }}" class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545]">
+      </div>
+    </div>
+    <div class="mt-4">
+      <label class="flex items-center gap-2">
+        <input type="checkbox" name="is_visible" value="1" {% if not post or post.is_visible %}checked{% endif %} class="rounded border-black/20 text-[#D64545] focus:ring-[#D64545]">
+        <span class="text-sm text-stone-dark">Sichtbar auf der Website</span>
+      </label>
+    </div>
+  </div>
+
+  {# Bild #}
+  <div class="bg-white rounded-xl border border-black/5 shadow-sm p-6">
+    <h2 class="text-lg font-bold text-[#1E1E1E] mb-4">Vorschaubild</h2>
+    <p class="text-xs text-stone/50 mb-3">Optional: Ein Bild vom LinkedIn-Beitrag hochladen (Screenshot oder Produktbild)</p>
+    {% if post and post.image_path %}
+      <div class="mb-4">
+        <img src="{{ post.image_path }}" alt="" class="w-48 h-32 object-cover rounded-lg border border-black/5">
+        <input type="hidden" name="existing_image" value="{{ post.image_path }}">
+      </div>
+    {% endif %}
+    <input type="file" name="image" accept="image/*" class="text-sm text-stone file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#D64545]/10 file:text-[#D64545] hover:file:bg-[#D64545]/20">
+  </div>
+
+  {# Deutsch #}
+  <div class="bg-white rounded-xl border border-black/5 shadow-sm p-6">
+    <h2 class="text-lg font-bold text-[#1E1E1E] mb-4">Deutsch</h2>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-stone-dark mb-1">Titel *</label>
+        <input type="text" name="title_de" value="{{ post.de.title if post and post.de else '' }}" required placeholder="z.B. LYNX Lining im Schienenverkehr" class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545]">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-stone-dark mb-1">Kurztext / Auszug</label>
+        <textarea name="excerpt_de" rows="3" placeholder="Kurze Zusammenfassung des LinkedIn-Beitrags..." class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545]">{{ post.de.excerpt if post and post.de else '' }}</textarea>
+      </div>
+    </div>
+  </div>
+
+  {# Englisch #}
+  <div class="bg-white rounded-xl border border-black/5 shadow-sm p-6">
+    <h2 class="text-lg font-bold text-[#1E1E1E] mb-4">Englisch <span class="text-xs font-normal text-stone/50">(falls leer wird der deutsche Text verwendet)</span></h2>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-stone-dark mb-1">Title</label>
+        <input type="text" name="title_en" value="{{ post.en.title if post and post.en else '' }}" placeholder="e.g. LYNX Lining in Railway Applications" class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545]">
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-stone-dark mb-1">Excerpt</label>
+        <textarea name="excerpt_en" rows="3" placeholder="Short summary of the LinkedIn post..." class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545]">{{ post.en.excerpt if post and post.en else '' }}</textarea>
+      </div>
+    </div>
+  </div>
+
+  {# Buttons #}
+  <div class="flex gap-4">
+    <button type="submit" class="px-6 py-2.5 bg-[#D64545] text-white rounded-lg font-semibold text-sm hover:bg-[#C13B3B] transition-colors">
+      {% if isNew %}Beitrag anlegen{% else %}Speichern{% endif %}
+    </button>
+    <a href="/admin/linkedin" class="px-6 py-2.5 border border-black/10 rounded-lg font-semibold text-sm text-stone hover:bg-stone/5 transition-colors">
+      Abbrechen
+    </a>
+  </div>
+</form>
+
+{% endblock %}

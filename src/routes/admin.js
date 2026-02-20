@@ -316,6 +316,93 @@ router.post('/instagram/:id/feature', requireAuth, async (req, res) => {
 });
 
 // ============================================================
+// LINKEDIN
+// ============================================================
+
+router.get('/linkedin', requireAuth, async (req, res) => {
+  const [posts] = await db.query(`
+    SELECT lp.*, lpt.title as title_de, lpt.excerpt as excerpt_de
+    FROM linkedin_posts lp
+    LEFT JOIN linkedin_post_translations lpt ON lp.id = lpt.linkedin_post_id AND lpt.locale = 'de'
+    ORDER BY lp.published_at DESC
+  `).catch(() => [[]]);
+  res.render('admin/linkedin-list.njk', { title: 'LinkedIn', adminPage: 'linkedin', posts });
+});
+
+router.get('/linkedin/neu', requireAuth, (req, res) => {
+  res.render('admin/linkedin-form.njk', { title: 'Neuer LinkedIn-Beitrag', adminPage: 'linkedin', post: null, isNew: true });
+});
+
+router.get('/linkedin/:id', requireAuth, async (req, res) => {
+  const [posts] = await db.query('SELECT * FROM linkedin_posts WHERE id = ?', [req.params.id]);
+  if (!posts.length) return res.redirect('/admin/linkedin');
+  const [de] = await db.query('SELECT * FROM linkedin_post_translations WHERE linkedin_post_id = ? AND locale = "de"', [req.params.id]);
+  const [en] = await db.query('SELECT * FROM linkedin_post_translations WHERE linkedin_post_id = ? AND locale = "en"', [req.params.id]);
+  res.render('admin/linkedin-form.njk', {
+    title: 'LinkedIn-Beitrag bearbeiten',
+    adminPage: 'linkedin',
+    post: { ...posts[0], de: de[0] || {}, en: en[0] || {} },
+    isNew: false
+  });
+});
+
+router.post('/linkedin', requireAuth, upload.single('image'), async (req, res) => {
+  const { linkedin_url, author_name, title_de, excerpt_de, title_en, excerpt_en, is_visible, sort_order } = req.body;
+  const imagePath = req.file ? '/images/uploads/' + req.file.filename : '';
+  const [result] = await db.query(
+    'INSERT INTO linkedin_posts (linkedin_url, image_path, author_name, published_at, is_visible, sort_order) VALUES (?, ?, ?, NOW(), ?, ?)',
+    [linkedin_url, imagePath, author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0]
+  );
+  const id = result.insertId;
+  await db.query(
+    'INSERT INTO linkedin_post_translations (linkedin_post_id, locale, title, excerpt) VALUES (?, "de", ?, ?)',
+    [id, title_de, excerpt_de]
+  );
+  await db.query(
+    'INSERT INTO linkedin_post_translations (linkedin_post_id, locale, title, excerpt) VALUES (?, "en", ?, ?)',
+    [id, title_en || title_de, excerpt_en || excerpt_de]
+  );
+  res.redirect('/admin/linkedin');
+});
+
+router.post('/linkedin/:id', requireAuth, upload.single('image'), async (req, res) => {
+  const { linkedin_url, author_name, title_de, excerpt_de, title_en, excerpt_en, is_visible, sort_order } = req.body;
+  const imagePath = req.file ? '/images/uploads/' + req.file.filename : req.body.existing_image;
+  await db.query(
+    'UPDATE linkedin_posts SET linkedin_url = ?, image_path = ?, author_name = ?, is_visible = ?, sort_order = ? WHERE id = ?',
+    [linkedin_url, imagePath, author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0, req.params.id]
+  );
+  await db.query(
+    'UPDATE linkedin_post_translations SET title = ?, excerpt = ? WHERE linkedin_post_id = ? AND locale = "de"',
+    [title_de, excerpt_de, req.params.id]
+  );
+  const [enExists] = await db.query('SELECT id FROM linkedin_post_translations WHERE linkedin_post_id = ? AND locale = "en"', [req.params.id]);
+  if (enExists.length) {
+    await db.query(
+      'UPDATE linkedin_post_translations SET title = ?, excerpt = ? WHERE linkedin_post_id = ? AND locale = "en"',
+      [title_en || title_de, excerpt_en || excerpt_de, req.params.id]
+    );
+  } else {
+    await db.query(
+      'INSERT INTO linkedin_post_translations (linkedin_post_id, locale, title, excerpt) VALUES (?, "en", ?, ?)',
+      [req.params.id, title_en || title_de, excerpt_en || excerpt_de]
+    );
+  }
+  res.redirect('/admin/linkedin');
+});
+
+router.post('/linkedin/:id/toggle', requireAuth, async (req, res) => {
+  await db.query('UPDATE linkedin_posts SET is_visible = NOT is_visible WHERE id = ?', [req.params.id]);
+  res.redirect('/admin/linkedin');
+});
+
+router.post('/linkedin/:id/delete', requireAuth, async (req, res) => {
+  await db.query('DELETE FROM linkedin_post_translations WHERE linkedin_post_id = ?', [req.params.id]);
+  await db.query('DELETE FROM linkedin_posts WHERE id = ?', [req.params.id]);
+  res.redirect('/admin/linkedin');
+});
+
+// ============================================================
 // SHOP-PRODUKTE (CRUD mit Staffelpreisen)
 // ============================================================
 
