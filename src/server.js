@@ -50,6 +50,22 @@ const env = nunjucks.configure(path.join(__dirname, 'views'), {
   noCache: process.env.NODE_ENV !== 'production'
 });
 
+// Custom Nunjucks Filters
+env.addFilter('formatDate', function(dateStr, locale) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return String(dateStr).substring(0, 10);
+  const months = locale === 'de'
+    ? ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez']
+    : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return d.getDate() + '. ' + months[d.getMonth()] + ' ' + d.getFullYear();
+});
+
+env.addFilter('nl2br', function(str) {
+  if (!str) return '';
+  return str.replace(/\n/g, '<br>\n');
+});
+
 // i18n middleware
 app.use(i18n);
 

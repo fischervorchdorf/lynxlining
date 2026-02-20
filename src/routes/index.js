@@ -183,7 +183,7 @@ router.get('/:locale/news', validateLocale, async (req, res) => {
     let linkedinPosts = [];
     try {
       const [liPosts] = await db.query(`
-        SELECT lp.*, lpt.title, lpt.excerpt
+        SELECT lp.*, lpt.title, lpt.excerpt, lpt.content
         FROM linkedin_posts lp
         JOIN linkedin_post_translations lpt ON lp.id = lpt.linkedin_post_id AND lpt.locale = ?
         WHERE lp.is_visible = 1
@@ -194,6 +194,26 @@ router.get('/:locale/news', validateLocale, async (req, res) => {
     res.render('pages/news.njk', { title: res.locals.t('nav.news'), newsPosts, instagramPosts, linkedinPosts, page: 'news' });
   } catch (err) {
     res.render('pages/news.njk', { title: res.locals.t('nav.news'), newsPosts: [], instagramPosts: [], linkedinPosts: [], page: 'news' });
+  }
+});
+
+// LinkedIn Detail
+router.get('/:locale/news/linkedin/:slug', validateLocale, async (req, res) => {
+  try {
+    const [posts] = await db.query(`
+      SELECT lp.*, lpt.title, lpt.excerpt, lpt.content
+      FROM linkedin_posts lp
+      JOIN linkedin_post_translations lpt ON lp.id = lpt.linkedin_post_id AND lpt.locale = ?
+      WHERE (lp.slug = ? OR lp.id = ?) AND lp.is_visible = 1
+    `, [req.locale, req.params.slug, req.params.slug]);
+    if (!posts.length) return res.redirect('/' + req.locale + '/news');
+    res.render('pages/linkedin-detail.njk', {
+      title: posts[0].title,
+      post: posts[0],
+      page: 'news'
+    });
+  } catch (err) {
+    res.redirect('/' + req.locale + '/news');
   }
 });
 
