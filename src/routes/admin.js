@@ -8,21 +8,32 @@ const { requireAuth } = require('../middleware/auth');
 
 // Multer für Bild-Uploads
 const fs = require('fs');
+
+// Allgemeiner Upload-Ordner
 const uploadDir = path.join(__dirname, '..', 'public', 'images', 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
+  destination: (req, file, cb) => { cb(null, uploadDir); },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
     cb(null, Date.now() + '-' + Math.random().toString(36).substring(7) + ext);
   }
 });
 const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
+
+// LinkedIn-Bilder: separater Ordner (wird ins Git committet, überlebt Redeploys)
+const linkedinDir = path.join(__dirname, '..', 'public', 'images', 'linkedin');
+if (!fs.existsSync(linkedinDir)) fs.mkdirSync(linkedinDir, { recursive: true });
+
+const linkedinStorage = multer.diskStorage({
+  destination: (req, file, cb) => { cb(null, linkedinDir); },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, Date.now() + '-' + Math.random().toString(36).substring(7) + ext);
+  }
+});
+const linkedinUpload = multer({ storage: linkedinStorage, limits: { fileSize: 10 * 1024 * 1024 } });
 
 // ============================================================
 // AUTH
@@ -357,10 +368,10 @@ router.get('/linkedin/:id', requireAuth, async (req, res) => {
   }
 });
 
-router.post('/linkedin', requireAuth, upload.single('image'), async (req, res) => {
+router.post('/linkedin', requireAuth, linkedinUpload.single('image'), async (req, res) => {
   try {
     const { linkedin_url, slug, author_name, title_de, excerpt_de, content_de, title_en, excerpt_en, content_en, is_visible, sort_order } = req.body;
-    const imagePath = req.file ? '/images/uploads/' + req.file.filename : '';
+    const imagePath = req.file ? '/images/linkedin/' + req.file.filename : '';
     const autoSlug = slug || (title_de || '').toLowerCase().replace(/[äöüß]/g, m => ({ä:'ae',ö:'oe',ü:'ue',ß:'ss'}[m]||m)).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 80);
 
     const [result] = await db.query(
@@ -379,14 +390,14 @@ router.post('/linkedin', requireAuth, upload.single('image'), async (req, res) =
   }
 });
 
-router.post('/linkedin/:id', requireAuth, upload.single('image'), async (req, res) => {
+router.post('/linkedin/:id', requireAuth, linkedinUpload.single('image'), async (req, res) => {
   try {
     const { linkedin_url, slug, author_name, title_de, excerpt_de, content_de, title_en, excerpt_en, content_en, is_visible, sort_order } = req.body;
     const autoSlug = slug || (title_de || '').toLowerCase().replace(/[äöüß]/g, m => ({ä:'ae',ö:'oe',ü:'ue',ß:'ss'}[m]||m)).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 80);
 
     // Bild: Neues Upload > bestehendes Bild > bisheriges in DB behalten
     if (req.file) {
-      const imagePath = '/images/uploads/' + req.file.filename;
+      const imagePath = '/images/linkedin/' + req.file.filename;
       await db.query(
         'UPDATE linkedin_posts SET slug = ?, linkedin_url = ?, image_path = ?, author_name = ?, is_visible = ?, sort_order = ? WHERE id = ?',
         [autoSlug, linkedin_url || '', imagePath, author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0, req.params.id]
