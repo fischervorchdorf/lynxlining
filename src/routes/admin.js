@@ -334,63 +334,105 @@ router.get('/linkedin/neu', requireAuth, (req, res) => {
 });
 
 router.get('/linkedin/:id', requireAuth, async (req, res) => {
-  const [posts] = await db.query('SELECT * FROM linkedin_posts WHERE id = ?', [req.params.id]);
-  if (!posts.length) return res.redirect('/admin/linkedin');
-  const [de] = await db.query('SELECT * FROM linkedin_post_translations WHERE linkedin_post_id = ? AND locale = "de"', [req.params.id]);
-  const [en] = await db.query('SELECT * FROM linkedin_post_translations WHERE linkedin_post_id = ? AND locale = "en"', [req.params.id]);
-  res.render('admin/linkedin-form.njk', {
-    title: 'LinkedIn-Beitrag bearbeiten',
-    adminPage: 'linkedin',
-    post: { ...posts[0], de: de[0] || {}, en: en[0] || {} },
-    isNew: false
-  });
+  try {
+    const [posts] = await db.query('SELECT * FROM linkedin_posts WHERE id = ?', [req.params.id]);
+    if (!posts.length) return res.redirect('/admin/linkedin');
+    const [de] = await db.query('SELECT * FROM linkedin_post_translations WHERE linkedin_post_id = ? AND locale = "de"', [req.params.id]);
+    const [en] = await db.query('SELECT * FROM linkedin_post_translations WHERE linkedin_post_id = ? AND locale = "en"', [req.params.id]);
+    res.render('admin/linkedin-form.njk', {
+      title: 'LinkedIn-Beitrag bearbeiten',
+      adminPage: 'linkedin',
+      post: { ...posts[0], de: de[0] || {}, en: en[0] || {} },
+      isNew: false
+    });
+  } catch (err) {
+    console.error('LinkedIn Edit Fehler:', err);
+    res.redirect('/admin/linkedin');
+  }
 });
 
 router.post('/linkedin', requireAuth, upload.single('image'), async (req, res) => {
-  const { linkedin_url, slug, author_name, title_de, excerpt_de, content_de, title_en, excerpt_en, content_en, is_visible, sort_order } = req.body;
-  const imagePath = req.file ? '/images/uploads/' + req.file.filename : '';
-  const autoSlug = slug || title_de.toLowerCase().replace(/[äö üß]/g, m => ({ä:'ae',ö:'oe',ü:'ue',ß:'ss'}[m]||m)).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 80);
-  const [result] = await db.query(
-    'INSERT INTO linkedin_posts (slug, linkedin_url, image_path, author_name, published_at, is_visible, sort_order) VALUES (?, ?, ?, ?, NOW(), ?, ?)',
-    [autoSlug, linkedin_url, imagePath, author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0]
-  );
-  const id = result.insertId;
-  await db.query(
-    'INSERT INTO linkedin_post_translations (linkedin_post_id, locale, title, excerpt, content) VALUES (?, "de", ?, ?, ?)',
-    [id, title_de, excerpt_de, content_de || null]
-  );
-  await db.query(
-    'INSERT INTO linkedin_post_translations (linkedin_post_id, locale, title, excerpt, content) VALUES (?, "en", ?, ?, ?)',
-    [id, title_en || title_de, excerpt_en || excerpt_de, content_en || content_de || null]
-  );
-  res.redirect('/admin/linkedin');
+  try {
+    const { linkedin_url, slug, author_name, title_de, excerpt_de, content_de, title_en, excerpt_en, content_en, is_visible, sort_order } = req.body;
+    const imagePath = req.file ? '/images/uploads/' + req.file.filename : '';
+    const autoSlug = slug || (title_de || '').toLowerCase().replace(/[äöüß]/g, m => ({ä:'ae',ö:'oe',ü:'ue',ß:'ss'}[m]||m)).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 80);
+
+    // Prüfen ob slug-Spalte existiert
+    const [slugCols] = await db.query("SHOW COLUMNS FROM linkedin_posts LIKE 'slug'");
+    let result;
+    if (slugCols.length) {
+      [result] = await db.query(
+        'INSERT INTO linkedin_posts (slug, linkedin_url, image_path, author_name, published_at, is_visible, sort_order) VALUES (?, ?, ?, ?, NOW(), ?, ?)',
+        [autoSlug, linkedin_url, imagePath, author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0]
+      );
+    } else {
+      [result] = await db.query(
+        'INSERT INTO linkedin_posts (linkedin_url, image_path, author_name, published_at, is_visible, sort_order) VALUES (?, ?, ?, NOW(), ?, ?)',
+        [linkedin_url, imagePath, author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0]
+      );
+    }
+    const id = result.insertId;
+
+    // Prüfen ob content-Spalte existiert
+    const [contentCols] = await db.query("SHOW COLUMNS FROM linkedin_post_translations LIKE 'content'");
+    if (contentCols.length) {
+      await db.query('INSERT INTO linkedin_post_translations (linkedin_post_id, locale, title, excerpt, content) VALUES (?, "de", ?, ?, ?)', [id, title_de, excerpt_de, content_de || null]);
+      await db.query('INSERT INTO linkedin_post_translations (linkedin_post_id, locale, title, excerpt, content) VALUES (?, "en", ?, ?, ?)', [id, title_en || title_de, excerpt_en || excerpt_de, content_en || content_de || null]);
+    } else {
+      await db.query('INSERT INTO linkedin_post_translations (linkedin_post_id, locale, title, excerpt) VALUES (?, "de", ?, ?)', [id, title_de, excerpt_de]);
+      await db.query('INSERT INTO linkedin_post_translations (linkedin_post_id, locale, title, excerpt) VALUES (?, "en", ?, ?)', [id, title_en || title_de, excerpt_en || excerpt_de]);
+    }
+    res.redirect('/admin/linkedin');
+  } catch (err) {
+    console.error('LinkedIn Create Fehler:', err);
+    res.redirect('/admin/linkedin');
+  }
 });
 
 router.post('/linkedin/:id', requireAuth, upload.single('image'), async (req, res) => {
-  const { linkedin_url, slug, author_name, title_de, excerpt_de, content_de, title_en, excerpt_en, content_en, is_visible, sort_order } = req.body;
-  const imagePath = req.file ? '/images/uploads/' + req.file.filename : req.body.existing_image;
-  const autoSlug = slug || title_de.toLowerCase().replace(/[äöüß]/g, m => ({ä:'ae',ö:'oe',ü:'ue',ß:'ss'}[m]||m)).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 80);
-  await db.query(
-    'UPDATE linkedin_posts SET slug = ?, linkedin_url = ?, image_path = ?, author_name = ?, is_visible = ?, sort_order = ? WHERE id = ?',
-    [autoSlug, linkedin_url, imagePath, author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0, req.params.id]
-  );
-  await db.query(
-    'UPDATE linkedin_post_translations SET title = ?, excerpt = ?, content = ? WHERE linkedin_post_id = ? AND locale = "de"',
-    [title_de, excerpt_de, content_de || null, req.params.id]
-  );
-  const [enExists] = await db.query('SELECT id FROM linkedin_post_translations WHERE linkedin_post_id = ? AND locale = "en"', [req.params.id]);
-  if (enExists.length) {
-    await db.query(
-      'UPDATE linkedin_post_translations SET title = ?, excerpt = ?, content = ? WHERE linkedin_post_id = ? AND locale = "en"',
-      [title_en || title_de, excerpt_en || excerpt_de, content_en || content_de || null, req.params.id]
-    );
-  } else {
-    await db.query(
-      'INSERT INTO linkedin_post_translations (linkedin_post_id, locale, title, excerpt, content) VALUES (?, "en", ?, ?, ?)',
-      [req.params.id, title_en || title_de, excerpt_en || excerpt_de, content_en || content_de || null]
-    );
+  try {
+    const { linkedin_url, slug, author_name, title_de, excerpt_de, content_de, title_en, excerpt_en, content_en, is_visible, sort_order } = req.body;
+    const imagePath = req.file ? '/images/uploads/' + req.file.filename : req.body.existing_image;
+    const autoSlug = slug || (title_de || '').toLowerCase().replace(/[äöüß]/g, m => ({ä:'ae',ö:'oe',ü:'ue',ß:'ss'}[m]||m)).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 80);
+
+    // Prüfen ob slug-Spalte existiert
+    const [slugCols] = await db.query("SHOW COLUMNS FROM linkedin_posts LIKE 'slug'");
+    if (slugCols.length) {
+      await db.query(
+        'UPDATE linkedin_posts SET slug = ?, linkedin_url = ?, image_path = ?, author_name = ?, is_visible = ?, sort_order = ? WHERE id = ?',
+        [autoSlug, linkedin_url, imagePath, author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0, req.params.id]
+      );
+    } else {
+      await db.query(
+        'UPDATE linkedin_posts SET linkedin_url = ?, image_path = ?, author_name = ?, is_visible = ?, sort_order = ? WHERE id = ?',
+        [linkedin_url, imagePath, author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0, req.params.id]
+      );
+    }
+
+    // Prüfen ob content-Spalte existiert
+    const [contentCols] = await db.query("SHOW COLUMNS FROM linkedin_post_translations LIKE 'content'");
+    if (contentCols.length) {
+      await db.query('UPDATE linkedin_post_translations SET title = ?, excerpt = ?, content = ? WHERE linkedin_post_id = ? AND locale = "de"', [title_de, excerpt_de, content_de || null, req.params.id]);
+      const [enExists] = await db.query('SELECT id FROM linkedin_post_translations WHERE linkedin_post_id = ? AND locale = "en"', [req.params.id]);
+      if (enExists.length) {
+        await db.query('UPDATE linkedin_post_translations SET title = ?, excerpt = ?, content = ? WHERE linkedin_post_id = ? AND locale = "en"', [title_en || title_de, excerpt_en || excerpt_de, content_en || content_de || null, req.params.id]);
+      } else {
+        await db.query('INSERT INTO linkedin_post_translations (linkedin_post_id, locale, title, excerpt, content) VALUES (?, "en", ?, ?, ?)', [req.params.id, title_en || title_de, excerpt_en || excerpt_de, content_en || content_de || null]);
+      }
+    } else {
+      await db.query('UPDATE linkedin_post_translations SET title = ?, excerpt = ? WHERE linkedin_post_id = ? AND locale = "de"', [title_de, excerpt_de, req.params.id]);
+      const [enExists] = await db.query('SELECT id FROM linkedin_post_translations WHERE linkedin_post_id = ? AND locale = "en"', [req.params.id]);
+      if (enExists.length) {
+        await db.query('UPDATE linkedin_post_translations SET title = ?, excerpt = ? WHERE linkedin_post_id = ? AND locale = "en"', [title_en || title_de, excerpt_en || excerpt_de, req.params.id]);
+      } else {
+        await db.query('INSERT INTO linkedin_post_translations (linkedin_post_id, locale, title, excerpt) VALUES (?, "en", ?, ?)', [req.params.id, title_en || title_de, excerpt_en || excerpt_de]);
+      }
+    }
+    res.redirect('/admin/linkedin');
+  } catch (err) {
+    console.error('LinkedIn Update Fehler:', err);
+    res.redirect('/admin/linkedin');
   }
-  res.redirect('/admin/linkedin');
 });
 
 router.post('/linkedin/:id/toggle', requireAuth, async (req, res) => {
