@@ -75,19 +75,25 @@
 
   {# Englisch #}
   <div class="bg-white rounded-xl border border-black/5 shadow-sm p-6">
-    <h2 class="text-lg font-bold text-[#1E1E1E] mb-4">Englisch <span class="text-xs font-normal text-stone/50">(falls leer wird der deutsche Text verwendet)</span></h2>
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-bold text-[#1E1E1E]">Englisch <span class="text-xs font-normal text-stone/50">(falls leer wird der deutsche Text verwendet)</span></h2>
+      <button type="button" onclick="translateAll()" class="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg text-xs font-semibold hover:bg-blue-100 transition-colors" id="translateAllBtn">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+        Alles automatisch übersetzen
+      </button>
+    </div>
     <div class="space-y-4">
       <div>
         <label class="block text-sm font-medium text-stone-dark mb-1">Title</label>
-        <input type="text" name="title_en" value="{{ post.en.title if post and post.en else '' }}" placeholder="e.g. LYNX Lining in Railway Applications" class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545]">
+        <input type="text" name="title_en" id="title_en" value="{{ post.en.title if post and post.en else '' }}" placeholder="e.g. LYNX Lining in Railway Applications" class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545]">
       </div>
       <div>
         <label class="block text-sm font-medium text-stone-dark mb-1">Excerpt</label>
-        <textarea name="excerpt_en" rows="2" placeholder="Short summary for the news overview..." class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545]">{{ post.en.excerpt if post and post.en else '' }}</textarea>
+        <textarea name="excerpt_en" id="excerpt_en" rows="2" placeholder="Short summary for the news overview..." class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545]">{{ post.en.excerpt if post and post.en else '' }}</textarea>
       </div>
       <div>
         <label class="block text-sm font-medium text-stone-dark mb-1">Full Post</label>
-        <textarea name="content_en" rows="12" placeholder="Paste the full LinkedIn post here for on-site reading..." class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] font-mono">{{ post.en.content if post and post.en else '' }}</textarea>
+        <textarea name="content_en" id="content_en" rows="12" placeholder="Paste the full LinkedIn post here for on-site reading..." class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] font-mono">{{ post.en.content if post and post.en else '' }}</textarea>
       </div>
     </div>
   </div>
@@ -102,5 +108,50 @@
     </a>
   </div>
 </form>
+
+<script>
+async function translateField(fromName, toId) {
+  const source = document.querySelector(`[name="${fromName}"]`);
+  if (!source || !source.value.trim()) return;
+
+  const target = document.getElementById(toId);
+  try {
+    const res = await fetch('/admin/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: source.value, from: 'de', to: 'en' })
+    });
+    const data = await res.json();
+    if (data.translated) {
+      target.value = data.translated;
+      target.style.borderColor = '#22c55e';
+      setTimeout(() => target.style.borderColor = '', 2000);
+    }
+  } catch (err) {
+    console.error('Übersetzung fehlgeschlagen:', err);
+  }
+}
+
+async function translateAll() {
+  const btn = document.getElementById('translateAllBtn');
+  const origText = btn.innerHTML;
+  btn.innerHTML = '<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg> Übersetze...';
+  btn.disabled = true;
+
+  await translateField('title_de', 'title_en');
+  await translateField('excerpt_de', 'excerpt_en');
+  await translateField('content_de', 'content_en');
+
+  btn.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Fertig!';
+  btn.classList.remove('bg-blue-50', 'text-blue-600', 'hover:bg-blue-100');
+  btn.classList.add('bg-green-50', 'text-green-600');
+  setTimeout(() => {
+    btn.innerHTML = origText;
+    btn.disabled = false;
+    btn.classList.add('bg-blue-50', 'text-blue-600', 'hover:bg-blue-100');
+    btn.classList.remove('bg-green-50', 'text-green-600');
+  }, 3000);
+}
+</script>
 
 {% endblock %}

@@ -102,6 +102,59 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Auto-Migration: fehlende Tabellen/Spalten beim Start anlegen
+async function runMigrations() {
+  try {
+    // LinkedIn-Tabellen erstellen falls nicht vorhanden
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS linkedin_posts (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        slug VARCHAR(100),
+        linkedin_url VARCHAR(500) NOT NULL,
+        image_path VARCHAR(500),
+        author_name VARCHAR(255) DEFAULT 'Martin F. Heidecker',
+        published_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        is_visible BOOLEAN DEFAULT TRUE,
+        sort_order INT DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        INDEX idx_visible (is_visible),
+        INDEX idx_published (published_at DESC)
+      )
+    `);
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS linkedin_post_translations (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        linkedin_post_id INT NOT NULL,
+        locale ENUM('de', 'en') NOT NULL,
+        title VARCHAR(255) NOT NULL,
+        excerpt TEXT,
+        content LONGTEXT,
+        FOREIGN KEY (linkedin_post_id) REFERENCES linkedin_posts(id) ON DELETE CASCADE,
+        UNIQUE KEY uq_linkedin_locale (linkedin_post_id, locale)
+      )
+    `);
+
+    // Slug-Spalte nachrüsten falls fehlend
+    const [cols] = await db.query("SHOW COLUMNS FROM linkedin_posts LIKE 'slug'");
+    if (!cols.length) {
+      await db.query('ALTER TABLE linkedin_posts ADD COLUMN slug VARCHAR(100) AFTER id');
+    }
+
+    // Content-Spalte nachrüsten falls fehlend
+    const [contentCols] = await db.query("SHOW COLUMNS FROM linkedin_post_translations LIKE 'content'");
+    if (!contentCols.length) {
+      await db.query('ALTER TABLE linkedin_post_translations ADD COLUMN content LONGTEXT AFTER excerpt');
+    }
+
+    console.log('✓ DB-Migrationen erfolgreich');
+  } catch (err) {
+    console.warn('DB-Migration Warnung:', err.message);
+  }
+}
+
+runMigrations();
+
 app.listen(PORT, () => {
   console.log(`LYNX Lining Server läuft auf http://localhost:${PORT}`);
   console.log(`NODE_ENV: ${process.env.NODE_ENV || 'development'}`);

@@ -405,6 +405,39 @@ router.post('/linkedin/:id/delete', requireAuth, async (req, res) => {
 });
 
 // ============================================================
+// ÜBERSETZUNG (Google Translate, kostenlos)
+// ============================================================
+
+router.post('/translate', requireAuth, async (req, res) => {
+  const { text, from = 'de', to = 'en' } = req.body;
+  if (!text || !text.trim()) return res.json({ translated: '' });
+
+  try {
+    const https = require('https');
+    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=${to}&dt=t&q=${encodeURIComponent(text)}`;
+
+    const translated = await new Promise((resolve, reject) => {
+      https.get(url, (response) => {
+        let data = '';
+        response.on('data', chunk => data += chunk);
+        response.on('end', () => {
+          try {
+            const parsed = JSON.parse(data);
+            const result = parsed[0].map(s => s[0]).join('');
+            resolve(result);
+          } catch (e) { reject(e); }
+        });
+      }).on('error', reject);
+    });
+
+    res.json({ translated });
+  } catch (err) {
+    console.error('Übersetzungsfehler:', err.message);
+    res.status(500).json({ error: 'Übersetzung fehlgeschlagen' });
+  }
+});
+
+// ============================================================
 // SHOP-PRODUKTE (CRUD mit Staffelpreisen)
 // ============================================================
 
