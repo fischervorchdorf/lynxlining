@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }} – LYNX Lining Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/output.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-[#F5F5F4] text-[#3D3D3D] antialiased min-h-screen flex">
+
+  {# Sidebar #}
+  <aside class="w-64 bg-[#1E1E1E] text-white min-h-screen flex flex-col fixed left-0 top-0 bottom-0 z-40">
+    <div class="px-6 py-5 border-b border-white/10">
+      <div class="font-bold text-lg tracking-widest">
+        <span class="text-[#D64545]">LYNX</span> ADMIN
+      </div>
+    </div>
+    <nav class="flex-1 py-4 px-3 space-y-1 overflow-y-auto">
+      <a href="/admin" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+        {% if adminPage == 'dashboard' %}bg-white/10 text-white{% else %}text-white/60 hover:text-white hover:bg-white/5{% endif %}">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        Dashboard
+      </a>
+      <a href="/admin/kontakt" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+        {% if adminPage == 'contacts' %}bg-white/10 text-white{% else %}text-white/60 hover:text-white hover:bg-white/5{% endif %}">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        Kontaktanfragen
+      </a>
+      <a href="/admin/bestellungen" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+        {% if adminPage == 'orders' %}bg-white/10 text-white{% else %}text-white/60 hover:text-white hover:bg-white/5{% endif %}">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        Bestellungen
+      </a>
+
+      <div class="border-t border-white/10 my-4"></div>
+      <p class="px-4 text-xs font-semibold text-white/30 uppercase tracking-wider mb-2">Inhalte</p>
+
+      <a href="/admin/anwendungen" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+        {% if adminPage == 'anwendungen' %}bg-white/10 text-white{% else %}text-white/60 hover:text-white hover:bg-white/5{% endif %}">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+        Anwendungen
+      </a>
+      <a href="/admin/vorteile" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+        {% if adminPage == 'vorteile' %}bg-white/10 text-white{% else %}text-white/60 hover:text-white hover:bg-white/5{% endif %}">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Vorteile
+      </a>
+      <a href="/admin/news" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+        {% if adminPage == 'news' %}bg-white/10 text-white{% else %}text-white/60 hover:text-white hover:bg-white/5{% endif %}">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/></svg>
+        News
+      </a>
+
+      <div class="border-t border-white/10 my-4"></div>
+      <p class="px-4 text-xs font-semibold text-white/30 uppercase tracking-wider mb-2">Medien</p>
+
+      <a href="/admin/fotos" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+        {% if adminPage == 'fotos' %}bg-white/10 text-white{% else %}text-white/60 hover:text-white hover:bg-white/5{% endif %}">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Fotos wechseln
+      </a>
+      <a href="/admin/instagram" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200
+        {% if adminPage == 'instagram' %}bg-white/10 text-white{% else %}text-white/60 hover:text-white hover:bg-white/5{% endif %}">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        Instagram
+      </a>
+
+      <div class="border-t border-white/10 my-4"></div>
+      <a href="/de" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-white/60 hover:text-white hover:bg-white/5 transition-all duration-200" target="_blank">
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        Website ansehen
+      </a>
+    </nav>
+    <div class="px-6 py-4 border-t border-white/10">
+      <a href="/admin/logout" class="flex items-center gap-3 text-sm text-white/50 hover:text-white transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        Abmelden
+      </a>
+    </div>
+  </aside>
+
+  {# Main Content #}
+  <main class="flex-1 ml-64">
+    <header class="bg-white border-b border-black/5 px-8 py-4 flex justify-between items-center sticky top-0 z-30">
+      <h1 class="text-xl font-bold text-[#1E1E1E]">{{ title }}</h1>
+      <span class="text-sm text-stone">{{ session.username or 'Admin' }}</span>
+    </header>
+    <div class="p-8">
+      {% block admin_content %}{% endblock %}
+    </div>
+  </main>
+</body>
+</html>

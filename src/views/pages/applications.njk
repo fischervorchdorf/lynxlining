@@ -1,0 +1,84 @@
+{% extends "layouts/main.njk" %}
+
+{% block content %}
+
+{# ===== HERO ===== #}
+<section class="bg-gradient-to-br from-stone-dark to-[#1a1c1e] py-24 lg:py-32">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 text-center">
+    <span class="inline-block px-5 py-2 bg-lynx-red/15 text-lynx-red text-xs font-bold tracking-widest uppercase rounded-full mb-5">{{ t('nav.applications') }}</span>
+    <h1 class="font-heading text-4xl lg:text-6xl font-extrabold text-white leading-tight">{{ t('applications_page.title') }}</h1>
+    <p class="text-lg text-white/60 max-w-2xl mx-auto mt-4">{{ t('applications_page.subtitle') }}</p>
+  </div>
+</section>
+
+{# ===== ANWENDUNGEN DETAIL ===== #}
+<section class="max-w-7xl mx-auto px-6 lg:px-10 py-24">
+  {% set staticApps = [
+    { slug: "schuettgut", title: "Schüttgutaufbereitung", desc: "Trichterauskleidung, Übergabestellen, Förderbandabdichtung und Staubkapselung", img: "/images/applications/application_schuettgut.jpg",
+      bullets: ["Trichterauskleidung und Bunker", "Übergabestellen-Verschleißschutz", "Förderbandabdichtungen", "Staubkapselung und Absaugung", "Feuchte und klebrige Materialien"] },
+    { slug: "bergbau", title: "Bergbau & Förderanlagen", desc: "Aufgabebunker, Förderbänder und Übergabestellen für höchste Beanspruchung bei hoch abrasiven Materialien", img: "/images/applications/application_bergbau.jpg",
+      bullets: ["Aufgabebunker und Silos", "Förderband-Verschleißschutz", "Übergabepunkte und Schurren", "Hoch abrasive Materialien", "Extreme Belastungssituationen"] },
+    { slug: "industrie", title: "Industrie", desc: "Verschleißschutz für Materialtransport, Schleifstaub-Absaugung und industrielle Anwendungen", img: "/images/applications/application_industrie1.jpg",
+      bullets: ["Materialtransport-Systeme", "Schleifstaub-Absauganlagen", "Anlagenbeschichtung", "Abrieb- und Prallschutz", "Staubkapselung"] },
+    { slug: "maschinen", title: "Maschinen- und Anlagenbau", desc: "Übergabestellen, Recyclinganlagen und individuelle Maschinenauskleidung", img: "/images/applications/application_maschinen.jpg",
+      bullets: ["Übergabestellen in Maschinen", "Anlagenbau-Integration", "Individuelle Auskleidungen", "OEM-Partnerschaften", "Maßgeschneiderte Lösungen"] },
+    { slug: "recycling", title: "Recycling & Aufbereitung", desc: "Baurestmassen, Zuschlagstoffaufbereitung und Recycling-Anlagen", img: "/images/applications/application_recycling.jpg",
+      bullets: ["Recyclinganlagen-Trichter", "Baurestmassen-Aufbereitung", "Zuschlagstoff-Produktion", "Sortieranlagen", "Organische Materialien"] },
+    { slug: "schienen", title: "Fahrzeuge & Schienenverkehr", desc: "Speziallösungen für den Schienenverkehr, LKW-Kipper und mobile Anlagen", img: "/images/applications/application_schienen.jpg",
+      bullets: ["LKW-Kipper-Auskleidung", "Schienenfahrzeuge", "Kehrmaschinen", "Mobile Brechanlagen", "Transportfahrzeuge"] }
+  ] %}
+  {% set appList = applications if applications.length else staticApps %}
+
+  <div class="space-y-20">
+    {% for app in appList %}
+      <div id="{{ app.slug }}" class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center {% if loop.index is even %}lg:flex-row-reverse{% endif %}">
+        {% if loop.index is even %}
+          <div class="order-1 lg:order-2">
+        {% else %}
+          <div>
+        {% endif %}
+            <div class="overflow-hidden rounded-2xl shadow-lg">
+              <img src="{{ app.image_path or app.img }}" alt="{{ app.title }}" class="w-full h-80 object-cover hover:scale-105 transition-transform duration-500" loading="lazy">
+            </div>
+          </div>
+        {% if loop.index is even %}
+          <div class="order-2 lg:order-1">
+        {% else %}
+          <div>
+        {% endif %}
+            <span class="inline-block px-4 py-1.5 bg-lynx-red/8 text-lynx-red text-xs font-bold rounded-full uppercase tracking-wider mb-4">{{ loop.index }}/{{ appList | length }}</span>
+            <h2 class="font-heading text-3xl font-extrabold text-stone-dark mb-4">{{ app.title }}</h2>
+            <p class="text-stone leading-relaxed mb-6">{{ app.desc or app.description }}</p>
+            {% set bulletList = app.bullets or (app.bullet_points | split('\n') if app.bullet_points else []) %}
+            {% if bulletList.length %}
+              <ul class="space-y-3">
+                {% for bullet in bulletList %}
+                  {% if bullet %}
+                    <li class="flex items-start gap-3">
+                      <svg class="w-5 h-5 text-lynx-red flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                      <span class="text-stone">{{ bullet }}</span>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{# ===== KONTAKT CTA ===== #}
+<div class="max-w-7xl mx-auto px-6 lg:px-10 pb-24">
+  <div class="bg-gradient-to-br from-lynx-red to-lynx-red-dark rounded-[2rem] p-12 lg:p-20 text-center">
+    <h2 class="font-heading text-3xl lg:text-5xl font-extrabold text-white mb-4">{{ t('contact_cta.title') }}</h2>
+    <p class="text-white/85 text-lg mb-10">{{ t('contact_cta.text') }}</p>
+    <a href="/{{ locale }}/kontakt" class="btn-lift inline-flex items-center gap-2.5 px-10 py-4 bg-white text-lynx-red rounded-xl font-bold text-base shadow-[0_8px_30px_rgba(0,0,0,0.15)]">
+      {{ t('contact_cta.button') }} &rarr;
+    </a>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,387 @@
+{% extends "layouts/main.njk" %}
+
+{% block content %}
+
+{# ===== HERO ===== #}
+<section class="bg-gradient-to-br from-stone-dark to-[#1a1c1e] py-24 lg:py-32">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 text-center">
+    <span class="inline-block px-5 py-2 bg-lynx-red/15 text-lynx-red text-xs font-bold tracking-widest uppercase rounded-full mb-5">{{ t('nav.shop') }}</span>
+    <h1 class="font-heading text-4xl lg:text-6xl font-extrabold text-white leading-tight">{{ t('shop_page.title') }}</h1>
+    <p class="text-lg text-white/60 max-w-2xl mx-auto mt-4">{{ t('shop_page.subtitle') }}</p>
+  </div>
+</section>
+
+{# ===== PRODUKTE ===== #}
+<section class="max-w-7xl mx-auto px-6 lg:px-10 -mt-16 relative z-10 pb-12">
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+    {% for prod in products %}
+      <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-black/4 hover:-translate-y-1 transition-all duration-300 flex flex-col"
+           data-product-id="{{ prod.id }}"
+           data-product-name="{{ prod.name }}"
+           data-product-unit="{{ prod.unit }}"
+           data-product-image="{{ prod.image_path }}"
+           data-price-tiers='{{ prod.price_tiers | dump | safe }}'>
+        <div class="overflow-hidden">
+          <img src="{{ prod.image_path }}" alt="{{ prod.name }}" class="w-full h-44 object-cover" loading="lazy">
+        </div>
+        <div class="p-6 flex flex-col flex-1">
+          <h3 class="font-heading text-base font-bold text-stone-dark mb-1">{{ prod.name }}</h3>
+          <p class="text-xs text-stone mb-4 flex-1">{{ prod.short_description }}</p>
+
+          {# Staffelpreise #}
+          <div class="bg-[#FAFAF9] rounded-xl p-3 mb-4 text-xs">
+            {% for tier in prod.price_tiers %}
+              <div class="flex justify-between py-1 {% if not loop.last %}border-b border-black/5{% endif %}">
+                <span class="text-stone">{{ t('shop_page.tier_from') }} {{ tier.min_quantity | int }} {{ t('shop_page.tier_unit') }}</span>
+                <span class="font-bold text-stone-dark">€ {{ tier.price_per_unit }}</span>
+              </div>
+            {% endfor %}
+          </div>
+
+          {# Preis + Menge #}
+          <div class="flex items-end gap-2 mt-auto">
+            <div class="flex-1">
+              <label class="text-xs text-stone mb-1 block">{{ t('shop_page.quantity') }}</label>
+              <input type="number" min="1" step="0.5" value="1"
+                     class="shop-qty w-full px-3 py-2 bg-[#FAFAF9] border border-black/8 rounded-lg text-sm text-stone-dark focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none"
+                     data-product-id="{{ prod.id }}">
+            </div>
+            <button onclick="addToCart(this.closest('[data-product-id]'))"
+                    class="btn-lift px-4 py-2 bg-lynx-red text-white rounded-lg font-semibold text-sm shadow-md hover:bg-lynx-red-dark whitespace-nowrap">
+              + {{ t('shop_page.add_to_cart') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <p class="text-center text-xs text-stone/60 mt-4">{{ t('shop_page.cart_netto') }}</p>
+</section>
+
+{# ===== WARENKORB ===== #}
+<section class="max-w-4xl mx-auto px-6 lg:px-10 py-12" id="cart-section">
+  <div class="bg-white rounded-2xl shadow-lg border border-black/4 p-8">
+    <h2 class="font-heading text-2xl font-bold text-stone-dark mb-6 flex items-center gap-3">
+      <svg class="w-6 h-6 text-lynx-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z"/>
+      </svg>
+      {{ t('shop_page.cart') }} <span id="cart-count" class="text-sm bg-lynx-red/10 text-lynx-red px-2.5 py-0.5 rounded-full font-bold">0</span>
+    </h2>
+
+    <div id="cart-empty" class="text-center py-8 text-stone">
+      <p>{{ t('shop_page.cart_empty') }}</p>
+    </div>
+
+    <div id="cart-items" class="hidden">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-black/8">
+            <th class="text-left py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Produkt{% else %}Product{% endif %}</th>
+            <th class="text-center py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Menge{% else %}Qty{% endif %}</th>
+            <th class="text-right py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Stückpreis{% else %}Unit Price{% endif %}</th>
+            <th class="text-right py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Gesamt{% else %}Total{% endif %}</th>
+            <th class="w-10"></th>
+          </tr>
+        </thead>
+        <tbody id="cart-tbody"></tbody>
+      </table>
+
+      <div class="flex justify-between items-center border-t-2 border-stone-dark mt-4 pt-4">
+        <span class="font-heading text-lg font-bold text-stone-dark">{{ t('shop_page.cart_total') }}</span>
+        <span id="cart-total" class="font-heading text-2xl font-extrabold text-lynx-red">€ 0,00</span>
+      </div>
+      <p class="text-xs text-stone/60 mt-1 text-right">{{ t('shop_page.cart_netto') }}</p>
+
+      <div class="mt-6 text-center">
+        <button onclick="showOrderForm()" class="btn-lift px-10 py-4 bg-lynx-red text-white rounded-xl font-bold text-base shadow-[0_8px_30px_rgba(214,69,69,0.35)] hover:bg-lynx-red-dark">
+          {{ t('shop_page.checkout') }} &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ===== BESTELLFORMULAR ===== #}
+<section class="max-w-3xl mx-auto px-6 lg:px-10 pb-24 hidden" id="order-section">
+  <div class="bg-white rounded-2xl shadow-lg border border-black/4 p-8 lg:p-10">
+    <h2 class="font-heading text-2xl font-bold text-stone-dark mb-2">{{ t('shop_page.order_title') }}</h2>
+    <p class="text-stone mb-8">{{ t('shop_page.order_subtitle') }}</p>
+
+    <div id="order-success" class="hidden mb-6 p-5 bg-green-50 border border-green-200 rounded-xl text-green-700">
+      <p class="font-semibold">{{ t('shop_page.order_success') }}</p>
+      <p class="text-sm mt-1" id="order-number-display"></p>
+    </div>
+    <div id="order-error" class="hidden mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+      {{ t('shop_page.order_error') }}
+    </div>
+
+    <form id="order-form" class="space-y-5">
+      <div class="hidden" aria-hidden="true">
+        <input type="text" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('contact_form.name') }} <span class="text-lynx-red">*</span></label>
+          <input type="text" name="customer_name" required
+                 class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('shop_page.company') }}</label>
+          <input type="text" name="customer_company"
+                 class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('contact_form.email') }} <span class="text-lynx-red">*</span></label>
+          <input type="email" name="customer_email" required
+                 class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('contact_form.phone') }}</label>
+          <input type="tel" name="customer_phone"
+                 class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('shop_page.street') }}</label>
+        <input type="text" name="customer_street"
+               class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none">
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div>
+          <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('shop_page.zip') }}</label>
+          <input type="text" name="customer_zip"
+                 class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('shop_page.city') }}</label>
+          <input type="text" name="customer_city"
+                 class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('shop_page.country') }}</label>
+          <input type="text" name="customer_country" value="{% if locale == 'de' %}Österreich{% else %}Austria{% endif %}"
+                 class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('shop_page.order_message') }}</label>
+        <textarea name="customer_message" rows="3"
+                  class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none resize-none"></textarea>
+      </div>
+
+      {# Bestellzusammenfassung #}
+      <div class="bg-[#FAFAF9] rounded-xl p-5 border border-black/4">
+        <h3 class="font-heading font-bold text-stone-dark mb-3">{% if locale == 'de' %}Ihre Bestellung{% else %}Your Order{% endif %}</h3>
+        <div id="order-summary"></div>
+        <div class="flex justify-between items-center border-t border-black/8 mt-3 pt-3">
+          <span class="font-bold text-stone-dark">{{ t('shop_page.cart_total') }}</span>
+          <span id="order-total" class="font-heading text-xl font-extrabold text-lynx-red">€ 0,00</span>
+        </div>
+      </div>
+
+      <button type="submit" id="order-submit-btn" class="btn-lift w-full px-10 py-4 bg-lynx-red text-white rounded-xl font-bold text-base shadow-[0_8px_30px_rgba(214,69,69,0.35)] hover:bg-lynx-red-dark">
+        {{ t('shop_page.submit_order') }} &rarr;
+      </button>
+    </form>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Warenkorb-Logik (localStorage)
+let cart = JSON.parse(localStorage.getItem('lynxCart') || '[]');
+
+function getApplicablePrice(tiers, quantity) {
+  let price = tiers[0] ? parseFloat(tiers[0].price_per_unit) : 0;
+  for (const tier of tiers) {
+    if (quantity >= parseFloat(tier.min_quantity)) {
+      price = parseFloat(tier.price_per_unit);
+    }
+  }
+  return price;
+}
+
+function addToCart(productEl) {
+  const id = parseInt(productEl.dataset.productId);
+  const name = productEl.dataset.productName;
+  const unit = productEl.dataset.productUnit;
+  const image = productEl.dataset.productImage;
+  const tiers = JSON.parse(productEl.dataset.priceTiers);
+  const qtyInput = productEl.querySelector('.shop-qty');
+  const qty = parseFloat(qtyInput.value);
+
+  if (isNaN(qty) || qty <= 0) return;
+
+  const price = getApplicablePrice(tiers, qty);
+  const existing = cart.find(item => item.id === id);
+
+  if (existing) {
+    existing.quantity += qty;
+    existing.price = getApplicablePrice(tiers, existing.quantity);
+  } else {
+    cart.push({ id, name, unit, image, tiers, quantity: qty, price });
+  }
+
+  saveCart();
+  renderCart();
+  qtyInput.value = 1;
+
+  // Scroll zum Warenkorb
+  document.getElementById('cart-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  saveCart();
+  renderCart();
+}
+
+function updateCartQty(index, newQty) {
+  if (newQty <= 0) {
+    removeFromCart(index);
+    return;
+  }
+  cart[index].quantity = newQty;
+  cart[index].price = getApplicablePrice(cart[index].tiers, newQty);
+  saveCart();
+  renderCart();
+}
+
+function saveCart() {
+  localStorage.setItem('lynxCart', JSON.stringify(cart));
+}
+
+function formatPrice(num) {
+  return num.toFixed(2).replace('.', ',');
+}
+
+function renderCart() {
+  const emptyEl = document.getElementById('cart-empty');
+  const itemsEl = document.getElementById('cart-items');
+  const countEl = document.getElementById('cart-count');
+  const tbody = document.getElementById('cart-tbody');
+
+  countEl.textContent = cart.length;
+
+  if (cart.length === 0) {
+    emptyEl.classList.remove('hidden');
+    itemsEl.classList.add('hidden');
+    return;
+  }
+
+  emptyEl.classList.add('hidden');
+  itemsEl.classList.remove('hidden');
+
+  let total = 0;
+  let html = '';
+
+  cart.forEach((item, i) => {
+    const lineTotal = Math.round(item.quantity * item.price * 100) / 100;
+    total += lineTotal;
+    html += `
+      <tr class="border-b border-black/5">
+        <td class="py-3 text-stone-dark font-medium">${item.name}</td>
+        <td class="py-3 text-center">
+          <input type="number" min="0.5" step="0.5" value="${item.quantity}"
+                 onchange="updateCartQty(${i}, parseFloat(this.value))"
+                 class="w-20 px-2 py-1 bg-[#FAFAF9] border border-black/8 rounded-lg text-sm text-center">
+          <span class="text-xs text-stone ml-1">${item.unit}</span>
+        </td>
+        <td class="py-3 text-right text-stone">€ ${formatPrice(item.price)}</td>
+        <td class="py-3 text-right font-semibold text-stone-dark">€ ${formatPrice(lineTotal)}</td>
+        <td class="py-3 text-right">
+          <button onclick="removeFromCart(${i})" class="text-stone/40 hover:text-lynx-red transition-colors" title="{{ t('shop_page.cart_remove') }}">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </td>
+      </tr>`;
+  });
+
+  tbody.innerHTML = html;
+  document.getElementById('cart-total').textContent = '€ ' + formatPrice(total);
+}
+
+function showOrderForm() {
+  const section = document.getElementById('order-section');
+  section.classList.remove('hidden');
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // Bestellzusammenfassung rendern
+  const summaryEl = document.getElementById('order-summary');
+  let total = 0;
+  let html = '';
+  cart.forEach(item => {
+    const lineTotal = Math.round(item.quantity * item.price * 100) / 100;
+    total += lineTotal;
+    html += `<div class="flex justify-between text-sm py-1">
+      <span class="text-stone">${item.quantity} ${item.unit} ${item.name}</span>
+      <span class="font-semibold text-stone-dark">€ ${formatPrice(lineTotal)}</span>
+    </div>`;
+  });
+  summaryEl.innerHTML = html;
+  document.getElementById('order-total').textContent = '€ ' + formatPrice(total);
+}
+
+// Bestellung absenden
+document.getElementById('order-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('order-submit-btn');
+  const successEl = document.getElementById('order-success');
+  const errorEl = document.getElementById('order-error');
+
+  btn.disabled = true;
+  btn.textContent = '...';
+  successEl.classList.add('hidden');
+  errorEl.classList.add('hidden');
+
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData.entries());
+
+  data.items = cart.map(item => ({
+    product_id: item.id,
+    quantity: item.quantity
+  }));
+
+  try {
+    const res = await fetch('/api/shop/order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+
+    if (res.ok && result.success) {
+      successEl.classList.remove('hidden');
+      document.getElementById('order-number-display').textContent =
+        '{% if locale == "de" %}Bestellnummer: {% else %}Order number: {% endif %}' + result.orderNumber;
+      cart = [];
+      saveCart();
+      renderCart();
+      this.reset();
+      document.getElementById('order-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      errorEl.textContent = result.error || '{{ t("shop_page.order_error") }}';
+      errorEl.classList.remove('hidden');
+    }
+  } catch {
+    errorEl.classList.remove('hidden');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '{{ t("shop_page.submit_order") }} →';
+  }
+});
+
+// Initiales Rendering
+renderCart();
+</script>
+{% endblock %}

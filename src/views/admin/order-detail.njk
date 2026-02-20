@@ -1,0 +1,126 @@
+{% extends "layouts/admin.njk" %}
+
+{% block admin_content %}
+
+<a href="/admin/bestellungen" class="inline-flex items-center gap-1 text-sm text-stone hover:text-[#D64545] mb-6 transition-colors">&larr; Zurück zu Bestellungen</a>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  {# Bestelldetails #}
+  <div class="lg:col-span-2 space-y-6">
+    {# Positionen #}
+    <div class="bg-white rounded-xl border border-black/5 shadow-sm">
+      <div class="px-6 py-4 border-b border-black/5 flex justify-between items-center">
+        <h2 class="font-bold text-[#1E1E1E]">Bestellpositionen</h2>
+        <span class="font-mono text-sm text-stone">{{ order.order_number }}</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="border-b border-black/5 bg-[#FAFAF9]">
+              <th class="text-left px-6 py-3 font-semibold text-stone text-xs uppercase">Produkt</th>
+              <th class="text-center px-6 py-3 font-semibold text-stone text-xs uppercase">Menge</th>
+              <th class="text-right px-6 py-3 font-semibold text-stone text-xs uppercase">Stückpreis</th>
+              <th class="text-right px-6 py-3 font-semibold text-stone text-xs uppercase">Gesamt</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-black/5">
+            {% for item in items %}
+              <tr>
+                <td class="px-6 py-3 font-medium text-[#1E1E1E]">{{ item.product_name }}</td>
+                <td class="px-6 py-3 text-center text-stone">{{ item.quantity }} {{ item.unit }}</td>
+                <td class="px-6 py-3 text-right text-stone">€ {{ item.price_per_unit }}</td>
+                <td class="px-6 py-3 text-right font-bold text-[#1E1E1E]">€ {{ item.total_price }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr class="border-t-2 border-[#1E1E1E]">
+              <td colspan="3" class="px-6 py-4 text-right font-bold text-[#1E1E1E]">Gesamtsumme (netto)</td>
+              <td class="px-6 py-4 text-right font-bold text-xl text-[#D64545]">€ {{ order.total_amount }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    {# Kundenanmerkungen #}
+    {% if order.customer_message %}
+      <div class="bg-white rounded-xl border border-black/5 shadow-sm p-6">
+        <h3 class="font-bold text-[#1E1E1E] mb-2">Kundenanmerkung</h3>
+        <p class="text-stone">{{ order.customer_message }}</p>
+      </div>
+    {% endif %}
+  </div>
+
+  {# Sidebar #}
+  <div class="space-y-6">
+    {# Status ändern #}
+    <div class="bg-white rounded-xl border border-black/5 shadow-sm p-6">
+      <h3 class="font-bold text-[#1E1E1E] mb-4">Status</h3>
+      <form method="POST" action="/admin/bestellungen/{{ order.id }}/status">
+        <select name="status" class="w-full px-3 py-2 bg-[#FAFAF9] border border-black/8 rounded-lg text-sm mb-3">
+          <option value="neu" {% if order.status == 'neu' %}selected{% endif %}>Neu</option>
+          <option value="bearbeitung" {% if order.status == 'bearbeitung' %}selected{% endif %}>In Bearbeitung</option>
+          <option value="versendet" {% if order.status == 'versendet' %}selected{% endif %}>Versendet</option>
+          <option value="abgeschlossen" {% if order.status == 'abgeschlossen' %}selected{% endif %}>Abgeschlossen</option>
+          <option value="storniert" {% if order.status == 'storniert' %}selected{% endif %}>Storniert</option>
+        </select>
+        <button type="submit" class="w-full px-4 py-2 bg-[#D64545] text-white rounded-lg font-semibold text-sm hover:bg-[#C13B3B] transition-colors">
+          Status aktualisieren
+        </button>
+      </form>
+    </div>
+
+    {# Kundendaten #}
+    <div class="bg-white rounded-xl border border-black/5 shadow-sm p-6">
+      <h3 class="font-bold text-[#1E1E1E] mb-4">Kundendaten</h3>
+      <div class="space-y-3 text-sm">
+        <div>
+          <span class="text-stone text-xs uppercase tracking-wider">Name</span>
+          <p class="font-medium text-[#1E1E1E]">{{ order.customer_name }}</p>
+        </div>
+        {% if order.customer_company %}
+          <div>
+            <span class="text-stone text-xs uppercase tracking-wider">Firma</span>
+            <p class="font-medium text-[#1E1E1E]">{{ order.customer_company }}</p>
+          </div>
+        {% endif %}
+        <div>
+          <span class="text-stone text-xs uppercase tracking-wider">E-Mail</span>
+          <p><a href="mailto:{{ order.customer_email }}" class="text-[#D64545] hover:underline">{{ order.customer_email }}</a></p>
+        </div>
+        {% if order.customer_phone %}
+          <div>
+            <span class="text-stone text-xs uppercase tracking-wider">Telefon</span>
+            <p class="text-[#1E1E1E]">{{ order.customer_phone }}</p>
+          </div>
+        {% endif %}
+        {% if order.customer_street %}
+          <div>
+            <span class="text-stone text-xs uppercase tracking-wider">Adresse</span>
+            <p class="text-[#1E1E1E]">{{ order.customer_street }}</p>
+            <p class="text-[#1E1E1E]">{{ order.customer_zip }} {{ order.customer_city }}</p>
+            <p class="text-[#1E1E1E]">{{ order.customer_country }}</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    {# Meta-Infos #}
+    <div class="bg-white rounded-xl border border-black/5 shadow-sm p-6">
+      <h3 class="font-bold text-[#1E1E1E] mb-4">Info</h3>
+      <div class="space-y-2 text-sm text-stone">
+        <div class="flex justify-between">
+          <span>Bestellt am</span>
+          <span class="text-[#1E1E1E]">{{ order.created_at }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Aktualisiert</span>
+          <span class="text-[#1E1E1E]">{{ order.updated_at }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

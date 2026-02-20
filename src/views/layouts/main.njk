@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ metaDescription or t('site.description') }}">
+  <link rel="alternate" hreflang="de" href="{{ localePath('de') }}">
+  <link rel="alternate" hreflang="en" href="{{ localePath('en') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/output.css">
+  {% block head %}{% endblock %}
+</head>
+<body class="font-body text-stone antialiased bg-[#FAFAF9]">
+
+  {% include "partials/header.njk" %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include "partials/footer.njk" %}
+
+  {% block scripts %}{% endblock %}
+  <script src="/js/main.js" defer></script>
+</body>
+</html>

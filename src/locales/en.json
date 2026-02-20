@@ -1,0 +1,181 @@
+{
+  "site": {
+    "title": "LYNX Lining",
+    "description": "Wear Protection for Mining, Machinery and Plant Construction",
+    "tagline": "Wear-resistant films made from thermoplastic polyurethane"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "advantages": "Advantages",
+    "applications": "Applications",
+    "references": "References",
+    "gallery": "Gallery",
+    "news": "News",
+    "shop": "Shop",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "LYNX LINING",
+    "subtitle": "Wear Protection for Mining, Machinery and Plant Construction",
+    "text": "Wear-resistant films made from thermoplastic polyurethane",
+    "description": "Up to 30x longer service life than conventional wear protection materials. Made in Austria.",
+    "cta_primary": "Learn more",
+    "cta_secondary": "Get in touch",
+    "badge_lifetime": "30x longer service life",
+    "badge_recyclable": "100% recyclable"
+  },
+  "stats": {
+    "lifetime": "Longer Service Life",
+    "recyclable": "Recyclable",
+    "industries": "Industries",
+    "austria": "Made in Austria"
+  },
+  "sections": {
+    "applications": "Applications",
+    "applications_title": "Industry Solutions",
+    "applications_subtitle": "LYNX Lining offers customized wear protection solutions for various industries",
+    "advantages": "Advantages",
+    "advantages_title": "Why LYNX Lining?",
+    "advantages_subtitle": "Our products offer decisive advantages over conventional materials",
+    "references": "References",
+    "references_title": "What our customers say",
+    "references_subtitle": "Find out why leading companies trust LYNX Lining",
+    "news": "News",
+    "news_title": "Latest from LYNX Lining",
+    "news_subtitle": "News, Instagram posts and updates from the world of wear protection",
+    "details": "View details",
+    "view_more": "View more",
+    "revolution_text": "We offer you a revolutionary product including customer-oriented solutions.",
+    "stands_for": "stands for",
+    "stands_for_list": ["Wear resistant", "Sound dampening", "Anti-adhesion", "Vibration dampening", "100% recyclable", "Made in Austria"],
+    "lifetime": "Lifetime",
+    "lifetime_title": "Lifetime",
+    "lifetime_caption": "Tipper with Lynx Lining after 43 months and approx. 50,000 loads (photo re-lining)"
+  },
+  "news_tabs": {
+    "all": "All",
+    "instagram": "Instagram",
+    "company": "Company News"
+  },
+  "products_page": {
+    "title": "Product Range",
+    "subtitle": "Thermoplastic polyurethane films for professional wear protection",
+    "specs": "Technical Specifications",
+    "thickness": "Available Thicknesses",
+    "thickness_value": "2mm, 3mm, 5mm & 10mm",
+    "width": "Standard Width",
+    "width_value": "1,515 mm (2,000 mm upon request)",
+    "formats": "Delivery Formats",
+    "formats_value": "Roll material or sheet material (1,515 mm × 3,000 mm)",
+    "colors": "Colors",
+    "colors_value": "2, 3, 5mm: Standard Red | 8 & 10mm: Blue/Red",
+    "custom_colors": "Custom colors available from 5,000 kg/thickness",
+    "cta": "Request a quote"
+  },
+  "advantages_page": {
+    "title": "Our Advantages",
+    "subtitle": "Why LYNX Lining is the best choice for wear protection",
+    "benefits_title": "More Benefits at a Glance",
+    "benefits": [
+      "Extremely wear-resistant and durable protection",
+      "High resistance to abrasion, impact, oils and fats",
+      "Up to 30x longer service life",
+      "High cost-saving potential",
+      "Resource savings and CO₂ reduction",
+      "Highest quality – Made in Austria",
+      "Easy installation and maintenance",
+      "Chemically resistant (acids, alkalis, solvents)",
+      "Temperature resistant from -40°C to +80°C",
+      "Flexible adaptation to various surfaces"
+    ]
+  },
+  "applications_page": {
+    "title": "Application Areas",
+    "subtitle": "LYNX Lining is used in numerous industries and applications"
+  },
+  "references_page": {
+    "title": "References & Partners",
+    "subtitle": "Leading companies trust LYNX Lining"
+  },
+  "gallery_page": {
+    "title": "Gallery",
+    "subtitle": "Impressions of our products and projects",
+    "filter_all": "All",
+    "filter_mining": "Mining",
+    "filter_transport": "Transport",
+    "filter_recycling": "Recycling",
+    "filter_production": "Production"
+  },
+  "news_page": {
+    "title": "News & Updates",
+    "subtitle": "Latest news from LYNX Lining and the industry"
+  },
+  "contact_page": {
+    "title": "Contact",
+    "subtitle": "We look forward to your inquiry",
+    "info_title": "Contact Information",
+    "address": "Address",
+    "email": "Email",
+    "phone": "Phone",
+    "hours": "Business Hours",
+    "hours_weekday": "Monday – Friday: 08:00 – 17:00",
+    "hours_weekend": "Saturday & Sunday: Closed",
+    "form_title": "Write to us"
+  },
+  "shop_page": {
+    "title": "Online Shop",
+    "subtitle": "Order LYNX Lining wear protection films directly",
+    "price_per": "per lm",
+    "from": "from",
+    "quantity": "Quantity (lm)",
+    "add_to_cart": "Add to cart",
+    "tier_info": "Volume discounts – the more you order, the lower the price",
+    "tier_from": "from",
+    "tier_unit": "lm",
+    "cart": "Cart",
+    "cart_empty": "Your cart is empty",
+    "cart_total": "Total",
+    "cart_remove": "Remove",
+    "cart_netto": "All prices net plus VAT",
+    "checkout": "Proceed to order",
+    "order_title": "Place your order",
+    "order_subtitle": "Fill out the form and we will get back to you shortly",
+    "company": "Company",
+    "street": "Street / Number",
+    "zip": "Zip Code",
+    "city": "City",
+    "country": "Country",
+    "order_message": "Order notes",
+    "submit_order": "Submit order",
+    "order_success": "Thank you for your order! We will get back to you shortly.",
+    "order_error": "An error occurred while submitting the order."
+  },
+  "contact_cta": {
+    "title": "Ready for better wear protection?",
+    "text": "Contact us for individual consulting and customized solutions",
+    "button": "Get in touch now"
+  },
+  "contact_form": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "subject": "Subject",
+    "message": "Message",
+    "submit": "Send message",
+    "required": "Required field",
+    "success": "Your message has been sent successfully!",
+    "error": "An error occurred while sending. Please try again."
+  },
+  "footer": {
+    "description": "Your partner for professional wear protection in mining, machinery and plant construction. Made in Austria.",
+    "navigation": "Navigation",
+    "legal": "Legal",
+    "imprint": "Imprint",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions",
+    "contact": "Contact",
+    "copyright": "All rights reserved.",
+    "made_in": "Made with ❤ in Austria"
+  }
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login – LYNX Lining Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/output.css">
+</head>
+<body class="bg-[#1E1E1E] min-h-screen flex items-center justify-center font-body antialiased">
+  <div class="w-full max-w-md px-6">
+    <div class="text-center mb-8">
+      <div class="font-bold text-2xl tracking-widest text-white mb-2">
+        <span class="text-[#D64545]">LYNX</span> LINING
+      </div>
+      <p class="text-white/50 text-sm">Admin-Bereich</p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-2xl p-8">
+      {% if error %}
+        <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+          {{ error }}
+        </div>
+      {% endif %}
+
+      <form method="POST" action="/admin/login" class="space-y-5">
+        <div>
+          <label class="block text-sm font-semibold text-[#3D3D3D] mb-2">Benutzername</label>
+          <input type="text" name="username" required autofocus
+                 class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-[#3D3D3D] focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none transition-all">
+        </div>
+        <div>
+          <label class="block text-sm font-semibold text-[#3D3D3D] mb-2">Passwort</label>
+          <input type="password" name="password" required
+                 class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-[#3D3D3D] focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none transition-all">
+        </div>
+        <button type="submit" class="w-full px-6 py-3.5 bg-[#D64545] text-white rounded-xl font-bold shadow-[0_8px_30px_rgba(214,69,69,0.35)] hover:bg-[#C13B3B] transition-all">
+          Anmelden
+        </button>
+      </form>
+    </div>
+
+    <p class="text-center text-white/30 text-xs mt-6">&copy; {{ currentYear }} LYNX Lining</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,63 @@
+{% extends "layouts/admin.njk" %}
+
+{% block admin_content %}
+
+<div class="bg-white rounded-xl border border-black/5 shadow-sm">
+  <div class="px-6 py-4 border-b border-black/5">
+    <h2 class="font-bold text-[#1E1E1E]">Alle Kontaktanfragen</h2>
+  </div>
+
+  {% if submissions.length %}
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-black/5 bg-[#FAFAF9]">
+            <th class="text-left px-6 py-3 font-semibold text-stone text-xs uppercase tracking-wider">Status</th>
+            <th class="text-left px-6 py-3 font-semibold text-stone text-xs uppercase tracking-wider">Name</th>
+            <th class="text-left px-6 py-3 font-semibold text-stone text-xs uppercase tracking-wider">E-Mail</th>
+            <th class="text-left px-6 py-3 font-semibold text-stone text-xs uppercase tracking-wider">Betreff</th>
+            <th class="text-left px-6 py-3 font-semibold text-stone text-xs uppercase tracking-wider">Datum</th>
+            <th class="w-20"></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-black/5">
+          {% for sub in submissions %}
+            <tr class="hover:bg-[#FAFAF9] transition-colors {% if not sub.is_read %}bg-blue-50/30{% endif %}">
+              <td class="px-6 py-4">
+                {% if sub.is_read %}
+                  <span class="inline-block w-2 h-2 bg-stone/30 rounded-full"></span>
+                {% else %}
+                  <span class="inline-block w-2 h-2 bg-[#D64545] rounded-full"></span>
+                {% endif %}
+              </td>
+              <td class="px-6 py-4 font-medium text-[#1E1E1E] {% if not sub.is_read %}font-bold{% endif %}">{{ sub.name }}</td>
+              <td class="px-6 py-4 text-stone">{{ sub.email }}</td>
+              <td class="px-6 py-4 text-stone">{{ sub.subject or '–' }}</td>
+              <td class="px-6 py-4 text-stone text-xs">{{ sub.created_at }}</td>
+              <td class="px-6 py-4">
+                {% if not sub.is_read %}
+                  <form method="POST" action="/admin/kontakt/{{ sub.id }}/read" class="inline">
+                    <button class="text-xs text-[#D64545] font-medium hover:underline">Gelesen</button>
+                  </form>
+                {% endif %}
+              </td>
+            </tr>
+            <tr class="{% if not sub.is_read %}bg-blue-50/30{% endif %}">
+              <td></td>
+              <td colspan="5" class="px-6 pb-4 text-stone text-sm">
+                {% if sub.phone %}<span class="text-xs text-stone/60 mr-3">Tel: {{ sub.phone }}</span>{% endif %}
+                <p class="mt-1">{{ sub.message }}</p>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="px-6 py-16 text-center text-stone">
+      <p class="text-lg">Keine Kontaktanfragen vorhanden</p>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

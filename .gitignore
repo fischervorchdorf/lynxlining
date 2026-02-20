@@ -1,1 +1,9 @@
-schalldämpfung.png
+node_modules/
+.env
+src/public/css/output.css
+src/public/uploads/*
+!src/public/uploads/.gitkeep
+src/public/images/instagram/*
+!src/public/images/instagram/.gitkeep
+.DS_Store
+*.log

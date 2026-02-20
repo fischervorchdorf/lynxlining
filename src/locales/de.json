@@ -1,0 +1,181 @@
+{
+  "site": {
+    "title": "LYNX Lining",
+    "description": "Verschleißschutz im Berg-, Maschinen- und Anlagenbau",
+    "tagline": "Verschleißfeste Folien aus thermoplastischem Polyurethan"
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Produkte",
+    "advantages": "Vorteile",
+    "applications": "Anwendungen",
+    "references": "Referenzen",
+    "gallery": "Galerie",
+    "news": "News",
+    "shop": "Shop",
+    "contact": "Kontakt"
+  },
+  "hero": {
+    "title": "LYNX LINING",
+    "subtitle": "Verschleißschutz im Berg-, Maschinen- und Anlagenbau",
+    "text": "Verschleißfeste Folien aus thermoplastischem Polyurethan",
+    "description": "Bis zu 30x längere Lebensdauer als herkömmliche Verschleißschutzmaterialien. Made in Austria.",
+    "cta_primary": "Mehr erfahren",
+    "cta_secondary": "Kontakt aufnehmen",
+    "badge_lifetime": "30x längere Lebensdauer",
+    "badge_recyclable": "100% recyclebar"
+  },
+  "stats": {
+    "lifetime": "Längere Lebensdauer",
+    "recyclable": "Recyclebar",
+    "industries": "Branchen",
+    "austria": "Made in Austria"
+  },
+  "sections": {
+    "applications": "Anwendungen",
+    "applications_title": "Branchenlösungen",
+    "applications_subtitle": "LYNX Lining bietet maßgeschneiderte Verschleißschutz-Lösungen für verschiedene Industrien",
+    "advantages": "Vorteile",
+    "advantages_title": "Warum LYNX Lining?",
+    "advantages_subtitle": "Unsere Produkte bieten entscheidende Vorteile gegenüber herkömmlichen Materialien",
+    "references": "Referenzen",
+    "references_title": "Das sagen unsere Kunden",
+    "references_subtitle": "Erfahren Sie, warum führende Unternehmen auf LYNX Lining vertrauen",
+    "news": "News",
+    "news_title": "Aktuelles von LYNX Lining",
+    "news_subtitle": "Neuigkeiten, Instagram-Posts und Updates aus der Welt des Verschleißschutzes",
+    "details": "Details ansehen",
+    "view_more": "Mehr ansehen",
+    "revolution_text": "Wir bieten Ihnen ein revolutionäres Produkt inklusive kundenorientierter Lösungen.",
+    "stands_for": "steht für",
+    "stands_for_list": ["Verschleißfest", "Schalldämpfend", "Anti-Haft", "Vibrationsdämpfend", "100% recyclebar", "Made in Austria"],
+    "lifetime": "Lebensdauer",
+    "lifetime_title": "Lebensdauer",
+    "lifetime_caption": "Kipper mit Lynx Lining nach 43 Monaten und ca. 50.000 Fuhren (Foto Neubeklebung)"
+  },
+  "news_tabs": {
+    "all": "Alle",
+    "instagram": "Instagram",
+    "company": "Firmennews"
+  },
+  "products_page": {
+    "title": "Produktpalette",
+    "subtitle": "Thermoplastische Polyurethanfolien für professionellen Verschleißschutz",
+    "specs": "Technische Daten",
+    "thickness": "Verfügbare Stärken",
+    "thickness_value": "2mm, 3mm, 5mm & 10mm",
+    "width": "Standardbreite",
+    "width_value": "1.515 mm (2.000 mm auf Anfrage)",
+    "formats": "Lieferformate",
+    "formats_value": "Rollenware oder Plattenware (1.515 mm × 3.000 mm)",
+    "colors": "Farben",
+    "colors_value": "2, 3, 5mm: Standard Rot | 8 & 10mm: Blau/Rot",
+    "custom_colors": "Sonderfarben ab 5.000 kg/Stärke möglich",
+    "cta": "Jetzt anfragen"
+  },
+  "advantages_page": {
+    "title": "Unsere Vorteile",
+    "subtitle": "Warum LYNX Lining die beste Wahl für Verschleißschutz ist",
+    "benefits_title": "Weitere Vorteile im Überblick",
+    "benefits": [
+      "Extrem verschleißfest und langlebiger Schutz",
+      "Hohe Beständigkeit gegen Abrieb, Schlag, Öle und Fette",
+      "Bis zu 30x längere Lebensdauer",
+      "Hohes Kosteneinsparungspotenzial",
+      "Ressourceneinsparung und CO₂-Reduktion",
+      "Höchste Qualität – Made in Austria",
+      "Einfache Montage und Wartung",
+      "Chemisch beständig (Säuren, Laugen, Lösungsmittel)",
+      "Temperaturbeständig von -40°C bis +80°C",
+      "Flexible Anpassung an verschiedene Oberflächen"
+    ]
+  },
+  "applications_page": {
+    "title": "Anwendungsgebiete",
+    "subtitle": "LYNX Lining wird in zahlreichen Branchen und Anwendungen eingesetzt"
+  },
+  "references_page": {
+    "title": "Referenzen & Partner",
+    "subtitle": "Führende Unternehmen vertrauen auf LYNX Lining"
+  },
+  "gallery_page": {
+    "title": "Galerie",
+    "subtitle": "Impressionen unserer Produkte und Projekte",
+    "filter_all": "Alle",
+    "filter_mining": "Bergbau",
+    "filter_transport": "Transport",
+    "filter_recycling": "Recycling",
+    "filter_production": "Produktion"
+  },
+  "news_page": {
+    "title": "News & Aktuelles",
+    "subtitle": "Neuigkeiten von LYNX Lining und aus der Branche"
+  },
+  "contact_page": {
+    "title": "Kontakt",
+    "subtitle": "Wir freuen uns auf Ihre Anfrage",
+    "info_title": "Kontaktinformationen",
+    "address": "Adresse",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "hours": "Geschäftszeiten",
+    "hours_weekday": "Montag – Freitag: 08:00 – 17:00",
+    "hours_weekend": "Samstag & Sonntag: Geschlossen",
+    "form_title": "Schreiben Sie uns"
+  },
+  "shop_page": {
+    "title": "Online-Shop",
+    "subtitle": "LYNX Lining Verschleißschutzfolien direkt bestellen",
+    "price_per": "pro lfm",
+    "from": "ab",
+    "quantity": "Menge (lfm)",
+    "add_to_cart": "In den Warenkorb",
+    "tier_info": "Staffelpreise – je mehr Sie bestellen, desto günstiger",
+    "tier_from": "ab",
+    "tier_unit": "lfm",
+    "cart": "Warenkorb",
+    "cart_empty": "Ihr Warenkorb ist leer",
+    "cart_total": "Gesamtsumme",
+    "cart_remove": "Entfernen",
+    "cart_netto": "Alle Preise netto zzgl. MwSt.",
+    "checkout": "Zur Bestellung",
+    "order_title": "Bestellung aufgeben",
+    "order_subtitle": "Füllen Sie das Formular aus und wir melden uns umgehend bei Ihnen",
+    "company": "Firma",
+    "street": "Straße / Hausnummer",
+    "zip": "PLZ",
+    "city": "Ort",
+    "country": "Land",
+    "order_message": "Anmerkungen zur Bestellung",
+    "submit_order": "Bestellung absenden",
+    "order_success": "Vielen Dank für Ihre Bestellung! Wir melden uns in Kürze bei Ihnen.",
+    "order_error": "Beim Absenden der Bestellung ist ein Fehler aufgetreten."
+  },
+  "contact_cta": {
+    "title": "Bereit für besseren Verschleißschutz?",
+    "text": "Kontaktieren Sie uns für eine individuelle Beratung und maßgeschneiderte Lösungen",
+    "button": "Jetzt Kontakt aufnehmen"
+  },
+  "contact_form": {
+    "name": "Name",
+    "email": "E-Mail",
+    "phone": "Telefon",
+    "subject": "Betreff",
+    "message": "Nachricht",
+    "submit": "Nachricht senden",
+    "required": "Pflichtfeld",
+    "success": "Ihre Nachricht wurde erfolgreich gesendet!",
+    "error": "Beim Senden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+  },
+  "footer": {
+    "description": "Ihr Partner für professionellen Verschleißschutz im Berg-, Maschinen- und Anlagenbau. Made in Austria.",
+    "navigation": "Navigation",
+    "legal": "Rechtliches",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "terms": "AGB",
+    "contact": "Kontakt",
+    "copyright": "Alle Rechte vorbehalten.",
+    "made_in": "Made with ❤ in Austria"
+  }
+}

@@ -1,0 +1,73 @@
+{% extends "layouts/admin.njk" %}
+
+{% block admin_content %}
+
+<a href="/admin/{{ contentType }}" class="inline-flex items-center gap-1 text-sm text-stone hover:text-[#D64545] mb-6 transition-colors">&larr; Zurück</a>
+
+<div class="max-w-3xl">
+  <form method="POST" action="/admin/{{ contentType }}{% if not isNew %}/{{ item.id }}{% endif %}" enctype="multipart/form-data" class="space-y-8">
+
+    {# Basis-Felder #}
+    <div class="bg-white rounded-xl border border-black/5 shadow-sm p-6">
+      <h2 class="font-bold text-[#1E1E1E] mb-4">Allgemein</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-stone uppercase tracking-wider mb-1">Slug</label>
+          <input type="text" name="slug" value="{{ item.slug if item else '' }}" required
+                 class="w-full px-3 py-2 bg-[#FAFAF9] border border-black/8 rounded-lg text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-stone uppercase tracking-wider mb-1">Reihenfolge</label>
+          <input type="number" name="sort_order" value="{{ item.sort_order if item else 0 }}"
+                 class="w-full px-3 py-2 bg-[#FAFAF9] border border-black/8 rounded-lg text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none">
+        </div>
+      </div>
+      <div class="mt-4">
+        <label class="block text-xs font-semibold text-stone uppercase tracking-wider mb-1">Bild</label>
+        {% if item and item.image_path %}
+          <img src="{{ item.image_path }}" class="w-32 h-20 rounded-lg object-cover mb-2" alt="">
+          <input type="hidden" name="existing_image" value="{{ item.image_path }}">
+        {% endif %}
+        <input type="file" name="image" accept="image/*" class="text-sm text-stone file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#D64545]/10 file:text-[#D64545] hover:file:bg-[#D64545]/20">
+      </div>
+    </div>
+
+    {# Deutsch #}
+    <div class="bg-white rounded-xl border border-black/5 shadow-sm p-6">
+      <h2 class="font-bold text-[#1E1E1E] mb-4">🇩🇪 Deutsch</h2>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-stone uppercase tracking-wider mb-1">Titel</label>
+          <input type="text" name="title_de" value="{{ item.de.title if item and item.de else '' }}" required
+                 class="w-full px-3 py-2 bg-[#FAFAF9] border border-black/8 rounded-lg text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-stone uppercase tracking-wider mb-1">Beschreibung</label>
+          <textarea name="desc_de" rows="4" class="w-full px-3 py-2 bg-[#FAFAF9] border border-black/8 rounded-lg text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none resize-none">{{ item.de.description if item and item.de else '' }}</textarea>
+        </div>
+      </div>
+    </div>
+
+    {# Englisch #}
+    <div class="bg-white rounded-xl border border-black/5 shadow-sm p-6">
+      <h2 class="font-bold text-[#1E1E1E] mb-4">🇬🇧 English</h2>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-stone uppercase tracking-wider mb-1">Title</label>
+          <input type="text" name="title_en" value="{{ item.en.title if item and item.en else '' }}"
+                 class="w-full px-3 py-2 bg-[#FAFAF9] border border-black/8 rounded-lg text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-stone uppercase tracking-wider mb-1">Description</label>
+          <textarea name="desc_en" rows="4" class="w-full px-3 py-2 bg-[#FAFAF9] border border-black/8 rounded-lg text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none resize-none">{{ item.en.description if item and item.en else '' }}</textarea>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="px-8 py-3 bg-[#D64545] text-white rounded-lg font-bold shadow-md hover:bg-[#C13B3B] transition-colors">
+      {% if isNew %}Anlegen{% else %}Speichern{% endif %}
+    </button>
+  </form>
+</div>
+
+{% endblock %}

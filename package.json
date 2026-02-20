@@ -1,0 +1,36 @@
+{
+  "name": "lynx-lining",
+  "version": "1.0.0",
+  "description": "LYNX Lining - Verschleißschutz im Berg-, Maschinen- und Anlagenbau",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "css:build": "npx @tailwindcss/cli -i src/public/css/app.css -o src/public/css/output.css --minify",
+    "css:watch": "npx @tailwindcss/cli -i src/public/css/app.css -o src/public/css/output.css --watch"
+  },
+  "author": "LYNX Lining",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "compression": "^1.8.1",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.1",
+    "helmet": "^8.1.0",
+    "marked": "^17.0.3",
+    "multer": "^2.0.2",
+    "mysql2": "^3.17.3",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^8.0.1",
+    "nunjucks": "^3.2.4",
+    "sharp": "^0.34.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.0",
+    "nodemon": "^3.1.11"
+  }
+}

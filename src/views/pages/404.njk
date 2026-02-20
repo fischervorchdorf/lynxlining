@@ -1,0 +1,12 @@
+{% extends "layouts/main.njk" %}
+
+{% block content %}
+<section class="max-w-7xl mx-auto px-6 lg:px-10 py-32 text-center">
+  <h1 class="font-heading text-8xl font-extrabold text-lynx-red mb-4">404</h1>
+  <h2 class="font-heading text-2xl font-bold text-stone-dark mb-4">Seite nicht gefunden</h2>
+  <p class="text-stone mb-8">Die gewünschte Seite existiert nicht oder wurde verschoben.</p>
+  <a href="/{{ locale or 'de' }}" class="btn-lift inline-flex items-center gap-2 px-8 py-3 bg-lynx-red text-white rounded-xl font-semibold">
+    Zurück zur Startseite &rarr;
+  </a>
+</section>
+{% endblock %}

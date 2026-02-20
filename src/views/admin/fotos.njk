@@ -1,0 +1,63 @@
+{% extends "layouts/admin.njk" %}
+
+{% block admin_content %}
+
+<p class="text-stone mb-8">Hier können Sie alle Bilder der Website ansehen, austauschen, neue hinzufügen oder löschen.</p>
+
+{% for cat in categories %}
+<div class="mb-10">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-lg font-bold text-[#1E1E1E]">{{ cat.label }}</h2>
+    <form method="POST" action="/admin/fotos/upload" enctype="multipart/form-data" class="flex items-center gap-3">
+      <input type="hidden" name="category" value="{{ cat.dir }}">
+      <input type="file" name="new_image" accept="{{ cat.accept }}" required
+             class="text-xs text-stone file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#D64545]/10 file:text-[#D64545] hover:file:bg-[#D64545]/20">
+      <button type="submit" class="px-4 py-1.5 bg-[#D64545] text-white rounded-lg text-xs font-semibold hover:bg-[#C13B3B] transition-colors">
+        + Hinzufügen
+      </button>
+    </form>
+  </div>
+
+  <div class="bg-white rounded-xl border border-black/5 shadow-sm p-6">
+    {% if cat.images.length %}
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+        {% for img in cat.images %}
+          <div class="group relative bg-[#FAFAF9] rounded-xl border border-black/5 overflow-hidden">
+            <div class="aspect-square flex items-center justify-center p-2">
+              <img src="{{ img.path }}" alt="{{ img.filename }}"
+                   class="max-w-full max-h-full object-contain rounded-lg">
+            </div>
+            <div class="p-3 border-t border-black/5">
+              <p class="text-xs text-stone truncate mb-3" title="{{ img.filename }}">{{ img.filename }}</p>
+
+              {# Bild austauschen #}
+              <form method="POST" action="/admin/fotos/replace" enctype="multipart/form-data" class="mb-2">
+                <input type="hidden" name="category" value="{{ cat.dir }}">
+                <input type="hidden" name="old_filename" value="{{ img.filename }}">
+                <input type="file" name="new_image" accept="{{ cat.accept }}" required
+                       class="w-full text-xs text-stone file:mr-1 file:py-1 file:px-2 file:rounded file:border-0 file:text-xs file:font-medium file:bg-blue-50 file:text-blue-600 hover:file:bg-blue-100 mb-1">
+                <button type="submit" class="w-full px-2 py-1.5 bg-blue-500 text-white rounded-lg text-xs font-semibold hover:bg-blue-600 transition-colors">
+                  Austauschen
+                </button>
+              </form>
+
+              {# Bild löschen #}
+              <form method="POST" action="/admin/fotos/delete" onsubmit="return confirm('Dieses Bild wirklich löschen? Wenn es auf der Website verwendet wird, wird es dort nicht mehr angezeigt.')">
+                <input type="hidden" name="category" value="{{ cat.dir }}">
+                <input type="hidden" name="filename" value="{{ img.filename }}">
+                <button type="submit" class="w-full px-2 py-1.5 bg-white text-stone/40 border border-black/5 rounded-lg text-xs font-medium hover:text-red-500 hover:border-red-200 transition-colors">
+                  Löschen
+                </button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-stone text-sm py-8 text-center">Noch keine Bilder in dieser Kategorie</p>
+    {% endif %}
+  </div>
+</div>
+{% endfor %}
+
+{% endblock %}

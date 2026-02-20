@@ -1,0 +1,85 @@
+{% extends "layouts/main.njk" %}
+
+{% block content %}
+
+{# ===== HERO ===== #}
+<section class="bg-gradient-to-br from-stone-dark to-[#1a1c1e] py-24 lg:py-32">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10 text-center">
+    <span class="inline-block px-5 py-2 bg-lynx-red/15 text-lynx-red text-xs font-bold tracking-widest uppercase rounded-full mb-5">{{ t('nav.references') }}</span>
+    <h1 class="font-heading text-4xl lg:text-6xl font-extrabold text-white leading-tight">{{ t('references_page.title') }}</h1>
+    <p class="text-lg text-white/60 max-w-2xl mx-auto mt-4">{{ t('references_page.subtitle') }}</p>
+  </div>
+</section>
+
+{# ===== REFERENZEN ===== #}
+<section class="max-w-7xl mx-auto px-6 lg:px-10 -mt-16 relative z-10 pb-24">
+  {% set staticRefs = [
+    { name: "Arthofer Bau", industry: "Bauindustrie", desc: "Einsatz in LKW-Kippern und Betonmischern. Ergebnis: Deutliche Reduzierung der Wartungskosten und Verlängerung der Gerätelebensdauer.", img: "/images/applications/application_bergbau.jpg" },
+    { name: "Quarzsande", industry: "Rohstoffgewinnung", desc: "Förderband- und Trichterauskleidung. Ergebnis: Verbesserter Materialfluss und drastisch reduzierte Stillstandzeiten.", img: "/images/applications/application_schuettgut.jpg" },
+    { name: "SBM Mineral Processing", industry: "Maschinen- & Anlagenbau", desc: "Integration in Kundenprojekte als OEM-Partner. Ergebnis: Höhere Kundenzufriedenheit, längere Standzeiten, geringere Betriebskosten.", img: "/images/applications/application_maschinen.jpg" },
+    { name: "Internationale Bergbaukonzerne", industry: "Bergbau", desc: "Fördersysteme und Bunker unter höchster Beanspruchung. Ergebnis: Extreme Verschleißfestigkeit unter härtesten Bedingungen bewiesen.", img: "/images/applications/application_industrie1.jpg" },
+    { name: "Recycling- & Aufbereitungsbetriebe", industry: "Recycling", desc: "Auskleidung von Recyclinganlagen und Aufbereitungsmaschinen. Ergebnis: Verbesserter Durchsatz und längere Wartungsintervalle.", img: "/images/applications/application_recycling.jpg" },
+    { name: "Transport & Logistik", industry: "Transport", desc: "LKW-Kipper und Transportfahrzeuge. Ergebnis: Verlängerte Lebensdauer und vereinfachte Entladung durch Anti-Haft-Eigenschaften.", img: "/images/products/kipper.jpg" }
+  ] %}
+  {% set refList = references if references.length else staticRefs %}
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% for ref in refList %}
+      <div class="group bg-white rounded-2xl overflow-hidden shadow-lg border border-black/4 hover:-translate-y-2 transition-all duration-300">
+        <div class="overflow-hidden h-48">
+          <img src="{{ ref.image_path or ref.img }}" alt="{{ ref.name }}" class="img-zoom w-full h-full object-cover" loading="lazy">
+        </div>
+        <div class="p-8">
+          <span class="inline-block px-3 py-1 bg-lynx-red/8 text-lynx-red text-xs font-bold rounded-full uppercase tracking-wider mb-3">{{ ref.industry }}</span>
+          <h3 class="font-heading text-xl font-bold text-stone-dark mb-3">{{ ref.name }}</h3>
+          <p class="text-stone text-sm leading-relaxed">{{ ref.desc or ref.description }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{# ===== TESTIMONIALS ===== #}
+<div class="max-w-7xl mx-auto px-6 lg:px-10 pb-24">
+  <div class="bg-gradient-to-br from-stone-dark to-[#1a1c1e] rounded-[2rem] p-10 lg:p-20">
+    <div class="text-center mb-16">
+      <h2 class="font-heading text-3xl lg:text-4xl font-extrabold text-white">{{ t('sections.references_title') }}</h2>
+      <p class="text-lg text-white/60 max-w-2xl mx-auto mt-4">{{ t('sections.references_subtitle') }}</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {% set staticTestimonials = [
+        { name: "Johann Arthofer", role: "Arthofer Bau GmbH", photo: "/images/testimonials/arthofer.webp", quote: "Seit wir LYNX Lining einsetzen, haben sich unsere Standzeiten dramatisch verbessert. Die Investition hat sich innerhalb weniger Monate amortisiert." },
+        { name: "Andreas Grabner", role: "Grabner Recycling", photo: "/images/testimonials/Andreas-Grabner.jpg", quote: "Die Vibrationsreduktion und Schalldämpfung durch LYNX Lining ist beeindruckend. Unsere Mitarbeiter schätzen die reduzierte Lärmbelastung." },
+        { name: "Rudolf Mandorfer", role: "Mandorfer Bau GmbH", photo: "/images/testimonials/mandorfer.jpg", quote: "Die Anti-Haft-Eigenschaften sind herausragend. Materialanbackungen gehören der Vergangenheit an." }
+      ] %}
+
+      {% for test in staticTestimonials %}
+        <div class="bg-white/6 border border-white/8 rounded-2xl p-9 hover:bg-white/10 hover:-translate-y-1 transition-all duration-300">
+          <div class="text-amber-400 text-lg tracking-widest mb-5">★★★★★</div>
+          <p class="text-white/85 text-[15px] leading-relaxed mb-6 italic">"{{ test.quote }}"</p>
+          <div class="flex items-center gap-3.5">
+            <img src="{{ test.photo }}" alt="{{ test.name }}" class="w-12 h-12 rounded-full object-cover">
+            <div>
+              <div class="text-white font-semibold text-[15px]">{{ test.name }}</div>
+              <div class="text-white/50 text-sm">{{ test.role }}</div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{# ===== KONTAKT CTA ===== #}
+<div class="max-w-7xl mx-auto px-6 lg:px-10 pb-24">
+  <div class="bg-gradient-to-br from-lynx-red to-lynx-red-dark rounded-[2rem] p-12 lg:p-20 text-center">
+    <h2 class="font-heading text-3xl lg:text-5xl font-extrabold text-white mb-4">{{ t('contact_cta.title') }}</h2>
+    <p class="text-white/85 text-lg mb-10">{{ t('contact_cta.text') }}</p>
+    <a href="/{{ locale }}/kontakt" class="btn-lift inline-flex items-center gap-2.5 px-10 py-4 bg-white text-lynx-red rounded-xl font-bold text-base shadow-[0_8px_30px_rgba(0,0,0,0.15)]">
+      {{ t('contact_cta.button') }} &rarr;
+    </a>
+  </div>
+</div>
+
+{% endblock %}

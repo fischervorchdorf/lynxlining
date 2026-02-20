@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+@theme {
+  --color-lynx-red: #D64545;
+  --color-lynx-red-dark: #B83838;
+  --color-lynx-red-light: #E85C5C;
+  --color-stone: #54585A;
+  --color-stone-light: #E8E6E3;
+  --color-stone-medium: #C4C2BF;
+  --color-stone-dark: #3A3D3F;
+  --font-heading: 'Montserrat', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* Base Styles */
+body {
+  font-family: var(--font-body);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Navigation active indicator */
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: var(--color-lynx-red);
+  border-radius: 2px;
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+}
+
+/* Advantage card top border */
+.adv-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--color-lynx-red);
+  transform: scaleX(0);
+  transition: transform 0.4s;
+  transform-origin: left;
+}
+.adv-card:hover::before {
+  transform: scaleX(1);
+}
+
+/* Image zoom on card hover */
+.img-zoom {
+  transition: transform 0.6s ease;
+}
+.group:hover .img-zoom {
+  transform: scale(1.05);
+}
+
+/* Button hover lift */
+.btn-lift {
+  transition: all 0.3s ease;
+}
+.btn-lift:hover {
+  transform: translateY(-2px);
+}
+
+/* Mobile menu overlay */
+.mobile-menu {
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+}
+.mobile-menu.open {
+  transform: translateX(0);
+}
