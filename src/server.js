@@ -21,8 +21,8 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Session
-app.use(session({
+// Session (mit MySQL Store für Production)
+const sessionConfig = {
   secret: process.env.SESSION_SECRET || 'lynxlining-dev-secret',
   resave: false,
   saveUninitialized: false,
@@ -30,7 +30,19 @@ app.use(session({
     secure: process.env.NODE_ENV === 'production',
     maxAge: 24 * 60 * 60 * 1000 // 24 Stunden
   }
-}));
+};
+
+// In Production: Session-Daten in MySQL speichern statt MemoryStore
+if (process.env.NODE_ENV === 'production') {
+  const MySQLStore = require('express-mysql-session')(session);
+  const db = require('./config/database');
+  const sessionStore = new MySQLStore({}, db);
+  sessionConfig.store = sessionStore;
+  // Proxy trust für HTTPS hinter Reverse Proxy
+  app.set('trust proxy', 1);
+}
+
+app.use(session(sessionConfig));
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -82,7 +94,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`LYNX Lining Server läuft auf http://localhost:${PORT}`);
 
-  // Instagram Sync: alle 30 Minuten
+  // Instagram Sync
   if (process.env.INSTAGRAM_ACCESS_TOKEN) {
     const { syncInstagramPosts, refreshToken } = require('./config/instagram');
 
@@ -96,9 +108,9 @@ app.listen(PORT, () => {
       syncInstagramPosts().catch(err => console.error('Instagram Sync Fehler:', err));
     }, 30 * 60 * 1000);
 
-    // Token Refresh alle 50 Tage
+    // Token Refresh alle 24 Stunden (statt 50 Tage, um Overflow zu vermeiden)
     setInterval(() => {
       refreshToken().catch(err => console.error('Instagram Token Refresh Fehler:', err));
-    }, 50 * 24 * 60 * 60 * 1000);
+    }, 24 * 60 * 60 * 1000);
   }
 });
