@@ -7,9 +7,15 @@ const db = require('../config/database');
 const { requireAuth } = require('../middleware/auth');
 
 // Multer für Bild-Uploads
+const fs = require('fs');
+const uploadDir = path.join(__dirname, '..', 'public', 'images', 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, '..', 'public', 'images', 'uploads'));
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
@@ -578,8 +584,6 @@ router.post('/shop-produkte/:id/delete', requireAuth, async (req, res) => {
 // ============================================================
 // FOTOS WECHSELN (Image Management)
 // ============================================================
-
-const fs = require('fs');
 
 // Bild-Kategorien mit Pfaden und Labels
 function getImageCategories() {
