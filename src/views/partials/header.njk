@@ -1,17 +1,14 @@
 {# ===== HEADER / NAVIGATION ===== #}
-<header class="sticky top-0 z-50 bg-white/97 backdrop-blur-xl border-b border-black/5 transition-shadow duration-300 hover:shadow-lg">
-  <div class="max-w-7xl mx-auto flex justify-between items-center px-6 lg:px-10 py-4">
+<header class="sticky top-0 z-50 bg-lynx-red shadow-lg">
+  <div class="max-w-[1400px] mx-auto flex items-center justify-between px-6 lg:px-10 py-0">
 
-    {# Logo #}
-    <a href="/{{ locale }}" class="flex items-center gap-3 no-underline">
-      <img src="/images/logo/logo_lynx.png" alt="LYNX Lining Logo" class="h-12 w-auto">
-      <span class="font-heading font-bold text-lg tracking-[3px] text-stone-dark">
-        <span class="text-lynx-red">LYNX</span> LINING
-      </span>
+    {# Logo – links, klickbar als Home-Button #}
+    <a href="/{{ locale }}" class="flex items-center gap-0 no-underline shrink-0 py-3">
+      <img src="/images/logo/logo_lynx.png" alt="LYNX Lining Logo" class="h-14 w-auto brightness-0 invert">
     </a>
 
-    {# Desktop Navigation #}
-    <nav class="hidden lg:flex items-center gap-1">
+    {# Desktop Navigation – mittig #}
+    <nav class="hidden lg:flex items-center gap-2 flex-1 justify-center">
       {% set navItems = [
         { key: 'home', href: '/' + locale },
         { key: 'products', href: '/' + locale + '/produkte' },
@@ -26,43 +23,41 @@
 
       {% for item in navItems %}
         <a href="{{ item.href }}"
-           class="nav-link relative px-4 py-2.5 text-sm font-medium tracking-wide rounded-lg transition-all duration-200
-                  {% if page == item.key %}text-lynx-red font-semibold active{% else %}text-stone hover:text-lynx-red hover:bg-lynx-red/5{% endif %}">
+           class="px-4 py-2 text-sm font-semibold tracking-wide border rounded transition-all duration-200
+                  {% if page == item.key %}bg-white/20 text-white border-white{% else %}text-white/90 border-white/40 hover:bg-white/15 hover:border-white hover:text-white{% endif %}">
           {{ t('nav.' + item.key) }}
         </a>
       {% endfor %}
-
-      {# Sprachumschalter #}
-      <div class="flex gap-0.5 ml-4 bg-stone-light rounded-lg p-0.5">
-        <a href="{{ localePath('de') }}"
-           class="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-md transition-all duration-200
-                  {% if locale == 'de' %}bg-white text-lynx-red shadow-sm{% else %}text-stone hover:text-lynx-red{% endif %}">
-          <img src="/images/icons/flag_de.png" alt="Deutsch" class="w-5 h-3.5 object-cover rounded-sm"> DE
-        </a>
-        <a href="{{ localePath('en') }}"
-           class="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold rounded-md transition-all duration-200
-                  {% if locale == 'en' %}bg-white text-lynx-red shadow-sm{% else %}text-stone hover:text-lynx-red{% endif %}">
-          <img src="/images/icons/flag_en.png" alt="English" class="w-5 h-3.5 object-cover rounded-sm"> EN
-        </a>
-      </div>
     </nav>
 
+    {# Sprachumschalter – rechts, mit Flaggen #}
+    <div class="hidden lg:flex items-center gap-3 shrink-0 ml-4">
+      <a href="{{ localePath('de') }}"
+         class="flex items-center gap-1.5 transition-all duration-200 {% if locale == 'de' %}opacity-100{% else %}opacity-60 hover:opacity-100{% endif %}">
+        <img src="/images/icons/flag_de.png" alt="Deutsch" class="w-8 h-6 object-cover rounded shadow-sm border border-white/30">
+      </a>
+      <a href="{{ localePath('en') }}"
+         class="flex items-center gap-1.5 transition-all duration-200 {% if locale == 'en' %}opacity-100{% else %}opacity-60 hover:opacity-100{% endif %}">
+        <img src="/images/icons/flag_en.png" alt="English" class="w-8 h-6 object-cover rounded shadow-sm border border-white/30">
+      </a>
+    </div>
+
     {# Mobile Hamburger Button #}
-    <button id="mobile-menu-btn" class="lg:hidden p-2 text-stone" aria-label="Menü öffnen">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <button id="mobile-menu-btn" class="lg:hidden p-2 text-white" aria-label="Menü öffnen">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
       </svg>
     </button>
   </div>
 
   {# Mobile Menu Overlay #}
-  <div id="mobile-menu" class="mobile-menu fixed inset-0 z-50 bg-white lg:hidden">
-    <div class="flex justify-between items-center px-6 py-4 border-b border-black/5">
-      <span class="font-heading font-bold text-lg tracking-[3px] text-stone-dark">
-        <span class="text-lynx-red">LYNX</span> LINING
-      </span>
-      <button id="mobile-menu-close" class="p-2 text-stone" aria-label="Menü schließen">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+  <div id="mobile-menu" class="mobile-menu fixed inset-0 z-50 bg-lynx-red lg:hidden">
+    <div class="flex justify-between items-center px-6 py-4 border-b border-white/20">
+      <a href="/{{ locale }}" class="no-underline">
+        <img src="/images/logo/logo_lynx.png" alt="LYNX Lining" class="h-12 w-auto brightness-0 invert">
+      </a>
+      <button id="mobile-menu-close" class="p-2 text-white" aria-label="Menü schließen">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
         </svg>
       </button>
@@ -70,21 +65,21 @@
     <nav class="flex flex-col p-6 gap-2">
       {% for item in navItems %}
         <a href="{{ item.href }}"
-           class="px-4 py-3 text-lg font-medium rounded-lg transition-all duration-200
-                  {% if page == item.key %}text-lynx-red bg-lynx-red/5{% else %}text-stone hover:text-lynx-red hover:bg-lynx-red/5{% endif %}">
+           class="px-5 py-3 text-lg font-semibold rounded-lg border transition-all duration-200
+                  {% if page == item.key %}bg-white/20 text-white border-white{% else %}text-white/90 border-white/30 hover:bg-white/15 hover:border-white{% endif %}">
           {{ t('nav.' + item.key) }}
         </a>
       {% endfor %}
-      <div class="flex gap-2 mt-4 pt-4 border-t border-stone-light">
+      <div class="flex gap-4 mt-6 pt-4 border-t border-white/20 justify-center">
         <a href="{{ localePath('de') }}"
-           class="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg font-semibold text-sm
-                  {% if locale == 'de' %}bg-lynx-red text-white{% else %}bg-stone-light text-stone{% endif %}">
-          <img src="/images/icons/flag_de.png" alt="" class="w-6 h-4 object-cover rounded-sm"> Deutsch
+           class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all
+                  {% if locale == 'de' %}bg-white/20 text-white border border-white{% else %}text-white/70 border border-white/30 hover:bg-white/10{% endif %}">
+          <img src="/images/icons/flag_de.png" alt="" class="w-7 h-5 object-cover rounded-sm"> Deutsch
         </a>
         <a href="{{ localePath('en') }}"
-           class="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg font-semibold text-sm
-                  {% if locale == 'en' %}bg-lynx-red text-white{% else %}bg-stone-light text-stone{% endif %}">
-          <img src="/images/icons/flag_en.png" alt="" class="w-6 h-4 object-cover rounded-sm"> English
+           class="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all
+                  {% if locale == 'en' %}bg-white/20 text-white border border-white{% else %}text-white/70 border border-white/30 hover:bg-white/10{% endif %}">
+          <img src="/images/icons/flag_en.png" alt="" class="w-7 h-5 object-cover rounded-sm"> English
         </a>
       </div>
     </nav>
