@@ -6,6 +6,7 @@ const session = require('express-session');
 const helmet = require('helmet');
 const compression = require('compression');
 const { i18n } = require('./middleware/i18n');
+const db = require('./config/database');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
