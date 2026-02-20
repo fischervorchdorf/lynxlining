@@ -177,5 +177,17 @@
     "contact": "Kontakt",
     "copyright": "Alle Rechte vorbehalten.",
     "made_in": "Made with ❤ in Austria"
+  },
+  "cookie": {
+    "title": "Cookie-Einstellungen",
+    "text": "Wir verwenden Cookies, um Ihnen die bestmögliche Nutzung unserer Website zu ermöglichen. Technisch notwendige Cookies sind für die Grundfunktionen erforderlich. Sie können selbst entscheiden, ob Sie nur notwendige oder auch optionale Cookies zulassen möchten.",
+    "necessary": "Notwendig",
+    "necessary_desc": "Für die Grundfunktionen der Website erforderlich (Session, Sprachauswahl)",
+    "analytics": "Statistik",
+    "analytics_desc": "Helfen uns zu verstehen, wie Besucher die Website nutzen",
+    "accept_all": "Alle akzeptieren",
+    "accept_necessary": "Nur notwendige",
+    "save": "Auswahl speichern",
+    "privacy_link": "Datenschutzerklärung"
   }
 }

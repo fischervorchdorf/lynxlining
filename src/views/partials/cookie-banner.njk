@@ -1,0 +1,91 @@
+{# ===== COOKIE BANNER (DSGVO) ===== #}
+<div id="cookie-banner" class="fixed bottom-0 left-0 right-0 z-[9999] hidden">
+  <div class="bg-white border-t border-black/10 shadow-[0_-10px_40px_rgba(0,0,0,0.12)]">
+    <div class="max-w-5xl mx-auto px-6 py-6 lg:py-8">
+
+      <div class="flex items-start gap-4 mb-5">
+        <div class="w-10 h-10 bg-lynx-red/10 rounded-xl flex items-center justify-center shrink-0 mt-0.5">
+          <svg class="w-5 h-5 text-lynx-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        </div>
+        <div>
+          <h3 class="font-heading font-bold text-stone-dark text-lg mb-1">{{ t('cookie.title') }}</h3>
+          <p class="text-sm text-stone leading-relaxed">{{ t('cookie.text') }}</p>
+        </div>
+      </div>
+
+      {# Cookie-Optionen #}
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+        <label class="flex items-center gap-3 p-3 bg-[#FAFAF9] rounded-xl border border-black/5 cursor-not-allowed opacity-75">
+          <input type="checkbox" checked disabled class="w-4 h-4 accent-lynx-red rounded">
+          <div>
+            <span class="text-sm font-semibold text-stone-dark">{{ t('cookie.necessary') }}</span>
+            <p class="text-xs text-stone mt-0.5">{{ t('cookie.necessary_desc') }}</p>
+          </div>
+        </label>
+        <label class="flex items-center gap-3 p-3 bg-[#FAFAF9] rounded-xl border border-black/5 cursor-pointer hover:border-lynx-red/30 transition-colors">
+          <input type="checkbox" id="cookie-analytics" class="w-4 h-4 accent-lynx-red rounded">
+          <div>
+            <span class="text-sm font-semibold text-stone-dark">{{ t('cookie.analytics') }}</span>
+            <p class="text-xs text-stone mt-0.5">{{ t('cookie.analytics_desc') }}</p>
+          </div>
+        </label>
+      </div>
+
+      {# Buttons #}
+      <div class="flex flex-wrap gap-3 items-center">
+        <button id="cookie-accept-all" class="px-6 py-2.5 bg-lynx-red text-white rounded-xl font-semibold text-sm hover:bg-lynx-red-dark transition-colors shadow-sm">
+          {{ t('cookie.accept_all') }}
+        </button>
+        <button id="cookie-accept-necessary" class="px-6 py-2.5 bg-white text-stone-dark border border-black/10 rounded-xl font-semibold text-sm hover:border-stone transition-colors">
+          {{ t('cookie.accept_necessary') }}
+        </button>
+        <button id="cookie-save" class="px-6 py-2.5 bg-white text-stone border border-black/10 rounded-xl font-medium text-sm hover:border-stone transition-colors">
+          {{ t('cookie.save') }}
+        </button>
+        <a href="/{{ locale }}/datenschutz" class="text-xs text-stone hover:text-lynx-red ml-auto underline">
+          {{ t('cookie.privacy_link') }}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  var banner = document.getElementById('cookie-banner');
+  var consent = localStorage.getItem('lynx_cookie_consent');
+
+  // Banner nur anzeigen wenn noch keine Einwilligung
+  if (!consent) {
+    banner.classList.remove('hidden');
+  }
+
+  // Alle akzeptieren
+  document.getElementById('cookie-accept-all').addEventListener('click', function() {
+    saveConsent({ necessary: true, analytics: true });
+  });
+
+  // Nur notwendige
+  document.getElementById('cookie-accept-necessary').addEventListener('click', function() {
+    saveConsent({ necessary: true, analytics: false });
+  });
+
+  // Auswahl speichern
+  document.getElementById('cookie-save').addEventListener('click', function() {
+    var analytics = document.getElementById('cookie-analytics').checked;
+    saveConsent({ necessary: true, analytics: analytics });
+  });
+
+  function saveConsent(prefs) {
+    localStorage.setItem('lynx_cookie_consent', JSON.stringify(prefs));
+    localStorage.setItem('lynx_cookie_consent_date', new Date().toISOString());
+    banner.classList.add('hidden');
+
+    // Falls Analytics akzeptiert, hier Google Analytics o.ä. laden
+    if (prefs.analytics) {
+      // Platzhalter für zukünftiges Analytics
+      console.log('Analytics Cookies akzeptiert');
+    }
+  }
+})();
+</script>

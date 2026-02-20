@@ -177,5 +177,17 @@
     "contact": "Contact",
     "copyright": "All rights reserved.",
     "made_in": "Made with ❤ in Austria"
+  },
+  "cookie": {
+    "title": "Cookie Settings",
+    "text": "We use cookies to provide you with the best possible experience on our website. Technically necessary cookies are required for basic functions. You can decide whether you want to allow only necessary or also optional cookies.",
+    "necessary": "Necessary",
+    "necessary_desc": "Required for basic website functions (session, language selection)",
+    "analytics": "Analytics",
+    "analytics_desc": "Help us understand how visitors use the website",
+    "accept_all": "Accept all",
+    "accept_necessary": "Necessary only",
+    "save": "Save selection",
+    "privacy_link": "Privacy Policy"
   }
 }
