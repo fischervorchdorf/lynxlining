@@ -382,14 +382,27 @@ router.post('/linkedin', requireAuth, upload.single('image'), async (req, res) =
 router.post('/linkedin/:id', requireAuth, upload.single('image'), async (req, res) => {
   try {
     const { linkedin_url, slug, author_name, title_de, excerpt_de, content_de, title_en, excerpt_en, content_en, is_visible, sort_order } = req.body;
-    const imagePath = req.file ? '/images/uploads/' + req.file.filename : (req.body.existing_image || '');
     const autoSlug = slug || (title_de || '').toLowerCase().replace(/[äöüß]/g, m => ({ä:'ae',ö:'oe',ü:'ue',ß:'ss'}[m]||m)).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 80);
 
-    // LinkedIn-Post updaten (alle Spalten die existieren)
-    await db.query(
-      'UPDATE linkedin_posts SET slug = ?, linkedin_url = ?, image_path = ?, author_name = ?, is_visible = ?, sort_order = ? WHERE id = ?',
-      [autoSlug, linkedin_url || '', imagePath, author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0, req.params.id]
-    );
+    // Bild: Neues Upload > bestehendes Bild > bisheriges in DB behalten
+    if (req.file) {
+      const imagePath = '/images/uploads/' + req.file.filename;
+      await db.query(
+        'UPDATE linkedin_posts SET slug = ?, linkedin_url = ?, image_path = ?, author_name = ?, is_visible = ?, sort_order = ? WHERE id = ?',
+        [autoSlug, linkedin_url || '', imagePath, author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0, req.params.id]
+      );
+    } else if (req.body.existing_image) {
+      await db.query(
+        'UPDATE linkedin_posts SET slug = ?, linkedin_url = ?, image_path = ?, author_name = ?, is_visible = ?, sort_order = ? WHERE id = ?',
+        [autoSlug, linkedin_url || '', req.body.existing_image, author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0, req.params.id]
+      );
+    } else {
+      // Kein neues Bild, kein existing_image → image_path NICHT überschreiben
+      await db.query(
+        'UPDATE linkedin_posts SET slug = ?, linkedin_url = ?, author_name = ?, is_visible = ?, sort_order = ? WHERE id = ?',
+        [autoSlug, linkedin_url || '', author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0, req.params.id]
+      );
+    }
 
     // DE-Übersetzung: INSERT falls nicht vorhanden, UPDATE falls vorhanden
     const [deExists] = await db.query('SELECT id FROM linkedin_post_translations WHERE linkedin_post_id = ? AND locale = "de"', [req.params.id]);
