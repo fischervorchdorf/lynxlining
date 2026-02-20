@@ -25,8 +25,10 @@
 <section class="max-w-4xl mx-auto px-6 lg:px-10 py-10">
 
   {% if post.image_path %}
-    <div class="mb-8 rounded-2xl overflow-hidden shadow-lg max-w-2xl mx-auto">
-      <img src="{{ post.image_path }}" alt="{{ post.title }}" class="w-full h-auto max-h-96 object-cover">
+    <div class="mb-8 float-right ml-6 mb-4 w-64 lg:w-80">
+      <div class="rounded-xl overflow-hidden shadow-md border border-black/5">
+        <img src="{{ post.image_path }}" alt="{{ post.title }}" class="w-full h-auto">
+      </div>
     </div>
   {% endif %}
 
