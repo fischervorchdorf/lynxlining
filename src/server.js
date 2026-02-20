@@ -10,6 +10,9 @@ const { i18n } = require('./middleware/i18n');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Trust proxy (Coolify/nginx Reverse Proxy)
+app.set('trust proxy', 1);
+
 // Security & compression
 app.use(helmet({
   contentSecurityPolicy: false,
@@ -21,26 +24,18 @@ app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Session (mit MySQL Store für Production)
+// Session-Konfiguration
 const sessionConfig = {
   secret: process.env.SESSION_SECRET || 'lynxlining-dev-secret',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: 24 * 60 * 60 * 1000 // 24 Stunden
+    secure: false, // Coolify terminiert SSL am Proxy, intern ist HTTP
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000, // 24 Stunden
+    sameSite: 'lax'
   }
 };
-
-// In Production: Session-Daten in MySQL speichern statt MemoryStore
-if (process.env.NODE_ENV === 'production') {
-  const MySQLStore = require('express-mysql-session')(session);
-  const db = require('./config/database');
-  const sessionStore = new MySQLStore({}, db);
-  sessionConfig.store = sessionStore;
-  // Proxy trust für HTTPS hinter Reverse Proxy
-  app.set('trust proxy', 1);
-}
 
 app.use(session(sessionConfig));
 
@@ -93,22 +88,21 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`LYNX Lining Server läuft auf http://localhost:${PORT}`);
+  console.log(`NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`DB_HOST: ${process.env.DB_HOST || 'nicht gesetzt'}`);
 
   // Instagram Sync
   if (process.env.INSTAGRAM_ACCESS_TOKEN) {
     const { syncInstagramPosts, refreshToken } = require('./config/instagram');
 
-    // Initialer Sync nach 10 Sekunden
     setTimeout(() => {
       syncInstagramPosts().then(r => console.log('Instagram initialer Sync:', r));
     }, 10000);
 
-    // Regelmäßiger Sync alle 30 Minuten
     setInterval(() => {
       syncInstagramPosts().catch(err => console.error('Instagram Sync Fehler:', err));
     }, 30 * 60 * 1000);
 
-    // Token Refresh alle 24 Stunden (statt 50 Tage, um Overflow zu vermeiden)
     setInterval(() => {
       refreshToken().catch(err => console.error('Instagram Token Refresh Fehler:', err));
     }, 24 * 60 * 60 * 1000);
