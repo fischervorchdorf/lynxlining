@@ -48,7 +48,14 @@
     "view_more": "Mehr ansehen",
     "revolution_text": "Wir bieten Ihnen ein revolutionäres Produkt inklusive kundenorientierter Lösungen.",
     "stands_for": "steht für",
-    "stands_for_list": ["Verschleißfest", "Schalldämpfend", "Anti-Haft", "Vibrationsdämpfend", "100% recyclebar", "Made in Austria"],
+    "stands_for_list": [
+      "Verschleißfest",
+      "Schalldämpfend",
+      "Anti-Haft",
+      "Vibrationsdämpfend",
+      "100% recyclebar",
+      "Made in Austria"
+    ],
     "lifetime": "Lebensdauer",
     "lifetime_title": "Lebensdauer",
     "lifetime_caption": "Kipper mit Lynx Lining nach 43 Monaten und ca. 50.000 Fuhren (Foto Neubeklebung)"
@@ -72,7 +79,107 @@
     "colors": "Farben",
     "colors_value": "2, 3, 5mm: Standard Rot | 8 & 10mm: Blau/Rot",
     "custom_colors": "Sonderfarben ab 5.000 kg/Stärke möglich",
-    "cta": "Jetzt anfragen"
+    "cta": "Jetzt anfragen",
+    "chem_title": "Chemische Beständigkeit",
+    "chem_button": "Chemische Beständigkeit anzeigen",
+    "chem_button_hide": "Chemische Beständigkeit verbergen",
+    "chem_heading": "LYNX Lining – Chemische Beständigkeit",
+    "chem_author": "Ing. Martin Heidecker – LYNX Lining, Stand 01.01.2023",
+    "chem_intro": "Die chemische Beständigkeit wird von verschiedenen Faktoren beeinflusst wie z.B. Konzentration, Temperatur und Zeitraum der Einwirkung. Die folgenden Angaben sind daher als Empfehlung zu verstehen.",
+    "chem_col_reagent": "Reagenz",
+    "chem_col_resistance": "Chemische Beständigkeit",
+    "chem_note": "Anmerkung: Die Angaben basieren auf aktuellen technischen und erfahrungsgemäßen Grundlagen. Aufgrund zahlreicher Einflussfaktoren können Tests notwendig sein. Es kann keine Garantie übernommen werden.",
+    "chem_legend_excellent": "Exzellent",
+    "chem_legend_good": "Gut beständig",
+    "chem_legend_limited": "Eingeschränkt",
+    "chem_legend_none": "Nicht beständig",
+    "chem_data": [
+      {
+        "reagent": "Azeton",
+        "resistance": "Kurze Zeit Kontakt",
+        "level": "none"
+      },
+      {
+        "reagent": "Säure – schwach",
+        "resistance": "Nicht resistent",
+        "level": "none"
+      },
+      {
+        "reagent": "Säure – stark",
+        "resistance": "Nicht resistent",
+        "level": "none"
+      },
+      {
+        "reagent": "Alkohol",
+        "resistance": "Alkoholyse kann eine Beschädigung hervorrufen",
+        "level": "limited"
+      },
+      {
+        "reagent": "Benzin",
+        "resistance": "Beständig über einen längeren Zeitraum",
+        "level": "good"
+      },
+      {
+        "reagent": "Diesel",
+        "resistance": "Beständig über einen längeren Zeitraum",
+        "level": "good"
+      },
+      {
+        "reagent": "Ammoniak",
+        "resistance": "Beständig über einen längeren Zeitraum",
+        "level": "good"
+      },
+      {
+        "reagent": "Mineralöl",
+        "resistance": "Beständig über einen längeren Zeitraum",
+        "level": "good"
+      },
+      {
+        "reagent": "Salpetersäure, Stickstoff",
+        "resistance": "Nicht beständig",
+        "level": "none"
+      },
+      {
+        "reagent": "Salzsäure, Chlorwasserstoff",
+        "resistance": "Nicht beständig",
+        "level": "none"
+      },
+      {
+        "reagent": "Meerwasser (salzig)",
+        "resistance": "Exzellent",
+        "level": "excellent"
+      },
+      {
+        "reagent": "Wasser (Süßwasser)",
+        "resistance": "Exzellent",
+        "level": "excellent"
+      },
+      {
+        "reagent": "Alkalische Lösung (Entfettung)",
+        "resistance": "Nicht beständig",
+        "level": "none"
+      },
+      {
+        "reagent": "Laugenbad",
+        "resistance": "Nicht beständig",
+        "level": "none"
+      },
+      {
+        "reagent": "Kohlenwasserstoff",
+        "resistance": "Anschwellung tritt auf",
+        "level": "limited"
+      },
+      {
+        "reagent": "Lösungsmittel",
+        "resistance": "Anschwellung tritt auf",
+        "level": "limited"
+      },
+      {
+        "reagent": "Schmieröl",
+        "resistance": "Gute Beständigkeit",
+        "level": "good"
+      }
+    ]
   },
   "advantages_page": {
     "title": "Unsere Vorteile",
