@@ -179,7 +179,59 @@
         "resistance": "Gute Beständigkeit",
         "level": "good"
       }
-    ]
+    ],
+    "sort_title": "Sortiment & Anwendungen",
+    "sort_button": "Sortiment & Anwendungen anzeigen",
+    "sort_button_hide": "Sortiment & Anwendungen verbergen",
+    "sort_heading": "LYNX Lining – Sortiment & Anwendungen",
+    "sort_material": "TPU Rollenware",
+    "sort_width": "Breite: 1.515 mm",
+    "sort_thicknesses_title": "Materialstärken & Einsatzbereiche",
+    "sort_col_thickness": "Stärke",
+    "sort_col_weight": "Gewicht",
+    "sort_col_applications": "Empfohlene Anwendungen",
+    "sort_thicknesses": [
+      {
+        "thickness": "2 mm",
+        "weight": "2,4 kg/m²",
+        "applications": "Feine und klebrige Materialien, wo Anti-Haft Eigenschaften von Vorteil sind. Lärmschutz-Auskleidungen, Prallschutz für pulvriges Material (Kalk, Zement, flüssiger Beton)."
+      },
+      {
+        "thickness": "3 mm",
+        "weight": "3,6 kg/m²",
+        "applications": "Feines Gestein (Sand, Kies, Beton), Auskleidungen gegen Verschleiß (0–32 mm). Lärmschutz-Anwendungen. Universeller und kostengünstiger Verschleißschutz."
+      },
+      {
+        "thickness": "5 mm",
+        "weight": "6,0 kg/m²",
+        "applications": "Sehr vielseitig einsetzbar. Gestein (0–65 mm), Recyclinganwendungen (Glas, Metall, Kunststoff). Maschinenbau, Schurren- und Rutschenauskleidungen, Kippermulden."
+      },
+      {
+        "thickness": "8 mm",
+        "weight": "9,6 kg/m²",
+        "applications": "Hohe Beanspruchungen (0–100 mm). Aufgabetrichter, Recyclinganwendungen (Beton, Metall, Glas). Wenn Sicherheit und Langlebigkeit gefordert sind."
+      },
+      {
+        "thickness": "10 mm",
+        "weight": "12 kg/m²",
+        "applications": "Sehr hohe Beanspruchung. Heavy-Duty Anwendungen, Industrie, Bergbau, hohe Materialströme und Dauerbetrieb (24/7)."
+      }
+    ],
+    "sort_specs_title": "Technische Spezifikation",
+    "sort_specs": [
+      { "label": "Material", "value": "LYNX Lining (Desmopan 385)" },
+      { "label": "Abriebfestigkeit", "value": "30 mm³ / ISO 4649" },
+      { "label": "Temperaturbereich", "value": "-70 °C bis +200 °C" },
+      { "label": "Dauerbelastung", "value": "max. 80 °C" },
+      { "label": "Farbe", "value": "Rot RAL 3013" },
+      { "label": "Dichte", "value": "1,2 kg/dm³" },
+      { "label": "Rollenbreite", "value": "1.515 mm (+/- 5 mm)" },
+      { "label": "Länge (2 mm / 3 mm)", "value": "40,3 lfm (61,05 m²)" },
+      { "label": "Länge (5 mm)", "value": "20,5 lfm (30,52 m²)" },
+      { "label": "Länge (8 mm / 10 mm)", "value": "12,15 lfm (18,4 m²)" }
+    ],
+    "sort_more_info": "Weitere Informationen:",
+    "sort_more_link": "www.lynx-lining.com/produkte/produktinfo/Lynx-lining-standard"
   },
   "advantages_page": {
     "title": "Unsere Vorteile",

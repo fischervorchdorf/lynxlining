@@ -104,7 +104,59 @@
       { "reagent": "Hydrocarbons", "resistance": "Swelling may occur", "level": "limited" },
       { "reagent": "Solvents", "resistance": "Swelling may occur", "level": "limited" },
       { "reagent": "Lubricating oil", "resistance": "Good resistance", "level": "good" }
-    ]
+    ],
+    "sort_title": "Range & Applications",
+    "sort_button": "Show Range & Applications",
+    "sort_button_hide": "Hide Range & Applications",
+    "sort_heading": "LYNX Lining – Range & Applications",
+    "sort_material": "TPU Roll Material",
+    "sort_width": "Width: 1,515 mm",
+    "sort_thicknesses_title": "Material Thicknesses & Application Areas",
+    "sort_col_thickness": "Thickness",
+    "sort_col_weight": "Weight",
+    "sort_col_applications": "Recommended Applications",
+    "sort_thicknesses": [
+      {
+        "thickness": "2 mm",
+        "weight": "2.4 kg/m²",
+        "applications": "Fine and sticky materials where anti-adhesion properties are beneficial. Noise protection linings, impact protection for powdery materials (lime, cement, liquid concrete)."
+      },
+      {
+        "thickness": "3 mm",
+        "weight": "3.6 kg/m²",
+        "applications": "Fine rock (sand, gravel, concrete), wear protection linings (0–32 mm). Noise reduction applications. Universal and cost-effective wear protection."
+      },
+      {
+        "thickness": "5 mm",
+        "weight": "6.0 kg/m²",
+        "applications": "Highly versatile. Rock (0–65 mm), recycling applications (glass, metal, plastics). Mechanical engineering, chute and slide linings, tipper bodies."
+      },
+      {
+        "thickness": "8 mm",
+        "weight": "9.6 kg/m²",
+        "applications": "High stress applications (0–100 mm). Feed hoppers, recycling applications (concrete, metal, glass). Where safety and longevity are required."
+      },
+      {
+        "thickness": "10 mm",
+        "weight": "12 kg/m²",
+        "applications": "Very high stress. Heavy-duty applications, industry, mining, high material flows and continuous operation (24/7)."
+      }
+    ],
+    "sort_specs_title": "Technical Specifications",
+    "sort_specs": [
+      { "label": "Material", "value": "LYNX Lining (Desmopan 385)" },
+      { "label": "Abrasion resistance", "value": "30 mm³ / ISO 4649" },
+      { "label": "Temperature range", "value": "-70 °C to +200 °C" },
+      { "label": "Continuous load", "value": "max. 80 °C" },
+      { "label": "Color", "value": "Red RAL 3013" },
+      { "label": "Density", "value": "1.2 kg/dm³" },
+      { "label": "Roll width", "value": "1,515 mm (+/- 5 mm)" },
+      { "label": "Length (2 mm / 3 mm)", "value": "40.3 lm (61.05 m²)" },
+      { "label": "Length (5 mm)", "value": "20.5 lm (30.52 m²)" },
+      { "label": "Length (8 mm / 10 mm)", "value": "12.15 lm (18.4 m²)" }
+    ],
+    "sort_more_info": "More information:",
+    "sort_more_link": "www.lynx-lining.com/produkte/produktinfo/Lynx-lining-standard"
   },
   "advantages_page": {
     "title": "Our Advantages",

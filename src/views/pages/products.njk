@@ -233,6 +233,135 @@
   }
 </script>
 
+{# ===== SORTIMENT & ANWENDUNGEN ===== #}
+<section class="bg-white py-20 border-t border-black/5">
+  <div class="max-w-5xl mx-auto px-6 lg:px-10">
+
+    {# Section header #}
+    <div class="text-center mb-10">
+      <span class="inline-block px-5 py-2 bg-lynx-red/8 text-lynx-red text-xs font-bold tracking-widest uppercase rounded-full mb-5">{{ t('products_page.sort_title') }}</span>
+      <h2 class="font-heading text-3xl lg:text-4xl font-extrabold text-stone-dark mb-4">{{ t('products_page.sort_heading') }}</h2>
+    </div>
+
+    {# Toggle Button #}
+    <div class="text-center mb-6">
+      <button
+        id="sort-toggle-btn"
+        onclick="toggleSortTable()"
+        class="inline-flex items-center gap-3 px-8 py-4 bg-stone-dark text-white rounded-xl font-bold text-sm shadow-lg hover:bg-[#1a1c1e] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+        aria-expanded="false"
+        aria-controls="sort-table-box"
+      >
+        <span class="sort-icon text-lg">📋</span>
+        <span id="sort-btn-label">{{ t('products_page.sort_button') }}</span>
+        <svg id="sort-chevron" class="w-4 h-4 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+        </svg>
+      </button>
+    </div>
+
+    {# Collapsible Container #}
+    <div
+      id="sort-table-box"
+      class="overflow-hidden transition-all duration-500 ease-in-out"
+      style="max-height: 0; opacity: 0;"
+      aria-hidden="true"
+    >
+      <div class="bg-white rounded-2xl shadow-lg border border-black/5 p-8 lg:p-10 mb-8 mt-4">
+
+        <p class="text-lg font-semibold text-stone-dark mb-8">
+          {{ t('products_page.sort_material') }}<br>
+          <span class="text-base font-normal text-stone">{{ t('products_page.sort_width') }}</span>
+        </p>
+
+        {# Table 1: Materialstärken & Einsatzbereiche #}
+        <h3 class="font-heading text-xl font-bold text-stone-dark mb-4">{{ t('products_page.sort_thicknesses_title') }}</h3>
+        <div class="overflow-x-auto rounded-xl border border-black/6 mb-12">
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="bg-stone-dark text-white">
+                <th class="text-left px-5 py-3.5 font-bold tracking-wide rounded-tl-xl w-24">{{ t('products_page.sort_col_thickness') }}</th>
+                <th class="text-left px-5 py-3.5 font-bold tracking-wide w-32">{{ t('products_page.sort_col_weight') }}</th>
+                <th class="text-left px-5 py-3.5 font-bold tracking-wide rounded-tr-xl">{{ t('products_page.sort_col_applications') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% set sortThicknesses = t('products_page.sort_thicknesses') %}
+              {% for row in sortThicknesses %}
+                <tr class="border-b border-black/5 hover:bg-black/2 transition-colors">
+                  <td class="px-5 py-4 font-bold text-lynx-red">{{ row.thickness }}</td>
+                  <td class="px-5 py-4 text-stone-dark font-medium">{{ row.weight }}</td>
+                  <td class="px-5 py-4 text-stone leading-relaxed">{{ row.applications }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {# Table 2: Technische Spezifikation #}
+        <h3 class="font-heading text-xl font-bold text-stone-dark mb-4">{{ t('products_page.sort_specs_title') }}</h3>
+        <div class="overflow-x-auto rounded-xl border border-black/6 mb-8">
+          <table class="w-full text-sm border-collapse">
+            <tbody>
+              {% set sortSpecs = t('products_page.sort_specs') %}
+              {% for row in sortSpecs %}
+                <tr class="border-b border-black/5 hover:bg-black/2 transition-colors">
+                  <td class="px-5 py-3 font-semibold text-stone-dark w-1/3 bg-stone-50">{{ row.label }}</td>
+                  <td class="px-5 py-3 text-stone w-2/3">{{ row.value }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <p class="text-sm text-stone mt-6">
+          {{ t('products_page.sort_more_info') }}<br>
+          <a href="#" class="text-lynx-red hover:underline font-medium break-all">{{ t('products_page.sort_more_link') }}</a>
+        </p>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  var _sortOpen = false;
+  var _sortLabelShow = {{ t('products_page.sort_button') | dump | safe }};
+  var _sortLabelHide = {{ t('products_page.sort_button_hide') | dump | safe }};
+
+  function toggleSortTable() {
+    var box     = document.getElementById('sort-table-box');
+    var btn     = document.getElementById('sort-toggle-btn');
+    var label   = document.getElementById('sort-btn-label');
+    var chevron = document.getElementById('sort-chevron');
+
+    _sortOpen = !_sortOpen;
+
+    if (_sortOpen) {
+      box.style.maxHeight = box.scrollHeight + 100 + 'px'; // +100 for safety margin with dynamic content
+      box.style.opacity   = '1';
+      box.setAttribute('aria-hidden', 'false');
+      btn.setAttribute('aria-expanded', 'true');
+      label.textContent   = _sortLabelHide;
+      chevron.style.transform = 'rotate(180deg)';
+      
+      // Update max-height after a brief delay to ensure content is fully rendered
+      setTimeout(function() {
+        if(_sortOpen) box.style.maxHeight = box.scrollHeight + 100 + 'px';
+      }, 300);
+      
+    } else {
+      box.style.maxHeight = '0';
+      box.style.opacity   = '0';
+      box.setAttribute('aria-hidden', 'true');
+      btn.setAttribute('aria-expanded', 'false');
+      label.textContent   = _sortLabelShow;
+      chevron.style.transform = 'rotate(0deg)';
+    }
+  }
+</script>
+
 {# ===== LEBENSDAUER VERGLEICH ===== #}
 <section class="max-w-7xl mx-auto px-6 lg:px-10 py-24">
   <div class="bg-gradient-to-br from-stone-dark to-[#1a1c1e] rounded-[2rem] p-10 lg:p-20 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
