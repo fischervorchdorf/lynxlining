@@ -219,19 +219,47 @@
     ],
     "sort_specs_title": "Technische Spezifikation",
     "sort_specs": [
-      { "label": "Material", "value": "LYNX Lining (Desmopan 385)" },
-      { "label": "Abriebfestigkeit", "value": "30 mm³ / ISO 4649" },
-      { "label": "Temperaturbereich", "value": "-70 °C bis +200 °C" },
-      { "label": "Dauerbelastung", "value": "max. 80 °C" },
-      { "label": "Farbe", "value": "Rot RAL 3013" },
-      { "label": "Dichte", "value": "1,2 kg/dm³" },
-      { "label": "Rollenbreite", "value": "1.515 mm (+/- 5 mm)" },
-      { "label": "Länge (2 mm / 3 mm)", "value": "40,3 lfm (61,05 m²)" },
-      { "label": "Länge (5 mm)", "value": "20,5 lfm (30,52 m²)" },
-      { "label": "Länge (8 mm / 10 mm)", "value": "12,15 lfm (18,4 m²)" }
-    ],
-    "sort_more_info": "Weitere Informationen:",
-    "sort_more_link": "www.lynx-lining.com/produkte/produktinfo/Lynx-lining-standard"
+      {
+        "label": "Material",
+        "value": "LYNX Lining (Desmopan 385)"
+      },
+      {
+        "label": "Abriebfestigkeit",
+        "value": "30 mm³ / ISO 4649"
+      },
+      {
+        "label": "Temperaturbereich",
+        "value": "-70 °C bis +200 °C"
+      },
+      {
+        "label": "Dauerbelastung",
+        "value": "max. 80 °C"
+      },
+      {
+        "label": "Farbe",
+        "value": "Rot RAL 3013"
+      },
+      {
+        "label": "Dichte",
+        "value": "1,2 kg/dm³"
+      },
+      {
+        "label": "Rollenbreite",
+        "value": "1.515 mm (+/- 5 mm)"
+      },
+      {
+        "label": "Länge (2 mm / 3 mm)",
+        "value": "40,3 lfm (61,05 m²)"
+      },
+      {
+        "label": "Länge (5 mm)",
+        "value": "20,5 lfm (30,52 m²)"
+      },
+      {
+        "label": "Länge (8 mm / 10 mm)",
+        "value": "12,15 lfm (18,4 m²)"
+      }
+    ]
   },
   "advantages_page": {
     "title": "Unsere Vorteile",
