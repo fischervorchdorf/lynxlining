@@ -643,7 +643,8 @@ router.get('/fotos', requireAuth, (req, res) => {
   res.render('admin/fotos.njk', {
     title: 'Fotos wechseln',
     adminPage: 'fotos',
-    categories
+    categories,
+    query: req.query
   });
 });
 
@@ -654,22 +655,15 @@ router.post('/fotos/replace', requireAuth, upload.single('new_image'), async (re
   const baseDir = path.join(__dirname, '..', 'public', 'images');
   const oldPath = path.join(baseDir, category, old_filename);
 
-  // Altes Bild löschen
-  if (fs.existsSync(oldPath)) {
-    fs.unlinkSync(oldPath);
-  }
-
-  // Neues Bild mit gleichem Dateinamen speichern (damit Referenzen erhalten bleiben)
-  const ext = path.extname(req.file.originalname);
-  const oldExt = path.extname(old_filename);
-  const baseName = path.basename(old_filename, oldExt);
-  const newFilename = baseName + ext;
+  // Altes Bild löschen (falls es nicht exakt derselbe Pfad ist, andernfalls direkt überschreiben)
+  // Neues Bild mit exakt demselben Dateinamen speichern, um Brüche zu vermeiden
+  const newFilename = old_filename; 
   const newPath = path.join(baseDir, category, newFilename);
 
   // Multer hat das File in uploads/ gespeichert, verschieben wir es
   fs.renameSync(req.file.path, newPath);
 
-  res.redirect('/admin/fotos');
+  res.redirect('/admin/fotos?success=true');
 });
 
 router.post('/fotos/upload', requireAuth, upload.single('new_image'), async (req, res) => {
@@ -688,7 +682,7 @@ router.post('/fotos/upload', requireAuth, upload.single('new_image'), async (req
   const newPath = path.join(targetDir, req.file.filename);
   fs.renameSync(req.file.path, newPath);
 
-  res.redirect('/admin/fotos');
+  res.redirect('/admin/fotos?success=true');
 });
 
 router.post('/fotos/delete', requireAuth, async (req, res) => {
