@@ -607,43 +607,50 @@ function closeInquiryForm() {
   document.body.style.overflow = '';
 }
 
-document.getElementById('inquiry-form').addEventListener('submit', async function(e) {
+document.getElementById('inquiry-form').addEventListener('submit', function(e) {
   e.preventDefault();
   const btn = document.getElementById('inquiry-submit-btn');
   const successEl = document.getElementById('inquiry-success');
   const errorEl = document.getElementById('inquiry-error');
+  const form = this;
 
   btn.disabled = true;
   btn.textContent = '...';
   successEl.classList.add('hidden');
   errorEl.classList.add('hidden');
 
-  const formData = new FormData(this);
+  const formData = new FormData(form);
   const data = Object.fromEntries(formData.entries());
 
-  try {
-    const res = await fetch('/api/shop/inquiry', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-
-    const result = await res.json();
-
-    if (res.ok && result.success) {
-      successEl.classList.remove('hidden');
-      this.reset();
-    } else {
-      errorEl.textContent = result.error || '{{ t("shop_page.order_error") }}';
+  // XMLHttpRequest als robuste Alternative (kompatibel mit allen Browsern/Extensions)
+  const xhr = new XMLHttpRequest();
+  xhr.open('POST', '/api/shop/inquiry', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.onload = function() {
+    try {
+      const result = JSON.parse(xhr.responseText);
+      if (xhr.status >= 200 && xhr.status < 300 && result.success) {
+        successEl.classList.remove('hidden');
+        errorEl.classList.add('hidden');
+        form.reset();
+      } else {
+        errorEl.textContent = result.error || '{{ t("shop_page.order_error") }}';
+        errorEl.classList.remove('hidden');
+      }
+    } catch(parseErr) {
+      errorEl.textContent = '{{ t("shop_page.order_error") }} (Parse: ' + xhr.status + ')';
       errorEl.classList.remove('hidden');
     }
-  } catch {
-    errorEl.textContent = '{{ t("shop_page.order_error") }}';
-    errorEl.classList.remove('hidden');
-  } finally {
     btn.disabled = false;
-    btn.textContent = '{{ t("shop_page.send_inquiry") }} →';
-  }
+    btn.textContent = '{{ t("shop_page.send_inquiry") }} \u2192';
+  };
+  xhr.onerror = function() {
+    errorEl.textContent = '{{ t("shop_page.order_error") }} (Netzwerk)';
+    errorEl.classList.remove('hidden');
+    btn.disabled = false;
+    btn.textContent = '{{ t("shop_page.send_inquiry") }} \u2192';
+  };
+  xhr.send(JSON.stringify(data));
 });
 
 // Initiales Rendering
