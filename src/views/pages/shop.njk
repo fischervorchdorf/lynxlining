@@ -87,37 +87,6 @@
   <p class="text-center text-xs text-stone/60 mt-6 mb-4">{{ t('shop_page.ex_works') }}</p>
 </section>
 
-{# ===== ROLLENABMESSUNGEN ===== #}
-<section class="max-w-7xl mx-auto px-6 lg:px-10 pb-8">
-  <div class="bg-[#FAFAF9] border border-black/5 rounded-2xl p-6 lg:p-8">
-    <div class="flex items-start gap-4">
-      <svg class="w-7 h-7 text-lynx-red shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-      <div class="flex-1">
-        <h3 class="font-heading text-base font-bold text-stone-dark mb-4">{{ t('shop_page.roll_dimensions_title') }}</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-2 text-sm">
-          <div class="flex justify-between sm:flex-col sm:gap-0.5">
-            <span class="text-stone">{{ t('shop_page.roll_tpu_width') }}</span>
-            <span class="font-semibold text-stone-dark">1.515 mm</span>
-          </div>
-          <div class="flex justify-between sm:flex-col sm:gap-0.5">
-            <span class="text-stone">{{ t('shop_page.roll_core_width') }}</span>
-            <span class="font-semibold text-stone-dark">1.650 mm</span>
-          </div>
-          <div class="flex justify-between sm:flex-col sm:gap-0.5">
-            <span class="text-stone">{{ t('shop_page.roll_core_dia') }}</span>
-            <span class="font-semibold text-stone-dark">450 mm</span>
-          </div>
-          <div class="flex justify-between sm:flex-col sm:gap-0.5">
-            <span class="text-stone">{{ t('shop_page.roll_outer_dia_range') }}</span>
-            <span class="font-semibold text-stone-dark">~600 – 800 mm</span>
-          </div>
-        </div>
-        <p class="text-xs text-stone/60 mt-3">{{ t('shop_page.roll_dims_note') }}</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 {# ===== COMFORT & ULTRA — PREIS AUF ANFRAGE ===== #}
 {% set inquiry_products = [] %}
 {% for prod in products %}
@@ -127,17 +96,42 @@
 {% endfor %}
 
 {% if inquiry_products.length %}
-{# Dark accent band #}
-<div class="bg-gradient-to-br from-stone-dark to-[#1a1c1e] pt-12 pb-16"></div>
-
-<section id="comfort-ultra" class="max-w-7xl mx-auto px-6 lg:px-10 -mt-16 relative z-10 pb-12">
-  <div class="mb-8">
-    <div class="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl px-6 py-3">
+{# Dark accent band with badge inside #}
+<section class="bg-gradient-to-br from-stone-dark to-[#1a1c1e] pt-12 pb-20">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
+    <div class="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl px-6 py-3 mb-8">
       <span class="font-heading text-lg lg:text-xl font-extrabold text-white tracking-wide">LYNX Lining Comfort & Ultra</span>
       <span class="w-px h-5 bg-white/25"></span>
       <span class="text-sm text-white/70 font-medium">{{ t('shop_page.price_on_request') }}</span>
     </div>
+
+    {# ===== ROLLENABMESSUNGEN (inside dark band) ===== #}
+    <div class="bg-white/5 border border-white/10 rounded-xl p-5">
+      <h3 class="font-heading text-sm font-bold text-white/90 mb-3">{{ t('shop_page.roll_dimensions_title') }}</h3>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+        <div>
+          <span class="text-white/50 text-xs block">{{ t('shop_page.roll_tpu_width') }}</span>
+          <span class="font-semibold text-white">1.515 mm</span>
+        </div>
+        <div>
+          <span class="text-white/50 text-xs block">{{ t('shop_page.roll_core_width') }}</span>
+          <span class="font-semibold text-white">1.650 mm</span>
+        </div>
+        <div>
+          <span class="text-white/50 text-xs block">{{ t('shop_page.roll_core_dia') }}</span>
+          <span class="font-semibold text-white">450 mm</span>
+        </div>
+        <div>
+          <span class="text-white/50 text-xs block">{{ t('shop_page.roll_outer_dia_range') }}</span>
+          <span class="font-semibold text-white">~600 – 800 mm</span>
+        </div>
+      </div>
+      <p class="text-xs text-white/40 mt-3">{{ t('shop_page.roll_dims_note') }}</p>
+    </div>
   </div>
+</section>
+
+<section id="comfort-ultra" class="max-w-7xl mx-auto px-6 lg:px-10 -mt-12 relative z-10 pb-12">
   <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
     {% for prod in inquiry_products %}
       <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-black/4 hover:-translate-y-1 transition-all duration-300 flex flex-col">
