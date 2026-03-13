@@ -85,22 +85,22 @@ async function seedShop() {
   // ===== COMFORT & ULTRA PRODUKTE (Preis auf Anfrage) =====
   const inquiryProducts = [
     {
-      slug: 'll-comfort-3mm', sku: 'LL-CMF-3MM', image: '/images/products/produkt.JPG', unit: 'lfm', sort: 6,
+      slug: 'll-comfort-3mm', sku: 'LL-CMF-3MM', image: '/images/products/comfort.jpg', unit: 'lfm', sort: 6,
       de: { name: 'LYNX Lining Comfort 3mm', short_description: 'Verschleißschutzfolie aus TPU auf Trägerblech montiert – Maximaler Komfort in 3mm Stärke', description: 'Die LYNX Lining Comfort 3mm vereint Verschleißschutz mit hervorragender Schalldämpfung und Vibrationsreduktion. Auf Trägerblech montiert geliefert. Perfekt für lärmempfindliche Umgebungen und Arbeitsplätze.' },
       en: { name: 'LYNX Lining Comfort 3mm', short_description: 'TPU wear protection on carrier plate – Maximum comfort in 3mm thickness', description: 'The LYNX Lining Comfort 3mm combines wear protection with excellent sound dampening and vibration reduction. Delivered mounted on carrier plate. Perfect for noise-sensitive environments and workplaces.' }
     },
     {
-      slug: 'll-comfort-5mm', sku: 'LL-CMF-5MM', image: '/images/products/produkt.JPG', unit: 'lfm', sort: 7,
+      slug: 'll-comfort-5mm', sku: 'LL-CMF-5MM', image: '/images/products/comfort.jpg', unit: 'lfm', sort: 7,
       de: { name: 'LYNX Lining Comfort 5mm', short_description: 'Verschleißschutzfolie aus TPU auf Trägerblech montiert – Maximaler Komfort in 5mm Stärke', description: 'Die LYNX Lining Comfort 5mm bietet verstärkten Verschleißschutz bei gleichzeitig optimaler Schall- und Vibrationsdämpfung. Auf Trägerblech montiert geliefert. Die ideale Wahl für industrielle Anwendungen mit Lärmschutzanforderungen.' },
       en: { name: 'LYNX Lining Comfort 5mm', short_description: 'TPU wear protection on carrier plate – Maximum comfort in 5mm thickness', description: 'The LYNX Lining Comfort 5mm offers enhanced wear protection with optimal sound and vibration dampening. Delivered mounted on carrier plate. The ideal choice for industrial applications with noise protection requirements.' }
     },
     {
-      slug: 'll-ultra-5mm', sku: 'LL-ULT-5MM', image: '/images/products/6675642.jpg', unit: 'lfm', sort: 8,
+      slug: 'll-ultra-5mm', sku: 'LL-ULT-5MM', image: '/images/products/ultra.jpg', unit: 'lfm', sort: 8,
       de: { name: 'LYNX Lining Ultra 5mm', short_description: 'Verschleißschutzfolie aus TPU als Sandwichplatte – Extreme Belastung in 5mm Stärke', description: 'Die LYNX Lining Ultra 5mm ist als Sandwichplatte für extremste Beanspruchung konzipiert. Höchste Abriebfestigkeit für Bergbau, Schüttgutaufbereitung und hoch abrasive Materialien. Individuelle Anfertigung nach Kundenwunsch.' },
       en: { name: 'LYNX Lining Ultra 5mm', short_description: 'TPU wear protection as sandwich panel – Extreme load in 5mm thickness', description: 'The LYNX Lining Ultra 5mm is designed as a sandwich panel for the most extreme demands. Highest abrasion resistance for mining, bulk material processing and highly abrasive materials. Custom manufacturing to customer specifications.' }
     },
     {
-      slug: 'll-ultra-10mm', sku: 'LL-ULT-10MM', image: '/images/products/6675642.jpg', unit: 'lfm', sort: 9,
+      slug: 'll-ultra-10mm', sku: 'LL-ULT-10MM', image: '/images/products/ultra.jpg', unit: 'lfm', sort: 9,
       de: { name: 'LYNX Lining Ultra 10mm', short_description: 'Verschleißschutzfolie aus TPU als Sandwichplatte – Extreme Belastung in 10mm Stärke', description: 'Die LYNX Lining Ultra 10mm bietet als Sandwichplatte maximalen Schutz für die härtesten Einsatzbedingungen. Unsere leistungsstärkste Lösung für extremen Verschleiß im Bergbau und in der Schwerindustrie. Individuelle Anfertigung nach Kundenwunsch.' },
       en: { name: 'LYNX Lining Ultra 10mm', short_description: 'TPU wear protection as sandwich panel – Extreme load in 10mm thickness', description: 'The LYNX Lining Ultra 10mm as sandwich panel provides maximum protection for the harshest operating conditions. Our most powerful solution for extreme wear in mining and heavy industry. Custom manufacturing to customer specifications.' }
     }
