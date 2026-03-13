@@ -34,7 +34,10 @@
             {% set haendlerPrice = prod.price_tiers[0].price_per_unit if prod.price_tiers.length else '0' %}
             {% set directPrice = (haendlerPrice | float * 0.80) %}
             <div class="bg-[#FAFAF9] rounded-xl p-4 mb-3 text-center">
-              <span class="text-2xl font-extrabold text-lynx-red">{{ "%.2f" | format(directPrice) | replace(".", ",") }} €</span>
+              {% set dpInt = (directPrice * 100) | round(0) %}
+              {% set dpWhole = (dpInt / 100) | int %}
+              {% set dpCents = dpInt % 100 %}
+              <span class="text-2xl font-extrabold text-lynx-red">{{ dpWhole }},{% if dpCents < 10 %}0{% endif %}{{ dpCents }} €</span>
               <span class="text-xs text-stone ml-1">{{ t('shop_page.per_roll') }}</span>
               <div class="mt-1">
                 <span class="text-xs text-stone/50 italic line-through">{{ haendlerPrice | replace(".", ",") }} €</span>
