@@ -87,6 +87,32 @@
   <p class="text-center text-xs text-stone/60 mt-6 mb-4">{{ t('shop_page.ex_works') }}</p>
 </section>
 
+{# ===== ROLLENABMESSUNGEN ===== #}
+<section class="max-w-7xl mx-auto px-6 lg:px-10 pb-10">
+  <div class="bg-[#FAFAF9] border border-black/5 rounded-2xl p-5 lg:p-6">
+    <h3 class="font-heading text-sm font-bold text-stone-dark mb-3">{{ t('shop_page.roll_dimensions_title') }}</h3>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+      <div>
+        <span class="text-stone text-xs block mb-0.5">{{ t('shop_page.roll_tpu_width') }}</span>
+        <span class="font-semibold text-stone-dark">1.515 mm</span>
+      </div>
+      <div>
+        <span class="text-stone text-xs block mb-0.5">{{ t('shop_page.roll_core_width') }}</span>
+        <span class="font-semibold text-stone-dark">1.650 mm</span>
+      </div>
+      <div>
+        <span class="text-stone text-xs block mb-0.5">{{ t('shop_page.roll_core_dia') }}</span>
+        <span class="font-semibold text-stone-dark">450 mm</span>
+      </div>
+      <div>
+        <span class="text-stone text-xs block mb-0.5">{{ t('shop_page.roll_outer_dia_range') }}</span>
+        <span class="font-semibold text-stone-dark">~600 – 800 mm</span>
+      </div>
+    </div>
+    <p class="text-xs text-stone/50 mt-3">{{ t('shop_page.roll_dims_note') }}</p>
+  </div>
+</section>
+
 {# ===== COMFORT & ULTRA — PREIS AUF ANFRAGE ===== #}
 {% set inquiry_products = [] %}
 {% for prod in products %}
@@ -96,37 +122,13 @@
 {% endfor %}
 
 {% if inquiry_products.length %}
-{# Dark accent band with badge inside #}
+{# Dark accent band with badge #}
 <section class="bg-gradient-to-br from-stone-dark to-[#1a1c1e] pt-12 pb-20">
   <div class="max-w-7xl mx-auto px-6 lg:px-10">
-    <div class="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl px-6 py-3 mb-8">
+    <div class="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl px-6 py-3">
       <span class="font-heading text-lg lg:text-xl font-extrabold text-white tracking-wide">LYNX Lining Comfort & Ultra</span>
       <span class="w-px h-5 bg-white/25"></span>
       <span class="text-sm text-white/70 font-medium">{{ t('shop_page.price_on_request') }}</span>
-    </div>
-
-    {# ===== ROLLENABMESSUNGEN (inside dark band) ===== #}
-    <div class="bg-white/5 border border-white/10 rounded-xl p-5">
-      <h3 class="font-heading text-sm font-bold text-white/90 mb-3">{{ t('shop_page.roll_dimensions_title') }}</h3>
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
-        <div>
-          <span class="text-white/50 text-xs block">{{ t('shop_page.roll_tpu_width') }}</span>
-          <span class="font-semibold text-white">1.515 mm</span>
-        </div>
-        <div>
-          <span class="text-white/50 text-xs block">{{ t('shop_page.roll_core_width') }}</span>
-          <span class="font-semibold text-white">1.650 mm</span>
-        </div>
-        <div>
-          <span class="text-white/50 text-xs block">{{ t('shop_page.roll_core_dia') }}</span>
-          <span class="font-semibold text-white">450 mm</span>
-        </div>
-        <div>
-          <span class="text-white/50 text-xs block">{{ t('shop_page.roll_outer_dia_range') }}</span>
-          <span class="font-semibold text-white">~600 – 800 mm</span>
-        </div>
-      </div>
-      <p class="text-xs text-white/40 mt-3">{{ t('shop_page.roll_dims_note') }}</p>
     </div>
   </div>
 </section>
