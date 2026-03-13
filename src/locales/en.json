@@ -268,7 +268,15 @@
     "inquiry_quantity_lfm": "Quantity (lm)",
     "inquiry_quantity_sqm": "Area (m²)",
     "inquiry_message": "Message",
-    "inquiry_message_placeholder": "Your inquiry or notes..."
+    "inquiry_message_placeholder": "Your inquiry or notes...",
+    "roll_dimensions_title": "Roll Dimensions",
+    "roll_dimensions_subtitle": "General dimensions for all LYNX Lining rolls (5 mm TPU)",
+    "roll_tpu_width": "Width LYNX Lining TPU",
+    "roll_core_width": "Roll width (core)",
+    "roll_core_dia": "Core diameter",
+    "roll_outer_dia_range": "Outer diameter",
+    "roll_outer_dia_note": "depending on material thickness",
+    "roll_dims_note": "Core dimensions apply to all material thicknesses. Roll length, weight and outer diameter vary by thickness."
   },
   "contact_cta": {
     "title": "Ready for better wear protection?",

@@ -372,7 +372,15 @@
     "inquiry_quantity_lfm": "Menge (lfm)",
     "inquiry_quantity_sqm": "Fläche (m²)",
     "inquiry_message": "Nachricht",
-    "inquiry_message_placeholder": "Ihre Anfrage oder Anmerkungen..."
+    "inquiry_message_placeholder": "Ihre Anfrage oder Anmerkungen...",
+    "roll_dimensions_title": "Rollenabmessungen",
+    "roll_dimensions_subtitle": "Allgemeine Maße für alle LYNX Lining Rollen (5 mm TPU)",
+    "roll_tpu_width": "Breite LYNX Lining TPU",
+    "roll_core_width": "Rollenbreite Wickelkern",
+    "roll_core_dia": "Durchmesser Wickelkern",
+    "roll_outer_dia_range": "Außendurchmesser Rolle",
+    "roll_outer_dia_note": "je nach Materialstärke",
+    "roll_dims_note": "Wickelkern-Maße gelten für alle Materialstärken. Rollenlänge, Gewicht und Außendurchmesser variieren je nach Stärke."
   },
   "contact_cta": {
     "title": "Bereit für besseren Verschleißschutz?",
