@@ -166,7 +166,14 @@ router.post('/shop/inquiry', async (req, res) => {
   }
 
   try {
-    sendInquiryNotification({
+    // In DB speichern
+    await db.query(`
+      INSERT INTO shop_inquiries (product_name, quantity_lfm, quantity_sqm, customer_name, customer_company, customer_email, customer_phone, message)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `, [product_name, quantity_lfm || null, quantity_sqm || null, name, company || null, email, phone || null, message || null]);
+
+    // E-Mail-Benachrichtigung
+    await sendInquiryNotification({
       productName: product_name,
       quantityLfm: quantity_lfm,
       quantitySqm: quantity_sqm,

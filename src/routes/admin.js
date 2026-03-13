@@ -75,22 +75,24 @@ router.get('/', requireAuth, async (req, res) => {
   try {
     const [contactCount] = await db.query('SELECT COUNT(*) as count FROM contact_submissions WHERE is_read = 0');
     const [orderCount] = await db.query('SELECT COUNT(*) as count FROM shop_orders WHERE is_read = 0');
+    const [inquiryCount] = await db.query('SELECT COUNT(*) as count FROM shop_inquiries WHERE is_read = 0').catch(() => [[{count: 0}]]);
     const [totalOrders] = await db.query('SELECT COUNT(*) as count FROM shop_orders');
     const [productCount] = await db.query('SELECT COUNT(*) as count FROM shop_products WHERE is_active = 1');
     const [recentOrders] = await db.query('SELECT order_number, customer_name, total_amount, status, created_at FROM shop_orders ORDER BY created_at DESC LIMIT 5');
     const [recentContacts] = await db.query('SELECT name, email, subject, created_at, is_read FROM contact_submissions ORDER BY created_at DESC LIMIT 5');
+    const [recentInquiries] = await db.query('SELECT product_name, customer_name, customer_email, created_at, is_read FROM shop_inquiries ORDER BY created_at DESC LIMIT 5').catch(() => [[]]);
 
     res.render('admin/dashboard.njk', {
       title: 'Dashboard', adminPage: 'dashboard',
-      stats: { unreadContacts: contactCount[0].count, unreadOrders: orderCount[0].count, totalOrders: totalOrders[0].count, activeProducts: productCount[0].count },
-      recentOrders, recentContacts
+      stats: { unreadContacts: contactCount[0].count, unreadOrders: orderCount[0].count, unreadInquiries: inquiryCount[0].count, totalOrders: totalOrders[0].count, activeProducts: productCount[0].count },
+      recentOrders, recentContacts, recentInquiries
     });
   } catch (err) {
     console.error('Dashboard-Fehler:', err);
     res.render('admin/dashboard.njk', {
       title: 'Dashboard', adminPage: 'dashboard',
-      stats: { unreadContacts: 0, unreadOrders: 0, totalOrders: 0, activeProducts: 0 },
-      recentOrders: [], recentContacts: []
+      stats: { unreadContacts: 0, unreadOrders: 0, unreadInquiries: 0, totalOrders: 0, activeProducts: 0 },
+      recentOrders: [], recentContacts: [], recentInquiries: []
     });
   }
 });
@@ -107,6 +109,20 @@ router.get('/kontakt', requireAuth, async (req, res) => {
 router.post('/kontakt/:id/read', requireAuth, async (req, res) => {
   await db.query('UPDATE contact_submissions SET is_read = 1 WHERE id = ?', [req.params.id]);
   res.redirect('/admin/kontakt');
+});
+
+// ============================================================
+// PREISANFRAGEN (Shop Inquiries)
+// ============================================================
+
+router.get('/anfragen', requireAuth, async (req, res) => {
+  const [inquiries] = await db.query('SELECT * FROM shop_inquiries ORDER BY created_at DESC').catch(() => [[]]);
+  res.render('admin/inquiries.njk', { title: 'Preisanfragen', adminPage: 'anfragen', inquiries });
+});
+
+router.post('/anfragen/:id/read', requireAuth, async (req, res) => {
+  await db.query('UPDATE shop_inquiries SET is_read = 1 WHERE id = ?', [req.params.id]);
+  res.redirect('/admin/anfragen');
 });
 
 // ============================================================

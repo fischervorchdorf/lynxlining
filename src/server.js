@@ -167,6 +167,25 @@ async function runMigrations() {
       }
     }
 
+    // Shop-Anfragen Tabelle (Preisanfragen für Comfort/Ultra)
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS shop_inquiries (
+        id INT PRIMARY KEY AUTO_INCREMENT,
+        product_name VARCHAR(255) NOT NULL,
+        quantity_lfm VARCHAR(100) DEFAULT NULL,
+        quantity_sqm VARCHAR(100) DEFAULT NULL,
+        customer_name VARCHAR(255) NOT NULL,
+        customer_company VARCHAR(255) DEFAULT NULL,
+        customer_email VARCHAR(255) NOT NULL,
+        customer_phone VARCHAR(100) DEFAULT NULL,
+        message TEXT DEFAULT NULL,
+        is_read BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_read (is_read),
+        INDEX idx_created (created_at DESC)
+      )
+    `);
+
     console.log('✓ DB-Migrationen erfolgreich');
   } catch (err) {
     console.warn('DB-Migration Warnung:', err.message);
