@@ -29,7 +29,7 @@ Website: <a href="https://www.lynx-lining.com">www.lynx-lining.com</a>
 <p>Vertrieb und Verarbeitung von Verschleißschutzfolien aus thermoplastischem Polyurethan (TPU) für den Berg-, Maschinen- und Anlagenbau.</p>
 
 <h3>Umsatzsteuer-Identifikationsnummer</h3>
-<p>UID-Nr: [auf Anfrage]</p>
+<p>UID-Nr: ATU__________ <em>(bitte ergänzen)</em></p>
 
 <h3>Aufsichtsbehörde</h3>
 <p>Bezirkshauptmannschaft Linz</p>
@@ -47,6 +47,9 @@ Website: <a href="https://www.lynx-lining.com">www.lynx-lining.com</a>
 
 <h3>Bildnachweis</h3>
 <p>Alle Bilder und Grafiken auf dieser Website sind Eigentum von LYNX Lining bzw. wurden mit Genehmigung der jeweiligen Rechteinhaber verwendet.</p>
+
+<h3>Hinweis zum Einsatz von Künstlicher Intelligenz</h3>
+<p>Teile dieser Website (Texte, Gestaltung) wurden mit Unterstützung von KI-basierten Werkzeugen erstellt. Alle Inhalte werden von uns inhaltlich geprüft und freigegeben. Die Verantwortung für die veröffentlichten Inhalte liegt bei LYNX Lining.</p>
 `;
 
 // ===== IMPRESSUM (EN) =====
@@ -71,7 +74,7 @@ Website: <a href="https://www.lynx-lining.com">www.lynx-lining.com</a>
 <p>Sales and processing of wear protection films made from thermoplastic polyurethane (TPU) for mining, machinery and plant construction.</p>
 
 <h3>VAT Identification Number</h3>
-<p>VAT ID: [upon request]</p>
+<p>VAT ID: ATU__________ <em>(to be added)</em></p>
 
 <h3>Supervisory Authority</h3>
 <p>District Authority Linz (Bezirkshauptmannschaft Linz)</p>
@@ -89,6 +92,9 @@ Website: <a href="https://www.lynx-lining.com">www.lynx-lining.com</a>
 
 <h3>Image Credits</h3>
 <p>All images and graphics on this website are the property of LYNX Lining or have been used with the permission of the respective rights holders.</p>
+
+<h3>Notice on the Use of Artificial Intelligence</h3>
+<p>Parts of this website (texts, design) were created with the support of AI-based tools. All content is reviewed and approved by us. LYNX Lining is responsible for all published content.</p>
 `;
 
 // ===== DATENSCHUTZERKLÄRUNG (DE) =====
@@ -308,16 +314,34 @@ const agbDE = `
 <p>Es handelt sich bei unseren Produkten um individuell gefertigte oder konfigurierte Waren (Zuschnitte, Sonderformate). Ein Widerrufsrecht nach dem Fern- und Auswärtsgeschäfte-Gesetz (FAGG) ist bei Waren, die nach Kundenspezifikation angefertigt werden, ausgeschlossen (§ 18 Abs. 1 Z 3 FAGG).</p>
 <p>Bei Standardware (nicht zugeschnitten, Rollenware ab Lager) räumen wir Ihnen ein freiwilliges Rückgaberecht von 14 Tagen ab Warenerhalt ein. Die Ware muss sich in einwandfreiem, unbenutztem Zustand und in der Originalverpackung befinden. Die Rücksendekosten trägt der Käufer.</p>
 
-<h3>9. Datenschutz</h3>
+<h3>9. Muster-Widerrufsformular</h3>
+<p>Falls Sie den Vertrag widerrufen wollen (nur bei Standardware gemäß Punkt 8), können Sie dieses Formular verwenden:</p>
+<div style="border:1px solid #ccc;padding:15px;margin:10px 0;background:#f9f9f9;">
+<p><strong>An:</strong><br>
+LYNX Lining<br>
+Ing. Kurt Haidecker<br>
+Schillerstraße 13, 4020 Linz, Österreich<br>
+E-Mail: office@lynx-lining.com</p>
+<p>Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den Kauf der folgenden Waren (*):</p>
+<p>_______________________________________________</p>
+<p>Bestellt am (*) / erhalten am (*):<br>_______________________________________________</p>
+<p>Name des/der Verbraucher(s):<br>_______________________________________________</p>
+<p>Anschrift des/der Verbraucher(s):<br>_______________________________________________</p>
+<p>Datum:<br>_______________________________________________</p>
+<p>Unterschrift (nur bei Mitteilung auf Papier):<br>_______________________________________________</p>
+<p><em>(*) Unzutreffendes streichen.</em></p>
+</div>
+
+<h3>10. Datenschutz</h3>
 <p>Die Erhebung und Verarbeitung personenbezogener Daten erfolgt gemäß unserer <a href="/de/datenschutz">Datenschutzerklärung</a>.</p>
 
-<h3>10. Anwendbares Recht und Gerichtsstand</h3>
+<h3>11. Anwendbares Recht und Gerichtsstand</h3>
 <p>Es gilt ausschließlich österreichisches Recht unter Ausschluss des UN-Kaufrechts. Gerichtsstand für alle Streitigkeiten ist Linz, Österreich.</p>
 
-<h3>11. Salvatorische Klausel</h3>
+<h3>12. Salvatorische Klausel</h3>
 <p>Sollten einzelne Bestimmungen dieser AGB unwirksam sein oder werden, so wird die Wirksamkeit der übrigen Bestimmungen davon nicht berührt. Die unwirksame Bestimmung wird durch eine wirksame Bestimmung ersetzt, die dem wirtschaftlichen Zweck der unwirksamen Bestimmung am nächsten kommt.</p>
 
-<p><em>Stand: Februar 2026</em></p>
+<p><em>Stand: März 2026</em></p>
 `;
 
 // ===== AGB (EN) =====
@@ -349,16 +373,34 @@ const agbEN = `
 <p>Our products are individually manufactured or configured goods (custom cuts, special formats). The right of withdrawal under the Austrian Distance and Off-Premises Contracts Act (FAGG) is excluded for goods manufactured to customer specifications (§ 18 para. 1 no. 3 FAGG).</p>
 <p>For standard goods (uncut, roll material from stock), we grant you a voluntary return right of 14 days from receipt of goods. The goods must be in perfect, unused condition and in their original packaging. Return shipping costs are borne by the Buyer.</p>
 
-<h3>9. Data Protection</h3>
+<h3>9. Model Withdrawal Form</h3>
+<p>If you wish to withdraw from the contract (only for standard goods as per Section 8), you may use this form:</p>
+<div style="border:1px solid #ccc;padding:15px;margin:10px 0;background:#f9f9f9;">
+<p><strong>To:</strong><br>
+LYNX Lining<br>
+Ing. Kurt Haidecker<br>
+Schillerstraße 13, 4020 Linz, Austria<br>
+Email: office@lynx-lining.com</p>
+<p>I/We (*) hereby withdraw from the contract concluded by me/us (*) for the purchase of the following goods (*):</p>
+<p>_______________________________________________</p>
+<p>Ordered on (*) / received on (*):<br>_______________________________________________</p>
+<p>Name of consumer(s):<br>_______________________________________________</p>
+<p>Address of consumer(s):<br>_______________________________________________</p>
+<p>Date:<br>_______________________________________________</p>
+<p>Signature (only for paper communication):<br>_______________________________________________</p>
+<p><em>(*) Delete as appropriate.</em></p>
+</div>
+
+<h3>10. Data Protection</h3>
 <p>The collection and processing of personal data is carried out in accordance with our <a href="/en/datenschutz">Privacy Policy</a>.</p>
 
-<h3>10. Applicable Law and Jurisdiction</h3>
+<h3>11. Applicable Law and Jurisdiction</h3>
 <p>Austrian law applies exclusively, excluding the UN Convention on Contracts for the International Sale of Goods. The place of jurisdiction for all disputes is Linz, Austria.</p>
 
-<h3>11. Severability Clause</h3>
+<h3>12. Severability Clause</h3>
 <p>Should individual provisions of these Terms and Conditions be or become invalid, the validity of the remaining provisions shall not be affected. The invalid provision shall be replaced by a valid provision that comes closest to the economic purpose of the invalid provision.</p>
 
-<p><em>Last updated: February 2026</em></p>
+<p><em>Last updated: March 2026</em></p>
 `;
 
 async function seedLegal() {

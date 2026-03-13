@@ -91,4 +91,36 @@ async function sendOrderNotification({ orderNumber, customerName, customerCompan
   }
 }
 
-module.exports = { sendContactNotification, sendOrderNotification };
+async function sendInquiryNotification({ productName, quantityLfm, quantitySqm, name, company, email, phone, message }) {
+  const mailTo = process.env.MAIL_TO || 'info@lynx-lining.com';
+  const mailFrom = process.env.MAIL_FROM || 'info@lynx-lining.com';
+
+  try {
+    await transporter.sendMail({
+      from: `"LYNX Lining Shop" <${mailFrom}>`,
+      to: mailTo,
+      replyTo: email,
+      subject: `Preisanfrage: ${productName}`,
+      html: `
+        <h2>Neue Preisanfrage aus dem Webshop</h2>
+        <h3>Produkt: ${productName}</h3>
+        <table style="border-collapse:collapse;width:100%;">
+          ${quantityLfm ? `<tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Menge (lfm)</td><td style="padding:8px;border:1px solid #ddd;">${quantityLfm} lfm</td></tr>` : ''}
+          ${quantitySqm ? `<tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Fläche (m²)</td><td style="padding:8px;border:1px solid #ddd;">${quantitySqm} m²</td></tr>` : ''}
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Name</td><td style="padding:8px;border:1px solid #ddd;">${name}</td></tr>
+          ${company ? `<tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Firma</td><td style="padding:8px;border:1px solid #ddd;">${company}</td></tr>` : ''}
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">E-Mail</td><td style="padding:8px;border:1px solid #ddd;"><a href="mailto:${email}">${email}</a></td></tr>
+          ${phone ? `<tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold;">Telefon</td><td style="padding:8px;border:1px solid #ddd;">${phone}</td></tr>` : ''}
+        </table>
+        ${message ? `<h3>Nachricht:</h3><p style="white-space:pre-wrap;background:#f5f5f5;padding:15px;border-radius:8px;">${message}</p>` : ''}
+        <hr>
+        <p style="color:#999;font-size:12px;">Preisanfrage über den LYNX Lining Online-Shop</p>
+      `
+    });
+    console.log('Anfrage-E-Mail gesendet an', mailTo);
+  } catch (err) {
+    console.warn('E-Mail konnte nicht gesendet werden:', err.message);
+  }
+}
+
+module.exports = { sendContactNotification, sendOrderNotification, sendInquiryNotification };

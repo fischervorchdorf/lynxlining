@@ -221,7 +221,10 @@ router.get('/:locale/news/linkedin/:slug', validateLocale, async (req, res) => {
 router.get('/:locale/shop', validateLocale, async (req, res) => {
   try {
     const [products] = await db.query(`
-      SELECT sp.*, spt.name, spt.short_description, spt.description
+      SELECT sp.*, spt.name, spt.short_description, spt.description,
+        sp.price_on_request, sp.price_per_sqm, sp.sqm_per_roll,
+        sp.roll_length_lfm, sp.roll_width_mm, sp.roll_weight_kg,
+        sp.roll_outer_diameter_mm, sp.roll_core_diameter_mm, sp.roll_core_width_mm
       FROM shop_products sp
       JOIN shop_product_translations spt ON sp.id = spt.shop_product_id AND spt.locale = ?
       WHERE sp.is_active = 1

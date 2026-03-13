@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5">
       <div>
         <label class="block text-sm font-semibold text-[#3D3D3D] mb-2">Mindestbestellmenge</label>
         <input type="number" name="min_quantity" step="0.5" value="{{ product.min_quantity if product else 1 }}"
@@ -57,6 +57,16 @@
           <input type="checkbox" name="is_active" value="1" {% if isNew or (product and product.is_active) %}checked{% endif %}
                  class="w-4 h-4 accent-[#D64545] rounded">
           <span class="text-sm text-[#3D3D3D]">Aktiv (im Shop sichtbar)</span>
+        </label>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-[#3D3D3D] mb-2">Preismodus</label>
+        <label class="flex items-center gap-3 mt-2 cursor-pointer">
+          <input type="checkbox" name="price_on_request" value="1" id="price-on-request-toggle"
+                 {% if product and product.price_on_request %}checked{% endif %}
+                 onchange="togglePriceMode()"
+                 class="w-4 h-4 accent-[#D64545] rounded">
+          <span class="text-sm text-[#3D3D3D]">Preis auf Anfrage (keine Staffelpreise, nur Anfrage-Formular)</span>
         </label>
       </div>
     </div>
@@ -74,6 +84,68 @@
       <input type="file" name="image" accept="image/*"
              class="w-full text-sm text-stone file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#D64545]/10 file:text-[#D64545] hover:file:bg-[#D64545]/20">
       <p class="text-xs text-stone/60 mt-1">{% if product %}Neues Bild hochladen um das aktuelle zu ersetzen{% else %}JPG, PNG oder WebP{% endif %}</p>
+    </div>
+  </div>
+
+  {# Rollendaten #}
+  <div class="bg-white rounded-2xl shadow-sm border border-black/5 p-6 lg:p-8">
+    <h2 class="font-bold text-lg text-[#1E1E1E] mb-6 flex items-center gap-2">
+      <svg class="w-5 h-5 text-[#D64545]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+      Rollendaten & Preisbasis
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div>
+        <label class="block text-xs font-semibold text-stone mb-1">VK-Handel / m² (Preisbasis)</label>
+        <div class="relative">
+          <input type="number" name="price_per_sqm" step="0.01" value="{{ product.price_per_sqm if product else '' }}"
+                 class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none pr-12"
+                 placeholder="169.28">
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-stone">€/m²</span>
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-stone mb-1">m² pro Rolle</label>
+        <input type="number" name="sqm_per_roll" step="0.01" value="{{ product.sqm_per_roll if product else '' }}"
+               class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none"
+               placeholder="30.53">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-stone mb-1">Rollenlänge (lfm)</label>
+        <input type="number" name="roll_length_lfm" step="0.01" value="{{ product.roll_length_lfm if product else '' }}"
+               class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none"
+               placeholder="20.15">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-stone mb-1">Bahnbreite (mm)</label>
+        <input type="number" name="roll_width_mm" value="{{ product.roll_width_mm if product else '' }}"
+               class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none"
+               placeholder="1515">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-stone mb-1">Gewicht Rolle (kg, ohne Wickelkern)</label>
+        <input type="number" name="roll_weight_kg" step="0.1" value="{{ product.roll_weight_kg if product else '' }}"
+               class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none"
+               placeholder="183.2">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-stone mb-1">Außendurchmesser Rolle (mm)</label>
+        <input type="number" name="roll_outer_diameter_mm" value="{{ product.roll_outer_diameter_mm if product else '' }}"
+               class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none"
+               placeholder="800">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-stone mb-1">Wickelkern-Durchmesser (mm)</label>
+        <input type="number" name="roll_core_diameter_mm" value="{{ product.roll_core_diameter_mm if product else '' }}"
+               class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none"
+               placeholder="450">
+      </div>
+      <div>
+        <label class="block text-xs font-semibold text-stone mb-1">Wickelkern-Breite (mm)</label>
+        <input type="number" name="roll_core_width_mm" value="{{ product.roll_core_width_mm if product else '' }}"
+               class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none"
+               placeholder="1650">
+      </div>
     </div>
   </div>
 
@@ -141,7 +213,7 @@
   </div>
 
   {# Staffelpreise #}
-  <div class="bg-white rounded-2xl shadow-sm border border-black/5 p-6 lg:p-8">
+  <div class="bg-white rounded-2xl shadow-sm border border-black/5 p-6 lg:p-8" id="tiers-section">
     <h2 class="font-bold text-lg text-[#1E1E1E] mb-2 flex items-center gap-2">
       <svg class="w-5 h-5 text-[#D64545]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
       Staffelpreise
@@ -154,7 +226,7 @@
           <div class="tier-row flex items-center gap-4">
             <div class="flex-1">
               <label class="block text-xs font-semibold text-stone mb-1">Ab Menge</label>
-              <input type="number" name="tier_min" step="0.5" value="{{ tier.min_quantity }}" required
+              <input type="number" name="tier_min" step="0.01" value="{{ tier.min_quantity }}" required
                      class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none">
             </div>
             <div class="flex-1">
@@ -168,22 +240,25 @@
           </div>
         {% endfor %}
       {% else %}
-        <div class="tier-row flex items-center gap-4">
-          <div class="flex-1">
-            <label class="block text-xs font-semibold text-stone mb-1">Ab Menge</label>
-            <input type="number" name="tier_min" step="0.5" value="1" required
-                   class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none">
+        {% for i in range(5) %}
+          <div class="tier-row flex items-center gap-4">
+            <div class="flex-1">
+              <label class="block text-xs font-semibold text-stone mb-1">Ab Menge</label>
+              <input type="number" name="tier_min" step="0.01" value="{% if i == 0 %}1{% elif i == 1 %}5{% elif i == 2 %}10{% elif i == 3 %}20{% endif %}"
+                     class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none"
+                     placeholder="{% if i == 0 %}1{% elif i == 1 %}5{% elif i == 2 %}10{% elif i == 3 %}20{% else %}Rollenlänge{% endif %}">
+            </div>
+            <div class="flex-1">
+              <label class="block text-xs font-semibold text-stone mb-1">Preis pro Einheit (€)</label>
+              <input type="number" name="tier_price" step="0.01" value=""
+                     class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none"
+                     placeholder="0.00">
+            </div>
+            <button type="button" onclick="this.closest('.tier-row').remove()" class="mt-5 p-2 text-stone/40 hover:text-red-500 transition-colors" title="Entfernen">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            </button>
           </div>
-          <div class="flex-1">
-            <label class="block text-xs font-semibold text-stone mb-1">Preis pro Einheit (€)</label>
-            <input type="number" name="tier_price" step="0.01" value="" required
-                   class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none"
-                   placeholder="29.90">
-          </div>
-          <button type="button" onclick="this.closest('.tier-row').remove()" class="mt-5 p-2 text-stone/40 hover:text-red-500 transition-colors" title="Entfernen">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-          </button>
-        </div>
+        {% endfor %}
       {% endif %}
     </div>
 
@@ -208,7 +283,7 @@ function addTierRow() {
     <div class="tier-row flex items-center gap-4">
       <div class="flex-1">
         <label class="block text-xs font-semibold text-stone mb-1">Ab Menge</label>
-        <input type="number" name="tier_min" step="0.5" value="" required
+        <input type="number" name="tier_min" step="0.01" value="" required
                class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none"
                placeholder="10">
       </div>
@@ -224,6 +299,21 @@ function addTierRow() {
     </div>`;
   container.insertAdjacentHTML('beforeend', html);
 }
+
+function togglePriceMode() {
+  const toggle = document.getElementById('price-on-request-toggle');
+  const tiersSection = document.getElementById('tiers-section');
+  if (toggle.checked) {
+    tiersSection.style.opacity = '0.3';
+    tiersSection.style.pointerEvents = 'none';
+  } else {
+    tiersSection.style.opacity = '1';
+    tiersSection.style.pointerEvents = 'auto';
+  }
+}
+
+// Initial state
+togglePriceMode();
 </script>
 
 {% endblock %}

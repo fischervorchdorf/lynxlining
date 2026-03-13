@@ -526,12 +526,22 @@ router.get('/shop-produkte/:id', requireAuth, async (req, res) => {
 });
 
 router.post('/shop-produkte', requireAuth, upload.single('image'), async (req, res) => {
-  const { slug, sku, unit, sort_order, min_quantity, is_active, name_de, short_desc_de, desc_de, name_en, short_desc_en, desc_en } = req.body;
+  const { slug, sku, unit, sort_order, min_quantity, is_active, price_on_request,
+    price_per_sqm, sqm_per_roll, roll_length_lfm, roll_width_mm, roll_weight_kg,
+    roll_outer_diameter_mm, roll_core_diameter_mm, roll_core_width_mm,
+    name_de, short_desc_de, desc_de, name_en, short_desc_en, desc_en } = req.body;
   const imagePath = req.file ? '/images/uploads/' + req.file.filename : (req.body.existing_image || '/images/products/produkt.JPG');
 
   const [result] = await db.query(
-    'INSERT INTO shop_products (slug, sku, image_path, unit, min_quantity, sort_order, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [slug, sku || '', imagePath, unit || 'lfm', min_quantity || 1, sort_order || 0, is_active ? 1 : 1]
+    `INSERT INTO shop_products (slug, sku, image_path, unit, min_quantity, sort_order, is_active,
+      price_on_request, price_per_sqm, sqm_per_roll, roll_length_lfm, roll_width_mm, roll_weight_kg,
+      roll_outer_diameter_mm, roll_core_diameter_mm, roll_core_width_mm)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    [slug, sku || '', imagePath, unit || 'lfm', min_quantity || 1, sort_order || 0, is_active ? 1 : 1,
+      price_on_request ? 1 : 0,
+      price_per_sqm || null, sqm_per_roll || null, roll_length_lfm || null,
+      roll_width_mm || null, roll_weight_kg || null, roll_outer_diameter_mm || null,
+      roll_core_diameter_mm || null, roll_core_width_mm || null]
   );
   const id = result.insertId;
 
@@ -540,13 +550,15 @@ router.post('/shop-produkte', requireAuth, upload.single('image'), async (req, r
   await db.query('INSERT INTO shop_product_translations (shop_product_id, locale, name, short_description, description) VALUES (?, "en", ?, ?, ?)',
     [id, name_en || name_de, short_desc_en || short_desc_de, desc_en || desc_de]);
 
-  // Staffelpreise
-  const tierMins = Array.isArray(req.body.tier_min) ? req.body.tier_min : (req.body.tier_min ? [req.body.tier_min] : []);
-  const tierPrices = Array.isArray(req.body.tier_price) ? req.body.tier_price : (req.body.tier_price ? [req.body.tier_price] : []);
-  for (let i = 0; i < tierMins.length; i++) {
-    if (tierMins[i] && tierPrices[i]) {
-      await db.query('INSERT INTO shop_price_tiers (shop_product_id, min_quantity, price_per_unit) VALUES (?, ?, ?)',
-        [id, parseFloat(tierMins[i]), parseFloat(tierPrices[i])]);
+  // Staffelpreise (nur wenn nicht "Preis auf Anfrage")
+  if (!price_on_request) {
+    const tierMins = Array.isArray(req.body.tier_min) ? req.body.tier_min : (req.body.tier_min ? [req.body.tier_min] : []);
+    const tierPrices = Array.isArray(req.body.tier_price) ? req.body.tier_price : (req.body.tier_price ? [req.body.tier_price] : []);
+    for (let i = 0; i < tierMins.length; i++) {
+      if (tierMins[i] && tierPrices[i]) {
+        await db.query('INSERT INTO shop_price_tiers (shop_product_id, min_quantity, price_per_unit) VALUES (?, ?, ?)',
+          [id, parseFloat(tierMins[i]), parseFloat(tierPrices[i])]);
+      }
     }
   }
 
@@ -554,11 +566,23 @@ router.post('/shop-produkte', requireAuth, upload.single('image'), async (req, r
 });
 
 router.post('/shop-produkte/:id', requireAuth, upload.single('image'), async (req, res) => {
-  const { slug, sku, unit, sort_order, min_quantity, is_active, name_de, short_desc_de, desc_de, name_en, short_desc_en, desc_en } = req.body;
+  const { slug, sku, unit, sort_order, min_quantity, is_active, price_on_request,
+    price_per_sqm, sqm_per_roll, roll_length_lfm, roll_width_mm, roll_weight_kg,
+    roll_outer_diameter_mm, roll_core_diameter_mm, roll_core_width_mm,
+    name_de, short_desc_de, desc_de, name_en, short_desc_en, desc_en } = req.body;
   const imagePath = req.file ? '/images/uploads/' + req.file.filename : req.body.existing_image;
 
-  await db.query('UPDATE shop_products SET slug = ?, sku = ?, image_path = ?, unit = ?, min_quantity = ?, sort_order = ?, is_active = ? WHERE id = ?',
-    [slug, sku || '', imagePath, unit || 'lfm', min_quantity || 1, sort_order || 0, is_active ? 1 : 0, req.params.id]);
+  await db.query(
+    `UPDATE shop_products SET slug = ?, sku = ?, image_path = ?, unit = ?, min_quantity = ?, sort_order = ?, is_active = ?,
+      price_on_request = ?, price_per_sqm = ?, sqm_per_roll = ?, roll_length_lfm = ?, roll_width_mm = ?, roll_weight_kg = ?,
+      roll_outer_diameter_mm = ?, roll_core_diameter_mm = ?, roll_core_width_mm = ?
+    WHERE id = ?`,
+    [slug, sku || '', imagePath, unit || 'lfm', min_quantity || 1, sort_order || 0, is_active ? 1 : 0,
+      price_on_request ? 1 : 0,
+      price_per_sqm || null, sqm_per_roll || null, roll_length_lfm || null,
+      roll_width_mm || null, roll_weight_kg || null, roll_outer_diameter_mm || null,
+      roll_core_diameter_mm || null, roll_core_width_mm || null,
+      req.params.id]);
 
   // Übersetzungen updaten/einfügen
   const [deExists] = await db.query('SELECT id FROM shop_product_translations WHERE shop_product_id = ? AND locale = "de"', [req.params.id]);

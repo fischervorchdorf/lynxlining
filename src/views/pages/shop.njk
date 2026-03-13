@@ -11,16 +11,85 @@
   </div>
 </section>
 
-{# ===== PRODUKTE ===== #}
-<section class="max-w-7xl mx-auto px-6 lg:px-10 -mt-16 relative z-10 pb-12">
-  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+{# ===== STANDARD PRODUKTE ===== #}
+<section class="max-w-7xl mx-auto px-6 lg:px-10 -mt-16 relative z-10 pb-8">
+  <h2 class="font-heading text-xl font-bold text-white mb-6">LYNX Lining Standard — {{ t('shop_page.roll_material') }}</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
     {% for prod in products %}
-      <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-black/4 hover:-translate-y-1 transition-all duration-300 flex flex-col"
-           data-product-id="{{ prod.id }}"
-           data-product-name="{{ prod.name }}"
-           data-product-unit="{{ prod.unit }}"
-           data-product-image="{{ prod.image_path }}"
-           data-price-tiers='{{ prod.price_tiers | dump | safe }}'>
+      {% if not prod.price_on_request %}
+        <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-black/4 hover:-translate-y-1 transition-all duration-300 flex flex-col"
+             data-product-id="{{ prod.id }}"
+             data-product-name="{{ prod.name }}"
+             data-product-unit="{{ prod.unit }}"
+             data-product-image="{{ prod.image_path }}"
+             data-price-tiers='{{ prod.price_tiers | dump | safe }}'>
+          <div class="overflow-hidden">
+            <img src="{{ prod.image_path }}" alt="{{ prod.name }}" class="w-full h-44 object-cover" loading="lazy">
+          </div>
+          <div class="p-6 flex flex-col flex-1">
+            <h3 class="font-heading text-base font-bold text-stone-dark mb-1">{{ prod.name }}</h3>
+            <p class="text-xs text-stone mb-4 flex-1">{{ prod.short_description }}</p>
+
+            {# Staffelpreise #}
+            <div class="bg-[#FAFAF9] rounded-xl p-3 mb-3 text-xs">
+              {% for tier in prod.price_tiers %}
+                <div class="flex justify-between py-1 {% if not loop.last %}border-b border-black/5{% endif %}">
+                  <span class="text-stone">{{ t('shop_page.tier_from') }} {{ tier.min_quantity }} {{ prod.unit }}</span>
+                  <span class="font-bold text-stone-dark">{{ tier.price_per_unit | replace(".", ",") }} €/{{ prod.unit }}</span>
+                </div>
+              {% endfor %}
+            </div>
+
+            {# Rollendaten Toggle #}
+            {% if prod.roll_length_lfm %}
+              <button type="button" onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-lynx-red hover:underline mb-3 text-left">
+                {{ t('shop_page.roll_specs') }} &#9662;
+              </button>
+              <div class="hidden bg-[#FAFAF9] rounded-xl p-3 mb-3 text-xs space-y-1">
+                {% if prod.roll_width_mm %}<div class="flex justify-between"><span class="text-stone">{{ t('shop_page.roll_width') }}</span><span class="font-medium">{{ prod.roll_width_mm }} mm</span></div>{% endif %}
+                <div class="flex justify-between"><span class="text-stone">{{ t('shop_page.roll_length') }}</span><span class="font-medium">{{ prod.roll_length_lfm }} lfm</span></div>
+                {% if prod.sqm_per_roll %}<div class="flex justify-between"><span class="text-stone">{{ t('shop_page.sqm_per_roll') }}</span><span class="font-medium">{{ prod.sqm_per_roll }} m²</span></div>{% endif %}
+                {% if prod.roll_weight_kg %}<div class="flex justify-between"><span class="text-stone">{{ t('shop_page.roll_weight') }}</span><span class="font-medium">{{ prod.roll_weight_kg }} kg</span></div>{% endif %}
+                {% if prod.roll_outer_diameter_mm %}<div class="flex justify-between"><span class="text-stone">{{ t('shop_page.roll_diameter') }}</span><span class="font-medium">~{{ prod.roll_outer_diameter_mm }} mm</span></div>{% endif %}
+                {% if prod.roll_core_diameter_mm %}<div class="flex justify-between"><span class="text-stone">{{ t('shop_page.core_diameter') }}</span><span class="font-medium">{{ prod.roll_core_diameter_mm }} mm</span></div>{% endif %}
+              </div>
+            {% endif %}
+
+            {# Menge + Warenkorb #}
+            <div class="flex items-end gap-2 mt-auto">
+              <div class="flex-1">
+                <label class="text-xs text-stone mb-1 block">{{ t('shop_page.quantity') }} ({{ prod.unit }})</label>
+                <input type="number" min="1" step="0.5" value="1"
+                       class="shop-qty w-full px-3 py-2 bg-[#FAFAF9] border border-black/8 rounded-lg text-sm text-stone-dark focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none"
+                       data-product-id="{{ prod.id }}">
+              </div>
+              <button onclick="addToCart(this.closest('[data-product-id]'))"
+                      class="btn-lift px-4 py-2 bg-lynx-red text-white rounded-lg font-semibold text-sm shadow-md hover:bg-lynx-red-dark whitespace-nowrap">
+                + {{ t('shop_page.add_to_cart') }}
+              </button>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <p class="text-center text-xs text-stone/60 mt-4">{{ t('shop_page.ex_works') }}</p>
+</section>
+
+{# ===== COMFORT & ULTRA — PREIS AUF ANFRAGE ===== #}
+{% set inquiry_products = [] %}
+{% for prod in products %}
+  {% if prod.price_on_request %}
+    {% set _ = inquiry_products.push(prod) %}
+  {% endif %}
+{% endfor %}
+
+{% if inquiry_products.length %}
+<section class="max-w-7xl mx-auto px-6 lg:px-10 pb-12">
+  <h2 class="font-heading text-xl font-bold text-stone-dark mb-6">LYNX Lining Comfort & Ultra — {{ t('shop_page.price_on_request') }}</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+    {% for prod in inquiry_products %}
+      <div class="bg-white rounded-2xl overflow-hidden shadow-lg border border-black/4 hover:-translate-y-1 transition-all duration-300 flex flex-col">
         <div class="overflow-hidden">
           <img src="{{ prod.image_path }}" alt="{{ prod.name }}" class="w-full h-44 object-cover" loading="lazy">
         </div>
@@ -28,34 +97,54 @@
           <h3 class="font-heading text-base font-bold text-stone-dark mb-1">{{ prod.name }}</h3>
           <p class="text-xs text-stone mb-4 flex-1">{{ prod.short_description }}</p>
 
-          {# Staffelpreise #}
-          <div class="bg-[#FAFAF9] rounded-xl p-3 mb-4 text-xs">
-            {% for tier in prod.price_tiers %}
-              <div class="flex justify-between py-1 {% if not loop.last %}border-b border-black/5{% endif %}">
-                <span class="text-stone">{{ t('shop_page.tier_from') }} {{ tier.min_quantity | int }} {{ t('shop_page.tier_unit') }}</span>
-                <span class="font-bold text-stone-dark">€ {{ tier.price_per_unit }}</span>
-              </div>
-            {% endfor %}
+          {# Preis auf Anfrage Box #}
+          <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 text-center">
+            <p class="font-bold text-amber-800 text-sm">{{ t('shop_page.price_on_request') }}</p>
+            <p class="text-xs text-amber-700 mt-1">{{ t('shop_page.inquiry_hint') }}</p>
           </div>
 
-          {# Preis + Menge #}
-          <div class="flex items-end gap-2 mt-auto">
-            <div class="flex-1">
-              <label class="text-xs text-stone mb-1 block">{{ t('shop_page.quantity') }}</label>
-              <input type="number" min="1" step="0.5" value="1"
-                     class="shop-qty w-full px-3 py-2 bg-[#FAFAF9] border border-black/8 rounded-lg text-sm text-stone-dark focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none"
-                     data-product-id="{{ prod.id }}">
-            </div>
-            <button onclick="addToCart(this.closest('[data-product-id]'))"
-                    class="btn-lift px-4 py-2 bg-lynx-red text-white rounded-lg font-semibold text-sm shadow-md hover:bg-lynx-red-dark whitespace-nowrap">
-              + {{ t('shop_page.add_to_cart') }}
-            </button>
-          </div>
+          <button onclick="openInquiryForm('{{ prod.name }}')"
+                  class="btn-lift w-full px-4 py-2.5 bg-stone-dark text-white rounded-lg font-semibold text-sm shadow-md hover:bg-[#2a2c2e] whitespace-nowrap mt-auto">
+            {{ t('shop_page.send_inquiry') }} &rarr;
+          </button>
         </div>
       </div>
     {% endfor %}
   </div>
-  <p class="text-center text-xs text-stone/60 mt-4">{{ t('shop_page.cart_netto') }}</p>
+</section>
+{% endif %}
+
+{# ===== SONDERANFERTIGUNGEN HINWEIS ===== #}
+<section class="max-w-5xl mx-auto px-6 lg:px-10 pb-12">
+  <div class="bg-gradient-to-r from-stone-dark to-[#2a2c2e] rounded-2xl p-8 lg:p-10 text-white">
+    <div class="flex items-start gap-4">
+      <svg class="w-8 h-8 text-lynx-red shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <div>
+        <h3 class="font-heading text-lg font-bold mb-2">{{ t('shop_page.custom_title') }}</h3>
+        <p class="text-white/80 text-sm leading-relaxed">{{ t('shop_page.custom_text') }}</p>
+        <p class="text-white/60 text-xs mt-3">{{ t('shop_page.custom_minimum') }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ===== PRAXISFOTOS ===== #}
+<section class="max-w-7xl mx-auto px-6 lg:px-10 pb-12">
+  <h2 class="font-heading text-xl font-bold text-stone-dark mb-6">{{ t('shop_page.practice_photos') }}</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="rounded-2xl overflow-hidden shadow-lg">
+      <img src="/images/products/rolle-palette.jpg" alt="LYNX Lining Rolle auf Palette" class="w-full h-80 object-cover" loading="lazy">
+      <div class="bg-white p-4">
+        <p class="text-sm text-stone-dark font-medium">{{ t('shop_page.photo_palette') }}</p>
+      </div>
+    </div>
+    <div class="rounded-2xl overflow-hidden shadow-lg">
+      <img src="/images/products/rolle-querschnitt.jpg" alt="LYNX Lining Rolle Querschnitt" class="w-full h-80 object-cover" loading="lazy">
+      <div class="bg-white p-4">
+        <p class="text-sm text-stone-dark font-medium">{{ t('shop_page.photo_cross_section') }}</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 {# ===== WARENKORB ===== #}
@@ -78,7 +167,7 @@
           <tr class="border-b border-black/8">
             <th class="text-left py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Produkt{% else %}Product{% endif %}</th>
             <th class="text-center py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Menge{% else %}Qty{% endif %}</th>
-            <th class="text-right py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Stückpreis{% else %}Unit Price{% endif %}</th>
+            <th class="text-right py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Preis/lfm{% else %}Price/lfm{% endif %}</th>
             <th class="text-right py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Gesamt{% else %}Total{% endif %}</th>
             <th class="w-10"></th>
           </tr>
@@ -90,7 +179,7 @@
         <span class="font-heading text-lg font-bold text-stone-dark">{{ t('shop_page.cart_total') }}</span>
         <span id="cart-total" class="font-heading text-2xl font-extrabold text-lynx-red">€ 0,00</span>
       </div>
-      <p class="text-xs text-stone/60 mt-1 text-right">{{ t('shop_page.cart_netto') }}</p>
+      <p class="text-xs text-stone/60 mt-1 text-right">{{ t('shop_page.ex_works') }}</p>
 
       <div class="mt-6 text-center">
         <button onclick="showOrderForm()" class="btn-lift px-10 py-4 bg-lynx-red text-white rounded-xl font-bold text-base shadow-[0_8px_30px_rgba(214,69,69,0.35)] hover:bg-lynx-red-dark">
@@ -213,11 +302,93 @@
   </div>
 </section>
 
+{# ===== ANFRAGE-FORMULAR (Modal) ===== #}
+<div id="inquiry-modal" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeInquiryForm()"></div>
+  <div class="absolute inset-4 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 md:w-full md:max-w-lg bg-white rounded-2xl shadow-2xl overflow-y-auto max-h-[90vh]">
+    <div class="p-6 lg:p-8">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="font-heading text-xl font-bold text-stone-dark">{{ t('shop_page.inquiry_title') }}</h2>
+        <button onclick="closeInquiryForm()" class="p-2 text-stone hover:text-stone-dark">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div id="inquiry-success" class="hidden mb-6 p-5 bg-green-50 border border-green-200 rounded-xl text-green-700">
+        <p class="font-semibold">{{ t('shop_page.inquiry_success') }}</p>
+      </div>
+      <div id="inquiry-error" class="hidden mb-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm"></div>
+
+      <form id="inquiry-form" class="space-y-4">
+        <div class="hidden" aria-hidden="true">
+          <input type="text" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('shop_page.inquiry_product') }}</label>
+          <input type="text" name="product_name" id="inquiry-product-name" readonly
+                 class="w-full px-4 py-3 bg-[#F0F0EE] border border-black/8 rounded-xl text-stone-dark text-sm">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('shop_page.inquiry_quantity_lfm') }}</label>
+            <input type="number" name="quantity_lfm" min="0" step="0.5"
+                   class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark text-sm focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none"
+                   placeholder="z.B. 15">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('shop_page.inquiry_quantity_sqm') }}</label>
+            <input type="number" name="quantity_sqm" min="0" step="0.5"
+                   class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark text-sm focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none"
+                   placeholder="z.B. 22">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('contact_form.name') }} <span class="text-lynx-red">*</span></label>
+          <input type="text" name="name" required
+                 class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark text-sm focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none">
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('shop_page.company') }}</label>
+          <input type="text" name="company"
+                 class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark text-sm focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none">
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('contact_form.email') }} <span class="text-lynx-red">*</span></label>
+          <input type="email" name="email" required
+                 class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark text-sm focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none">
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('contact_form.phone') }}</label>
+          <input type="tel" name="phone"
+                 class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark text-sm focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none">
+        </div>
+
+        <div>
+          <label class="block text-sm font-semibold text-stone-dark mb-2">{{ t('shop_page.inquiry_message') }}</label>
+          <textarea name="message" rows="3"
+                    class="w-full px-4 py-3 bg-[#FAFAF9] border border-black/8 rounded-xl text-stone-dark text-sm focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none resize-none"
+                    placeholder="{{ t('shop_page.inquiry_message_placeholder') }}"></textarea>
+        </div>
+
+        <button type="submit" id="inquiry-submit-btn" class="btn-lift w-full px-6 py-3 bg-stone-dark text-white rounded-xl font-bold text-sm shadow-md hover:bg-[#2a2c2e]">
+          {{ t('shop_page.send_inquiry') }} &rarr;
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block scripts %}
 <script>
-// Warenkorb-Logik (localStorage)
+// ===== WARENKORB =====
 let cart = JSON.parse(localStorage.getItem('lynxCart') || '[]');
 
 function getApplicablePrice(tiers, quantity) {
@@ -255,7 +426,6 @@ function addToCart(productEl) {
   renderCart();
   qtyInput.value = 1;
 
-  // Scroll zum Warenkorb
   document.getElementById('cart-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
@@ -316,8 +486,8 @@ function renderCart() {
                  class="w-20 px-2 py-1 bg-[#FAFAF9] border border-black/8 rounded-lg text-sm text-center">
           <span class="text-xs text-stone ml-1">${item.unit}</span>
         </td>
-        <td class="py-3 text-right text-stone">€ ${formatPrice(item.price)}</td>
-        <td class="py-3 text-right font-semibold text-stone-dark">€ ${formatPrice(lineTotal)}</td>
+        <td class="py-3 text-right text-stone">${formatPrice(item.price)} €</td>
+        <td class="py-3 text-right font-semibold text-stone-dark">${formatPrice(lineTotal)} €</td>
         <td class="py-3 text-right">
           <button onclick="removeFromCart(${i})" class="text-stone/40 hover:text-lynx-red transition-colors" title="{{ t('shop_page.cart_remove') }}">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -327,7 +497,7 @@ function renderCart() {
   });
 
   tbody.innerHTML = html;
-  document.getElementById('cart-total').textContent = '€ ' + formatPrice(total);
+  document.getElementById('cart-total').textContent = formatPrice(total) + ' €';
 }
 
 function showOrderForm() {
@@ -335,7 +505,6 @@ function showOrderForm() {
   section.classList.remove('hidden');
   section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  // Bestellzusammenfassung rendern
   const summaryEl = document.getElementById('order-summary');
   let total = 0;
   let html = '';
@@ -344,14 +513,14 @@ function showOrderForm() {
     total += lineTotal;
     html += `<div class="flex justify-between text-sm py-1">
       <span class="text-stone">${item.quantity} ${item.unit} ${item.name}</span>
-      <span class="font-semibold text-stone-dark">€ ${formatPrice(lineTotal)}</span>
+      <span class="font-semibold text-stone-dark">${formatPrice(lineTotal)} €</span>
     </div>`;
   });
   summaryEl.innerHTML = html;
-  document.getElementById('order-total').textContent = '€ ' + formatPrice(total);
+  document.getElementById('order-total').textContent = formatPrice(total) + ' €';
 }
 
-// Bestellung absenden
+// ===== BESTELLUNG ABSENDEN =====
 document.getElementById('order-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const btn = document.getElementById('order-submit-btn');
@@ -398,6 +567,62 @@ document.getElementById('order-form').addEventListener('submit', async function(
   } finally {
     btn.disabled = false;
     btn.textContent = '{{ t("shop_page.submit_order") }} →';
+  }
+});
+
+// ===== ANFRAGE-FORMULAR =====
+function openInquiryForm(productName) {
+  document.getElementById('inquiry-product-name').value = productName;
+  document.getElementById('inquiry-modal').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  // Reset state
+  document.getElementById('inquiry-success').classList.add('hidden');
+  document.getElementById('inquiry-error').classList.add('hidden');
+  document.getElementById('inquiry-form').reset();
+  document.getElementById('inquiry-product-name').value = productName;
+}
+
+function closeInquiryForm() {
+  document.getElementById('inquiry-modal').classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('inquiry-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('inquiry-submit-btn');
+  const successEl = document.getElementById('inquiry-success');
+  const errorEl = document.getElementById('inquiry-error');
+
+  btn.disabled = true;
+  btn.textContent = '...';
+  successEl.classList.add('hidden');
+  errorEl.classList.add('hidden');
+
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData.entries());
+
+  try {
+    const res = await fetch('/api/shop/inquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+
+    if (res.ok && result.success) {
+      successEl.classList.remove('hidden');
+      this.reset();
+    } else {
+      errorEl.textContent = result.error || '{{ t("shop_page.order_error") }}';
+      errorEl.classList.remove('hidden');
+    }
+  } catch {
+    errorEl.textContent = '{{ t("shop_page.order_error") }}';
+    errorEl.classList.remove('hidden');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '{{ t("shop_page.send_inquiry") }} →';
   }
 });
 

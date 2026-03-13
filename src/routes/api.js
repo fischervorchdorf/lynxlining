@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
-const { sendContactNotification, sendOrderNotification } = require('../config/mail');
+const { sendContactNotification, sendOrderNotification, sendInquiryNotification } = require('../config/mail');
 
 // Kontaktformular
 router.post('/contact', async (req, res) => {
@@ -142,6 +142,39 @@ router.post('/shop/order', async (req, res) => {
   } catch (err) {
     console.error('Bestellfehler:', err);
     res.status(500).json({ error: 'Beim Absenden der Bestellung ist ein Fehler aufgetreten.' });
+  }
+});
+
+// Shop-Preisanfrage (Comfort/Ultra)
+router.post('/shop/inquiry', async (req, res) => {
+  const { product_name, quantity_lfm, quantity_sqm, name, company, email, phone, message, website } = req.body;
+
+  // Honeypot
+  if (website) {
+    return res.status(200).json({ success: true });
+  }
+
+  // Validierung
+  if (!name || !email || !product_name) {
+    return res.status(400).json({ error: 'Bitte füllen Sie alle Pflichtfelder aus.' });
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: 'Bitte geben Sie eine gültige E-Mail-Adresse ein.' });
+  }
+
+  try {
+    sendInquiryNotification({
+      productName: product_name,
+      quantityLfm: quantity_lfm,
+      quantitySqm: quantity_sqm,
+      name, company, email, phone, message
+    });
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Anfrage-Fehler:', err);
+    res.status(500).json({ error: 'Beim Senden der Anfrage ist ein Fehler aufgetreten.' });
   }
 });
 

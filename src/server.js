@@ -148,6 +148,25 @@ async function runMigrations() {
       await db.query('ALTER TABLE linkedin_post_translations ADD COLUMN content LONGTEXT AFTER excerpt');
     }
 
+    // Shop-Produkte: Neue Spalten für Rollendaten und Preis auf Anfrage
+    const shopNewCols = [
+      { name: 'price_on_request', sql: 'ADD COLUMN price_on_request BOOLEAN DEFAULT FALSE AFTER is_active' },
+      { name: 'price_per_sqm', sql: 'ADD COLUMN price_per_sqm DECIMAL(10,2) DEFAULT NULL AFTER price_on_request' },
+      { name: 'sqm_per_roll', sql: 'ADD COLUMN sqm_per_roll DECIMAL(10,2) DEFAULT NULL AFTER price_per_sqm' },
+      { name: 'roll_length_lfm', sql: 'ADD COLUMN roll_length_lfm DECIMAL(10,2) DEFAULT NULL AFTER sqm_per_roll' },
+      { name: 'roll_width_mm', sql: 'ADD COLUMN roll_width_mm INT DEFAULT NULL AFTER roll_length_lfm' },
+      { name: 'roll_weight_kg', sql: 'ADD COLUMN roll_weight_kg DECIMAL(10,2) DEFAULT NULL AFTER roll_width_mm' },
+      { name: 'roll_outer_diameter_mm', sql: 'ADD COLUMN roll_outer_diameter_mm INT DEFAULT NULL AFTER roll_weight_kg' },
+      { name: 'roll_core_diameter_mm', sql: 'ADD COLUMN roll_core_diameter_mm INT DEFAULT NULL AFTER roll_outer_diameter_mm' },
+      { name: 'roll_core_width_mm', sql: 'ADD COLUMN roll_core_width_mm INT DEFAULT NULL AFTER roll_core_diameter_mm' }
+    ];
+    for (const col of shopNewCols) {
+      const [exists] = await db.query(`SHOW COLUMNS FROM shop_products LIKE '${col.name}'`);
+      if (!exists.length) {
+        await db.query(`ALTER TABLE shop_products ${col.sql}`);
+      }
+    }
+
     console.log('✓ DB-Migrationen erfolgreich');
   } catch (err) {
     console.warn('DB-Migration Warnung:', err.message);
