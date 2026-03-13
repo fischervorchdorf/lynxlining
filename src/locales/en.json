@@ -73,6 +73,8 @@
     "colors_value": "2, 3, 5mm: Standard Red | 8 & 10mm: Blue/Red",
     "custom_colors": "Custom colors available from 5,000 kg/thickness",
     "cta": "Request a quote",
+    "shop_cta": "Go to shop",
+    "spec_download": "Download TPU specification (PDF)",
     "chem_title": "Chemical Resistance",
     "chem_button": "Show Chemical Resistance",
     "chem_button_hide": "Hide Chemical Resistance",

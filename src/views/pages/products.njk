@@ -24,17 +24,17 @@
             <span class="inline-block px-3 py-1 bg-lynx-red/8 text-lynx-red text-xs font-bold rounded-full uppercase tracking-wider mb-4">{{ prod.subtitle }}</span>
             <h2 class="font-heading text-2xl font-bold text-stone-dark mb-3">{{ prod.title }}</h2>
             <p class="text-stone leading-relaxed mb-6">{{ prod.description }}</p>
-            <a href="/{{ locale }}/kontakt" class="btn-lift inline-flex items-center gap-2 px-6 py-3 bg-lynx-red text-white rounded-xl font-semibold text-sm shadow-md hover:bg-lynx-red-dark">
-              {{ t('products_page.cta') }} &rarr;
+            <a href="/{{ locale }}/shop{% if 'comfort' in prod.slug or 'ultra' in prod.slug %}#comfort-ultra{% else %}#standard{% endif %}" class="btn-lift inline-flex items-center gap-2 px-6 py-3 bg-lynx-red text-white rounded-xl font-semibold text-sm shadow-md hover:bg-lynx-red-dark">
+              {{ t('products_page.shop_cta') }} &rarr;
             </a>
           </div>
         </div>
       {% endfor %}
     {% else %}
       {% set staticProducts = [
-        { title: "LYNX Lining Standard", subtitle: "Der Allrounder", desc: "Unser Standardprodukt für vielfältige Anwendungen im Verschleißschutz. Ideal für moderate Beanspruchung.", img: "/images/products/produkt.JPG" },
-        { title: "LYNX Lining Comfort", subtitle: "Maximaler Komfort", desc: "Erweiterte Schalldämpfung und Vibrationsreduktion. Perfekt für lärmempfindliche Umgebungen.", img: "/images/products/produkt.JPG" },
-        { title: "LYNX Lining Ultra", subtitle: "Extreme Belastung", desc: "Für extremste Beanspruchung im Bergbau und bei hoch abrasiven Materialien. Maximale Lebensdauer.", img: "/images/products/6675642.jpg" }
+        { title: "LYNX Lining Standard", subtitle: "Der Allrounder", desc: "Unser Standardprodukt für vielfältige Anwendungen im Verschleißschutz. Ideal für moderate Beanspruchung.", img: "/images/products/produkt.JPG", link: "standard" },
+        { title: "LYNX Lining Comfort", subtitle: "Maximaler Komfort", desc: "Erweiterte Schalldämpfung und Vibrationsreduktion. Perfekt für lärmempfindliche Umgebungen.", img: "/images/products/produkt.JPG", link: "comfort-ultra" },
+        { title: "LYNX Lining Ultra", subtitle: "Extreme Belastung", desc: "Für extremste Beanspruchung im Bergbau und bei hoch abrasiven Materialien. Maximale Lebensdauer.", img: "/images/products/6675642.jpg", link: "comfort-ultra" }
       ] %}
       {% for prod in staticProducts %}
         <div class="group bg-white rounded-2xl overflow-hidden shadow-lg border border-black/4 hover:-translate-y-2 transition-all duration-300">
@@ -45,8 +45,8 @@
             <span class="inline-block px-3 py-1 bg-lynx-red/8 text-lynx-red text-xs font-bold rounded-full uppercase tracking-wider mb-4">{{ prod.subtitle }}</span>
             <h2 class="font-heading text-2xl font-bold text-stone-dark mb-3">{{ prod.title }}</h2>
             <p class="text-stone leading-relaxed mb-6">{{ prod.desc }}</p>
-            <a href="/{{ locale }}/kontakt" class="btn-lift inline-flex items-center gap-2 px-6 py-3 bg-lynx-red text-white rounded-xl font-semibold text-sm shadow-md hover:bg-lynx-red-dark">
-              {{ t('products_page.cta') }} &rarr;
+            <a href="/{{ locale }}/shop#{{ prod.link }}" class="btn-lift inline-flex items-center gap-2 px-6 py-3 bg-lynx-red text-white rounded-xl font-semibold text-sm shadow-md hover:bg-lynx-red-dark">
+              {{ t('products_page.shop_cta') }} &rarr;
             </a>
           </div>
         </div>
@@ -85,6 +85,15 @@
         <p class="text-stone">{{ t('products_page.colors_value') }}</p>
         <p class="text-sm text-stone/70 mt-2">{{ t('products_page.custom_colors') }}</p>
       </div>
+    </div>
+
+    {# Download Spezifikation #}
+    <div class="mt-10 text-center">
+      <a href="/pdf/LYNX_Lining_TPU_Spezifikation.pdf" target="_blank"
+         class="inline-flex items-center gap-3 px-8 py-4 bg-stone-dark text-white rounded-xl font-bold text-sm shadow-lg hover:bg-[#1a1c1e] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        {{ t('products_page.spec_download') }}
+      </a>
     </div>
   </div>
 </section>

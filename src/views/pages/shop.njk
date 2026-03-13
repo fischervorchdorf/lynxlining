@@ -12,7 +12,7 @@
 </section>
 
 {# ===== STANDARD PRODUKTE ===== #}
-<section class="max-w-7xl mx-auto px-6 lg:px-10 -mt-16 relative z-10 pb-8">
+<section id="standard" class="max-w-7xl mx-auto px-6 lg:px-10 -mt-16 relative z-10 pb-8">
   <h2 class="font-heading text-xl font-bold text-white mb-6">LYNX Lining Standard — {{ t('shop_page.roll_material') }}</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
     {% for prod in products %}
@@ -85,7 +85,7 @@
 {% endfor %}
 
 {% if inquiry_products.length %}
-<section class="max-w-7xl mx-auto px-6 lg:px-10 pb-12">
+<section id="comfort-ultra" class="max-w-7xl mx-auto px-6 lg:px-10 pb-12">
   <h2 class="font-heading text-xl font-bold text-stone-dark mb-6">LYNX Lining Comfort & Ultra — {{ t('shop_page.price_on_request') }}</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
     {% for prod in inquiry_products %}
