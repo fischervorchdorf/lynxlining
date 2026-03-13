@@ -21,7 +21,7 @@ Schillerstraße 13<br>
 
 <h3>Kontakt</h3>
 <p>
-E-Mail: <a href="mailto:info@lynx-lining.com">info@lynx-lining.com</a><br>
+E-Mail: <a href="mailto:office@lynx-lining.com">office@lynx-lining.com</a><br>
 Website: <a href="https://www.lynx-lining.com">www.lynx-lining.com</a>
 </p>
 
@@ -66,7 +66,7 @@ Austria</p>
 
 <h3>Contact</h3>
 <p>
-Email: <a href="mailto:info@lynx-lining.com">info@lynx-lining.com</a><br>
+Email: <a href="mailto:office@lynx-lining.com">office@lynx-lining.com</a><br>
 Website: <a href="https://www.lynx-lining.com">www.lynx-lining.com</a>
 </p>
 
@@ -108,7 +108,7 @@ const datenschutzDE = `
 Ing. Kurt Haidecker<br>
 Schillerstraße 13<br>
 4020 Linz, Österreich<br>
-E-Mail: <a href="mailto:info@lynx-lining.com">info@lynx-lining.com</a></p>
+E-Mail: <a href="mailto:office@lynx-lining.com">office@lynx-lining.com</a></p>
 
 <h3>2. Erhebung und Speicherung personenbezogener Daten</h3>
 
@@ -131,7 +131,7 @@ E-Mail: <a href="mailto:info@lynx-lining.com">info@lynx-lining.com</a></p>
 
 <h4>b) Bei Nutzung des Kontaktformulars</h4>
 <p>Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Formular inklusive der von Ihnen dort angegebenen Kontaktdaten (Name, E-Mail-Adresse, Telefonnummer, Betreff, Nachricht) zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter.</p>
-<p>Die Verarbeitung der in das Kontaktformular eingegebenen Daten erfolgt auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Ein Widerruf Ihrer bereits erteilten Einwilligung ist jederzeit möglich per E-Mail an info@lynx-lining.com.</p>
+<p>Die Verarbeitung der in das Kontaktformular eingegebenen Daten erfolgt auf Grundlage Ihrer Einwilligung (Art. 6 Abs. 1 lit. a DSGVO). Ein Widerruf Ihrer bereits erteilten Einwilligung ist jederzeit möglich per E-Mail an office@lynx-lining.com.</p>
 
 <h4>c) Bei Bestellungen über den Online-Shop</h4>
 <p>Wenn Sie über unseren Online-Shop eine Bestellung aufgeben, erheben wir folgende personenbezogene Daten:</p>
@@ -202,7 +202,7 @@ const datenschutzEN = `
 Ing. Kurt Haidecker<br>
 Schillerstraße 13<br>
 4020 Linz, Austria<br>
-Email: <a href="mailto:info@lynx-lining.com">info@lynx-lining.com</a></p>
+Email: <a href="mailto:office@lynx-lining.com">office@lynx-lining.com</a></p>
 
 <h3>2. Collection and Storage of Personal Data</h3>
 
@@ -225,7 +225,7 @@ Email: <a href="mailto:info@lynx-lining.com">info@lynx-lining.com</a></p>
 
 <h4>b) When Using the Contact Form</h4>
 <p>When you send us inquiries via the contact form, your details from the form including the contact data you provide (name, email address, phone number, subject, message) are stored for the purpose of processing the inquiry and in case of follow-up questions. We do not share this data without your consent.</p>
-<p>The processing of the data entered in the contact form is based on your consent (Art. 6 para. 1 lit. a GDPR). You can revoke your consent at any time by email to info@lynx-lining.com.</p>
+<p>The processing of the data entered in the contact form is based on your consent (Art. 6 para. 1 lit. a GDPR). You can revoke your consent at any time by email to office@lynx-lining.com.</p>
 
 <h4>c) When Placing Orders via the Online Shop</h4>
 <p>When you place an order through our online shop, we collect the following personal data:</p>

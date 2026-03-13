@@ -11,8 +11,8 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendContactNotification({ name, email, phone, subject, message }) {
-  const mailTo = process.env.MAIL_TO || 'info@lynx-lining.com';
-  const mailFrom = process.env.MAIL_FROM || 'info@lynx-lining.com';
+  const mailTo = process.env.MAIL_TO || 'office@lynx-lining.com';
+  const mailFrom = process.env.MAIL_FROM || 'office@lynx-lining.com';
 
   try {
     await transporter.sendMail({
@@ -40,8 +40,8 @@ async function sendContactNotification({ name, email, phone, subject, message })
 }
 
 async function sendOrderNotification({ orderNumber, customerName, customerCompany, customerEmail, customerPhone, items, totalAmount }) {
-  const mailTo = process.env.MAIL_TO || 'info@lynx-lining.com';
-  const mailFrom = process.env.MAIL_FROM || 'info@lynx-lining.com';
+  const mailTo = process.env.MAIL_TO || 'office@lynx-lining.com';
+  const mailFrom = process.env.MAIL_FROM || 'office@lynx-lining.com';
 
   const itemRows = items.map(item =>
     `<tr>
@@ -92,8 +92,8 @@ async function sendOrderNotification({ orderNumber, customerName, customerCompan
 }
 
 async function sendInquiryNotification({ productName, quantityLfm, quantitySqm, name, company, email, phone, message }) {
-  const mailTo = process.env.MAIL_TO || 'info@lynx-lining.com';
-  const mailFrom = process.env.MAIL_FROM || 'info@lynx-lining.com';
+  const mailTo = process.env.MAIL_TO || 'office@lynx-lining.com';
+  const mailFrom = process.env.MAIL_FROM || 'office@lynx-lining.com';
 
   try {
     await transporter.sendMail({

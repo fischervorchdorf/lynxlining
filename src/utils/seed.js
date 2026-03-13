@@ -12,7 +12,7 @@ async function seed() {
   // ===== ADMIN USER =====
   const passwordHash = await bcrypt.hash('LynxAdmin2026!', 12);
   await db.query(`INSERT IGNORE INTO users (username, email, password_hash, role) VALUES (?, ?, ?, ?)`,
-    ['admin', 'info@lynx-lining.com', passwordHash, 'admin']);
+    ['admin', 'office@lynx-lining.com', passwordHash, 'admin']);
   console.log('✓ Admin-User angelegt (admin / LynxAdmin2026!)');
 
   // ===== SETTINGS =====
@@ -22,7 +22,7 @@ async function seed() {
     ['company_zip', '4020'],
     ['company_city', 'Linz'],
     ['company_country', 'Austria'],
-    ['company_email', 'info@lynx-lining.com'],
+    ['company_email', 'office@lynx-lining.com'],
     ['company_phone', ''],
     ['company_website', 'https://lynx-lining.com'],
     ['instagram_url', 'https://www.instagram.com/lynx_lining/'],
@@ -178,8 +178,8 @@ async function seed() {
   // ===== STATISCHE SEITEN =====
   const legalPages = [
     { slug: 'impressum', type: 'legal',
-      de: { title: 'Impressum', content: '## Impressum\n\n**LYNX Lining**\nSchillerstraße 13\n4020 Linz, Austria\n\nE-Mail: info@lynx-lining.com\n\nUnternehmensgegenstand: Verschleißschutz' },
-      en: { title: 'Imprint', content: '## Imprint\n\n**LYNX Lining**\nSchillerstraße 13\n4020 Linz, Austria\n\nEmail: info@lynx-lining.com\n\nBusiness purpose: Wear protection' }
+      de: { title: 'Impressum', content: '## Impressum\n\n**LYNX Lining**\nSchillerstraße 13\n4020 Linz, Austria\n\nE-Mail: office@lynx-lining.com\n\nUnternehmensgegenstand: Verschleißschutz' },
+      en: { title: 'Imprint', content: '## Imprint\n\n**LYNX Lining**\nSchillerstraße 13\n4020 Linz, Austria\n\nEmail: office@lynx-lining.com\n\nBusiness purpose: Wear protection' }
     },
     { slug: 'datenschutz', type: 'legal',
       de: { title: 'Datenschutzerklärung', content: '## Datenschutzerklärung\n\nDer Schutz Ihrer persönlichen Daten ist uns ein besonderes Anliegen.\n\nVerantwortlich: LYNX Lining, Schillerstraße 13, 4020 Linz' },
