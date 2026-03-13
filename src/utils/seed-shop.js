@@ -6,20 +6,16 @@
 require('dotenv').config();
 const db = require('../config/database');
 
-// Hilfsfunktion: Preis pro lfm = VK-Handel/m² × 1,515m Breite
-function lfmPrice(pricePerSqm) {
-  return Math.round(pricePerSqm * 1.515 * 100) / 100;
+// Hilfsfunktion: Preis pro Rolle = VK-Handel/m² × m²/Rolle
+function rollPrice(pricePerSqm, sqmPerRoll) {
+  return Math.round(pricePerSqm * sqmPerRoll * 100) / 100;
 }
 
-// Hilfsfunktion: Rabattstufen berechnen
-function calcTiers(pricePerSqm, rollLengthLfm) {
-  const base = lfmPrice(pricePerSqm);
+// Hilfsfunktion: Staffelpreise pro Rolle (aktuell nur 1 Stufe, 0% Rabatt)
+function calcTiers(pricePerSqm, sqmPerRoll) {
+  const base = rollPrice(pricePerSqm, sqmPerRoll);
   return [
-    { min: 1, price: base },                                          // 0% Rabatt
-    { min: 5, price: Math.round(base * 0.95 * 100) / 100 },          // 5% Rabatt
-    { min: 10, price: Math.round(base * 0.90 * 100) / 100 },         // 10% Rabatt
-    { min: 20, price: Math.round(base * 0.85 * 100) / 100 },         // 15% Rabatt
-    { min: rollLengthLfm, price: Math.round(base * 0.80 * 100) / 100 } // 20% Rabatt (ganze Rolle)
+    { min: 1, price: base }  // Einzelrollenpreis, kein Rabatt
   ];
 }
 
@@ -46,35 +42,35 @@ async function seedShop() {
   // Preisdaten: VK-Handel/m² | m²/Rolle | Rollenlänge lfm
   const standardProducts = [
     {
-      slug: 'll-standard-2mm', sku: 'LL-STD-2MM', image: '/images/products/produkt.JPG', unit: 'lfm', sort: 1,
+      slug: 'll-standard-2mm', sku: 'LL-STD-2MM', image: '/images/products/produkt.JPG', unit: 'Rolle', sort: 1,
       pricePerSqm: 67.90, sqmPerRoll: 61.05, rollLength: 40.30,
       rollWidth: 1515, rollWeight: 111, rollOuterDia: 600, rollCoreDia: 450, rollCoreWidth: 1650,
       de: { name: 'LYNX Lining Standard 2mm', short_description: 'Verschleißschutzfolie aus TPU – Der Allrounder in 2mm Stärke', description: 'Die LYNX Lining Standard 2mm Verschleißschutzfolie bietet zuverlässigen Schutz für moderate Beanspruchung. Ideal für Oberflächen mit geringem bis mittlerem Verschleiß. Einfache Montage durch selbstklebende Rückseite oder mechanische Befestigung.' },
       en: { name: 'LYNX Lining Standard 2mm', short_description: 'TPU wear protection film – The all-rounder in 2mm thickness', description: 'The LYNX Lining Standard 2mm wear protection film provides reliable protection for moderate stress. Ideal for surfaces with low to medium wear. Easy installation via self-adhesive backing or mechanical fastening.' }
     },
     {
-      slug: 'll-standard-3mm', sku: 'LL-STD-3MM', image: '/images/products/produkt.JPG', unit: 'lfm', sort: 2,
+      slug: 'll-standard-3mm', sku: 'LL-STD-3MM', image: '/images/products/produkt.JPG', unit: 'Rolle', sort: 2,
       pricePerSqm: 101.56, sqmPerRoll: 61.05, rollLength: 40.30,
       rollWidth: 1515, rollWeight: 139, rollOuterDia: 700, rollCoreDia: 450, rollCoreWidth: 1650,
       de: { name: 'LYNX Lining Standard 3mm', short_description: 'Verschleißschutzfolie aus TPU – Der Allrounder in 3mm Stärke', description: 'Die LYNX Lining Standard 3mm Verschleißschutzfolie bietet erhöhten Schutz für vielfältige Anwendungen. Optimale Balance zwischen Flexibilität und Widerstandsfähigkeit.' },
       en: { name: 'LYNX Lining Standard 3mm', short_description: 'TPU wear protection film – The all-rounder in 3mm thickness', description: 'The LYNX Lining Standard 3mm wear protection film provides enhanced protection for versatile applications. Optimal balance between flexibility and resistance.' }
     },
     {
-      slug: 'll-standard-5mm', sku: 'LL-STD-5MM', image: '/images/products/produkt.JPG', unit: 'lfm', sort: 3,
+      slug: 'll-standard-5mm', sku: 'LL-STD-5MM', image: '/images/products/produkt.JPG', unit: 'Rolle', sort: 3,
       pricePerSqm: 169.28, sqmPerRoll: 30.53, rollLength: 20.15,
       rollWidth: 1515, rollWeight: 183.2, rollOuterDia: 800, rollCoreDia: 450, rollCoreWidth: 1650,
       de: { name: 'LYNX Lining Standard 5mm', short_description: 'Verschleißschutzfolie aus TPU – Der Allrounder in 5mm Stärke', description: 'Die LYNX Lining Standard 5mm Verschleißschutzfolie bietet robusten Schutz für anspruchsvolle Einsatzgebiete. Besonders geeignet für Übergabestellen und Trichterauskleidungen.' },
       en: { name: 'LYNX Lining Standard 5mm', short_description: 'TPU wear protection film – The all-rounder in 5mm thickness', description: 'The LYNX Lining Standard 5mm wear protection film provides robust protection for demanding applications. Especially suitable for transfer points and hopper linings.' }
     },
     {
-      slug: 'll-standard-8mm', sku: 'LL-STD-8MM', image: '/images/products/produkt.JPG', unit: 'lfm', sort: 4,
+      slug: 'll-standard-8mm', sku: 'LL-STD-8MM', image: '/images/products/produkt.JPG', unit: 'Rolle', sort: 4,
       pricePerSqm: 270.80, sqmPerRoll: 18.40, rollLength: 12.15,
       rollWidth: 1515, rollWeight: 177, rollOuterDia: 750, rollCoreDia: 450, rollCoreWidth: 1650,
       de: { name: 'LYNX Lining Standard 8mm', short_description: 'Verschleißschutzfolie aus TPU – Der Allrounder in 8mm Stärke', description: 'Die LYNX Lining Standard 8mm Verschleißschutzfolie bietet verstärkten Schutz für stark beanspruchte Bereiche. Ideal für Übergabestellen mit hohem Materialfluss.' },
       en: { name: 'LYNX Lining Standard 8mm', short_description: 'TPU wear protection film – The all-rounder in 8mm thickness', description: 'The LYNX Lining Standard 8mm wear protection film provides reinforced protection for heavily stressed areas. Ideal for transfer points with high material flow.' }
     },
     {
-      slug: 'll-standard-10mm', sku: 'LL-STD-10MM', image: '/images/products/produkt.JPG', unit: 'lfm', sort: 5,
+      slug: 'll-standard-10mm', sku: 'LL-STD-10MM', image: '/images/products/produkt.JPG', unit: 'Rolle', sort: 5,
       pricePerSqm: 338.55, sqmPerRoll: 18.40, rollLength: 12.15,
       rollWidth: 1515, rollWeight: 221, rollOuterDia: 800, rollCoreDia: 450, rollCoreWidth: 1650,
       de: { name: 'LYNX Lining Standard 10mm', short_description: 'Verschleißschutzfolie aus TPU – Der Allrounder in 10mm Stärke', description: 'Die LYNX Lining Standard 10mm Verschleißschutzfolie bietet maximalen Schutz in der Standard-Linie. Für stark beanspruchte Bereiche mit hohem Materialfluss.' },
@@ -85,22 +81,22 @@ async function seedShop() {
   // ===== COMFORT & ULTRA PRODUKTE (Preis auf Anfrage) =====
   const inquiryProducts = [
     {
-      slug: 'll-comfort-3mm', sku: 'LL-CMF-3MM', image: '/images/products/comfort.jpg', unit: 'lfm', sort: 6,
+      slug: 'll-comfort-3mm', sku: 'LL-CMF-3MM', image: '/images/products/comfort.jpg', unit: 'Rolle', sort: 6,
       de: { name: 'LYNX Lining Comfort 3mm', short_description: 'Verschleißschutzfolie aus TPU auf Trägerblech montiert – Maximaler Komfort in 3mm Stärke', description: 'Die LYNX Lining Comfort 3mm vereint Verschleißschutz mit hervorragender Schalldämpfung und Vibrationsreduktion. Auf Trägerblech montiert geliefert. Perfekt für lärmempfindliche Umgebungen und Arbeitsplätze.' },
       en: { name: 'LYNX Lining Comfort 3mm', short_description: 'TPU wear protection on carrier plate – Maximum comfort in 3mm thickness', description: 'The LYNX Lining Comfort 3mm combines wear protection with excellent sound dampening and vibration reduction. Delivered mounted on carrier plate. Perfect for noise-sensitive environments and workplaces.' }
     },
     {
-      slug: 'll-comfort-5mm', sku: 'LL-CMF-5MM', image: '/images/products/comfort.jpg', unit: 'lfm', sort: 7,
+      slug: 'll-comfort-5mm', sku: 'LL-CMF-5MM', image: '/images/products/comfort.jpg', unit: 'Rolle', sort: 7,
       de: { name: 'LYNX Lining Comfort 5mm', short_description: 'Verschleißschutzfolie aus TPU auf Trägerblech montiert – Maximaler Komfort in 5mm Stärke', description: 'Die LYNX Lining Comfort 5mm bietet verstärkten Verschleißschutz bei gleichzeitig optimaler Schall- und Vibrationsdämpfung. Auf Trägerblech montiert geliefert. Die ideale Wahl für industrielle Anwendungen mit Lärmschutzanforderungen.' },
       en: { name: 'LYNX Lining Comfort 5mm', short_description: 'TPU wear protection on carrier plate – Maximum comfort in 5mm thickness', description: 'The LYNX Lining Comfort 5mm offers enhanced wear protection with optimal sound and vibration dampening. Delivered mounted on carrier plate. The ideal choice for industrial applications with noise protection requirements.' }
     },
     {
-      slug: 'll-ultra-5mm', sku: 'LL-ULT-5MM', image: '/images/products/ultra.jpg', unit: 'lfm', sort: 8,
+      slug: 'll-ultra-5mm', sku: 'LL-ULT-5MM', image: '/images/products/ultra.jpg', unit: 'Rolle', sort: 8,
       de: { name: 'LYNX Lining Ultra 5mm', short_description: 'Verschleißschutzfolie aus TPU als Sandwichplatte – Extreme Belastung in 5mm Stärke', description: 'Die LYNX Lining Ultra 5mm ist als Sandwichplatte für extremste Beanspruchung konzipiert. Höchste Abriebfestigkeit für Bergbau, Schüttgutaufbereitung und hoch abrasive Materialien. Individuelle Anfertigung nach Kundenwunsch.' },
       en: { name: 'LYNX Lining Ultra 5mm', short_description: 'TPU wear protection as sandwich panel – Extreme load in 5mm thickness', description: 'The LYNX Lining Ultra 5mm is designed as a sandwich panel for the most extreme demands. Highest abrasion resistance for mining, bulk material processing and highly abrasive materials. Custom manufacturing to customer specifications.' }
     },
     {
-      slug: 'll-ultra-10mm', sku: 'LL-ULT-10MM', image: '/images/products/ultra.jpg', unit: 'lfm', sort: 9,
+      slug: 'll-ultra-10mm', sku: 'LL-ULT-10MM', image: '/images/products/ultra.jpg', unit: 'Rolle', sort: 9,
       de: { name: 'LYNX Lining Ultra 10mm', short_description: 'Verschleißschutzfolie aus TPU als Sandwichplatte – Extreme Belastung in 10mm Stärke', description: 'Die LYNX Lining Ultra 10mm bietet als Sandwichplatte maximalen Schutz für die härtesten Einsatzbedingungen. Unsere leistungsstärkste Lösung für extremen Verschleiß im Bergbau und in der Schwerindustrie. Individuelle Anfertigung nach Kundenwunsch.' },
       en: { name: 'LYNX Lining Ultra 10mm', short_description: 'TPU wear protection as sandwich panel – Extreme load in 10mm thickness', description: 'The LYNX Lining Ultra 10mm as sandwich panel provides maximum protection for the harshest operating conditions. Our most powerful solution for extreme wear in mining and heavy industry. Custom manufacturing to customer specifications.' }
     }
@@ -108,7 +104,7 @@ async function seedShop() {
 
   // ===== STANDARD PRODUKTE EINFÜGEN =====
   for (const prod of standardProducts) {
-    const tiers = calcTiers(prod.pricePerSqm, prod.rollLength);
+    const tiers = calcTiers(prod.pricePerSqm, prod.sqmPerRoll);
 
     const [result] = await db.query(
       `INSERT INTO shop_products (slug, sku, image_path, unit, min_quantity, sort_order, is_active,
@@ -152,8 +148,8 @@ async function seedShop() {
       );
     }
 
-    console.log(`✓ ${prod.de.name} (${prod.sku}) – ${lfmPrice(prod.pricePerSqm)} €/lfm, Rolle: ${prod.rollLength} lfm`);
-    tiers.forEach(t => console.log(`    ab ${t.min} lfm: ${t.price} €/lfm`));
+    console.log(`✓ ${prod.de.name} (${prod.sku}) – ${rollPrice(prod.pricePerSqm, prod.sqmPerRoll)} €/Rolle (${prod.rollLength} lfm, ${prod.sqmPerRoll} m²)`);
+    tiers.forEach(t => console.log(`    ab ${t.min} Rolle(n): ${t.price} €/Rolle`));
   }
 
   // ===== COMFORT & ULTRA PRODUKTE EINFÜGEN =====
@@ -190,8 +186,8 @@ async function seedShop() {
   }
 
   console.log(`\n✅ Shop-Seeding abgeschlossen! ${standardProducts.length + inquiryProducts.length} Produkte erfolgreich eingespielt.`);
-  console.log('\nPreisberechnung: VK-Handel/m² × 1,515m Bahnbreite = Preis/lfm');
-  console.log('Rabattstufen: 0% (1 lfm), 5% (5 lfm), 10% (10 lfm), 15% (20 lfm), 20% (ganze Rolle)');
+  console.log('\nPreisberechnung: VK-Handel/m² × m²/Rolle = Preis/Rolle');
+  console.log('Einheit: Rolle (ganze Rollen). Rabatte aktuell auf 0%.');
   process.exit(0);
 }
 

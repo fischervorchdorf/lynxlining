@@ -33,7 +33,8 @@
       <div>
         <label class="block text-sm font-semibold text-[#3D3D3D] mb-2">Einheit</label>
         <select name="unit" class="w-full px-4 py-2.5 bg-[#FAFAF9] border border-black/8 rounded-xl text-sm focus:ring-2 focus:ring-[#D64545]/30 focus:border-[#D64545] outline-none">
-          <option value="lfm" {% if not product or product.unit == 'lfm' %}selected{% endif %}>lfm (Laufmeter)</option>
+          <option value="Rolle" {% if not product or product.unit == 'Rolle' %}selected{% endif %}>Rolle</option>
+          <option value="lfm" {% if product and product.unit == 'lfm' %}selected{% endif %}>lfm (Laufmeter)</option>
           <option value="m²" {% if product and product.unit == 'm²' %}selected{% endif %}>m² (Quadratmeter)</option>
           <option value="stk" {% if product and product.unit == 'stk' %}selected{% endif %}>Stück</option>
         </select>

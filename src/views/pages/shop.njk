@@ -30,14 +30,11 @@
             <h3 class="font-heading text-base font-bold text-stone-dark mb-1">{{ prod.name }}</h3>
             <p class="text-xs text-stone mb-4 flex-1">{{ prod.short_description }}</p>
 
-            {# Staffelpreise #}
-            <div class="bg-[#FAFAF9] rounded-xl p-3 mb-3 text-xs">
-              {% for tier in prod.price_tiers %}
-                <div class="flex justify-between py-1 {% if not loop.last %}border-b border-black/5{% endif %}">
-                  <span class="text-stone">{{ t('shop_page.tier_from') }} {{ tier.min_quantity }} {{ prod.unit }}</span>
-                  <span class="font-bold text-stone-dark">{{ tier.price_per_unit | replace(".", ",") }} €/{{ prod.unit }}</span>
-                </div>
-              {% endfor %}
+            {# Rollenpreis #}
+            {% set rollPrice = prod.price_tiers[0].price_per_unit if prod.price_tiers.length else '0' %}
+            <div class="bg-[#FAFAF9] rounded-xl p-4 mb-3 text-center">
+              <span class="text-2xl font-extrabold text-stone-dark">{{ rollPrice | replace(".", ",") }} €</span>
+              <span class="text-xs text-stone ml-1">{{ t('shop_page.per_roll') }}</span>
             </div>
 
             {# Rollendaten Toggle #}
@@ -58,7 +55,7 @@
             {# Menge + Warenkorb #}
             <div class="flex items-end gap-2 mt-auto">
               <div class="flex-1">
-                <label class="text-xs text-stone mb-1 block">{{ t('shop_page.quantity') }} ({{ prod.unit }})</label>
+                <label class="text-xs text-stone mb-1 block">{{ t('shop_page.quantity_rolls') }}</label>
                 <input type="number" min="1" step="1" value="1"
                        class="shop-qty w-full px-3 py-2 bg-[#FAFAF9] border border-black/8 rounded-lg text-sm text-stone-dark focus:ring-2 focus:ring-lynx-red/30 focus:border-lynx-red outline-none"
                        data-product-id="{{ prod.id }}">
@@ -167,7 +164,7 @@
           <tr class="border-b border-black/8">
             <th class="text-left py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Produkt{% else %}Product{% endif %}</th>
             <th class="text-center py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Menge{% else %}Qty{% endif %}</th>
-            <th class="text-right py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Preis/lfm{% else %}Price/lfm{% endif %}</th>
+            <th class="text-right py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Preis/Rolle{% else %}Price/roll{% endif %}</th>
             <th class="text-right py-3 font-semibold text-stone-dark">{% if locale == 'de' %}Gesamt{% else %}Total{% endif %}</th>
             <th class="w-10"></th>
           </tr>
