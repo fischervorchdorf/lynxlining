@@ -88,7 +88,9 @@ router.post('/shop/order', async (req, res) => {
         ORDER BY min_quantity DESC LIMIT 1
       `, [product.id, qty]);
 
-      const pricePerUnit = tiers.length ? parseFloat(tiers[0].price_per_unit) : 0;
+      // Produzentenpreis = Händlerpreis × 0.80 (20% Direktvorteil)
+      const haendlerPrice = tiers.length ? parseFloat(tiers[0].price_per_unit) : 0;
+      const pricePerUnit = Math.round(haendlerPrice * 0.80 * 100) / 100;
       const totalPrice = Math.round(qty * pricePerUnit * 100) / 100;
       totalAmount += totalPrice;
 

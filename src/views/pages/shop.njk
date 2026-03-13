@@ -30,11 +30,16 @@
             <h3 class="font-heading text-base font-bold text-stone-dark mb-1">{{ prod.name }}</h3>
             <p class="text-xs text-stone mb-4 flex-1">{{ prod.short_description }}</p>
 
-            {# Rollenpreis #}
-            {% set rollPrice = prod.price_tiers[0].price_per_unit if prod.price_tiers.length else '0' %}
+            {# Rollenpreis (Produzentenpreis = 80% vom Händlerpreis) #}
+            {% set haendlerPrice = prod.price_tiers[0].price_per_unit if prod.price_tiers.length else '0' %}
+            {% set directPrice = (haendlerPrice | float * 0.80) %}
             <div class="bg-[#FAFAF9] rounded-xl p-4 mb-3 text-center">
-              <span class="text-2xl font-extrabold text-stone-dark">{{ rollPrice | replace(".", ",") }} €</span>
+              <span class="text-2xl font-extrabold text-lynx-red">{{ "%.2f" | format(directPrice) | replace(".", ",") }} €</span>
               <span class="text-xs text-stone ml-1">{{ t('shop_page.per_roll') }}</span>
+              <div class="mt-1">
+                <span class="text-xs text-stone/50 italic line-through">{{ haendlerPrice | replace(".", ",") }} €</span>
+                <span class="text-xs text-stone/50 italic ml-1">{{ t('shop_page.dealer_price') }}</span>
+              </div>
             </div>
 
             {# Rollendaten Toggle #}
@@ -388,6 +393,9 @@
 // ===== WARENKORB =====
 let cart = JSON.parse(localStorage.getItem('lynxCart') || '[]');
 
+// Produzentenpreis = Händlerpreis × 0.80 (20% Direktvorteil)
+const DIRECT_DISCOUNT = 0.80;
+
 function getApplicablePrice(tiers, quantity) {
   let price = tiers[0] ? parseFloat(tiers[0].price_per_unit) : 0;
   for (const tier of tiers) {
@@ -395,7 +403,7 @@ function getApplicablePrice(tiers, quantity) {
       price = parseFloat(tier.price_per_unit);
     }
   }
-  return price;
+  return Math.round(price * DIRECT_DISCOUNT * 100) / 100;
 }
 
 function addToCart(productEl) {

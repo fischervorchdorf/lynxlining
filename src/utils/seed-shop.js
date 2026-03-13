@@ -1,21 +1,25 @@
 /**
  * Seed-Script: Shop-Produkte für den LYNX Lining Webshop
- * Mit echten Preisen basierend auf VK-Handel/m² × 1,515m Bahnbreite
+ * Preise basierend auf VK-Handel/m² × m²/Rolle = Händlerpreis/Rolle
+ * Der Webshop zeigt den Produzentenpreis (80% vom Händlerpreis) an.
+ * Die 20%-Reduktion wird im Frontend (shop.njk) und Backend (api.js) berechnet.
  * Ausführen: node src/utils/seed-shop.js
  */
 require('dotenv').config();
 const db = require('../config/database');
 
-// Hilfsfunktion: Preis pro Rolle = VK-Handel/m² × m²/Rolle
+// Hilfsfunktion: Händlerpreis pro Rolle = VK-Handel/m² × m²/Rolle
+// ACHTUNG: In DB wird der Händlerpreis gespeichert.
+// Der Produzentenpreis (80%) wird in shop.njk und api.js berechnet.
 function rollPrice(pricePerSqm, sqmPerRoll) {
   return Math.round(pricePerSqm * sqmPerRoll * 100) / 100;
 }
 
-// Hilfsfunktion: Staffelpreise pro Rolle (aktuell nur 1 Stufe, 0% Rabatt)
+// Staffelpreise pro Rolle — aktuell nur 1 Stufe (Händlerpreis)
 function calcTiers(pricePerSqm, sqmPerRoll) {
   const base = rollPrice(pricePerSqm, sqmPerRoll);
   return [
-    { min: 1, price: base }  // Einzelrollenpreis, kein Rabatt
+    { min: 1, price: base }  // Händlerpreis, Webshop zeigt 80% davon
   ];
 }
 
