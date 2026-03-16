@@ -213,53 +213,50 @@ async function runMigrations() {
       )
     `);
 
-    // UNIQUE KEY für product_translations sicherstellen (fehlte ursprünglich)
-    try {
-      const [ptKeys] = await db.query(`SHOW INDEX FROM product_translations WHERE Key_name = 'uq_product_locale'`);
-      if (!ptKeys.length) {
-        // Erst Duplikate entfernen, dann UNIQUE KEY anlegen
-        await db.query(`
-          DELETE pt1 FROM product_translations pt1
-          INNER JOIN product_translations pt2
-          WHERE pt1.id > pt2.id AND pt1.product_id = pt2.product_id AND pt1.locale = pt2.locale
-        `);
-        await db.query(`ALTER TABLE product_translations ADD UNIQUE KEY uq_product_locale (product_id, locale)`);
-        console.log('✓ UNIQUE KEY für product_translations angelegt');
+    // ===== UNIQUE KEYS für alle Tabellen sicherstellen =====
+    // Ohne UNIQUE KEY funktioniert ON DUPLICATE KEY UPDATE nicht!
+
+    // 1. Haupttabellen: UNIQUE KEY auf slug
+    for (const table of ['products', 'advantages', 'applications']) {
+      try {
+        const [keys] = await db.query(`SHOW INDEX FROM ${table} WHERE Key_name = 'uq_slug'`);
+        if (!keys.length) {
+          // Duplikate entfernen (behalte niedrigste ID pro slug)
+          await db.query(`
+            DELETE t1 FROM ${table} t1
+            INNER JOIN ${table} t2
+            WHERE t1.id > t2.id AND t1.slug = t2.slug
+          `);
+          await db.query(`ALTER TABLE ${table} ADD UNIQUE KEY uq_slug (slug)`);
+          console.log(`✓ UNIQUE KEY (slug) für ${table} angelegt`);
+        }
+      } catch (e) {
+        console.warn(`${table} UNIQUE KEY:`, e.message);
       }
-    } catch (e) {
-      console.warn('product_translations UNIQUE KEY:', e.message);
     }
 
-    // UNIQUE KEY für advantage_translations sicherstellen
-    try {
-      const [atKeys] = await db.query(`SHOW INDEX FROM advantage_translations WHERE Key_name = 'uq_advantage_locale'`);
-      if (!atKeys.length) {
-        await db.query(`
-          DELETE at1 FROM advantage_translations at1
-          INNER JOIN advantage_translations at2
-          WHERE at1.id > at2.id AND at1.advantage_id = at2.advantage_id AND at1.locale = at2.locale
-        `);
-        await db.query(`ALTER TABLE advantage_translations ADD UNIQUE KEY uq_advantage_locale (advantage_id, locale)`);
-        console.log('✓ UNIQUE KEY für advantage_translations angelegt');
+    // 2. Übersetzungstabellen: UNIQUE KEY auf (parent_id, locale)
+    const translationTables = [
+      { table: 'product_translations', parentCol: 'product_id', keyName: 'uq_product_locale' },
+      { table: 'advantage_translations', parentCol: 'advantage_id', keyName: 'uq_advantage_locale' },
+      { table: 'application_translations', parentCol: 'application_id', keyName: 'uq_application_locale' }
+    ];
+    for (const { table, parentCol, keyName } of translationTables) {
+      try {
+        const [keys] = await db.query(`SHOW INDEX FROM ${table} WHERE Key_name = '${keyName}'`);
+        if (!keys.length) {
+          // Duplikate entfernen - behalte die Zeile MIT Inhalt (höchste ID, da Seed-Updates neuere Daten haben)
+          await db.query(`
+            DELETE t1 FROM ${table} t1
+            INNER JOIN ${table} t2
+            WHERE t1.id < t2.id AND t1.${parentCol} = t2.${parentCol} AND t1.locale = t2.locale
+          `);
+          await db.query(`ALTER TABLE ${table} ADD UNIQUE KEY ${keyName} (${parentCol}, locale)`);
+          console.log(`✓ UNIQUE KEY für ${table} angelegt`);
+        }
+      } catch (e) {
+        console.warn(`${table} UNIQUE KEY:`, e.message);
       }
-    } catch (e) {
-      console.warn('advantage_translations UNIQUE KEY:', e.message);
-    }
-
-    // UNIQUE KEY für application_translations sicherstellen
-    try {
-      const [appKeys] = await db.query(`SHOW INDEX FROM application_translations WHERE Key_name = 'uq_application_locale'`);
-      if (!appKeys.length) {
-        await db.query(`
-          DELETE at1 FROM application_translations at1
-          INNER JOIN application_translations at2
-          WHERE at1.id > at2.id AND at1.application_id = at2.application_id AND at1.locale = at2.locale
-        `);
-        await db.query(`ALTER TABLE application_translations ADD UNIQUE KEY uq_application_locale (application_id, locale)`);
-        console.log('✓ UNIQUE KEY für application_translations angelegt');
-      }
-    } catch (e) {
-      console.warn('application_translations UNIQUE KEY:', e.message);
     }
 
     console.log('✓ DB-Migrationen erfolgreich');
