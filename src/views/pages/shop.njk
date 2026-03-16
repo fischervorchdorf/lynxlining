@@ -5,21 +5,23 @@
 {# ===== HERO ===== #}
 <section class="bg-gradient-to-br from-stone-dark to-[#1a1c1e] py-12 lg:py-20">
   <div class="max-w-7xl mx-auto px-6 lg:px-10 text-center">
-    <span class="inline-block px-5 py-2 bg-lynx-red/15 text-lynx-red text-xs font-bold tracking-widest uppercase rounded-full mb-3">{{ t('nav.shop') }}</span>
     <h1 class="font-heading text-3xl lg:text-5xl font-extrabold text-white leading-tight">{{ t('shop_page.title') }}</h1>
     <p class="text-base text-white/60 max-w-2xl mx-auto mt-3">{{ t('shop_page.subtitle') }}</p>
   </div>
 </section>
 
 {# ===== STANDARD PRODUKTE ===== #}
-<section id="standard" class="max-w-7xl mx-auto px-6 lg:px-10 -mt-8 relative z-10 pb-8">
-  <div class="mb-8">
+<section class="bg-gradient-to-br from-stone-dark to-[#1a1c1e] py-12 lg:py-20">
+  <div class="max-w-7xl mx-auto px-6 lg:px-10">
     <div class="inline-flex items-center gap-3 bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl px-6 py-3">
       <span class="font-heading text-lg lg:text-xl font-extrabold text-white tracking-wide">LYNX Lining Standard</span>
       <span class="w-px h-5 bg-white/25"></span>
       <span class="text-sm text-white/70 font-medium">{{ t('shop_page.roll_material') }}</span>
     </div>
   </div>
+</section>
+
+<section id="standard" class="max-w-7xl mx-auto px-6 lg:px-10 -mt-8 relative z-10 pb-8">
   <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
     {% for prod in products %}
       {% if not prod.price_on_request %}
@@ -86,6 +88,9 @@
   </div>
   <p class="text-center text-xs text-stone/60 mt-6 mb-4">{{ t('shop_page.ex_works') }}</p>
 </section>
+
+{# ===== WEISSER ZWISCHENBALKEN ===== #}
+<div class="bg-white py-6"></div>
 
 {# ===== ROLLENABMESSUNGEN ===== #}
 <section class="max-w-7xl mx-auto px-6 lg:px-10 pb-10">
