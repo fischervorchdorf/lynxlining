@@ -14,7 +14,7 @@ const impressumDE = `
 <h3>Angaben gemäß § 5 ECG und Offenlegung gemäß § 25 MedienG</h3>
 
 <p><strong>LYNX Lining</strong><br>
-Ing. Kurt Haidecker<br>
+Ing. Martin F. Heidecker<br>
 Schillerstraße 13<br>
 4020 Linz<br>
 Österreich</p>
@@ -59,7 +59,7 @@ const impressumEN = `
 <h3>Information pursuant to § 5 ECG (Austrian E-Commerce Act) and Disclosure pursuant to § 25 MedienG (Austrian Media Act)</h3>
 
 <p><strong>LYNX Lining</strong><br>
-Ing. Kurt Haidecker<br>
+Ing. Martin F. Heidecker<br>
 Schillerstraße 13<br>
 4020 Linz<br>
 Austria</p>
@@ -105,7 +105,7 @@ const datenschutzDE = `
 
 <h3>1. Verantwortlicher</h3>
 <p><strong>LYNX Lining</strong><br>
-Ing. Kurt Haidecker<br>
+Ing. Martin F. Heidecker<br>
 Schillerstraße 13<br>
 4020 Linz, Österreich<br>
 E-Mail: <a href="mailto:office@lynx-lining.com">office@lynx-lining.com</a></p>
@@ -199,7 +199,7 @@ const datenschutzEN = `
 
 <h3>1. Controller</h3>
 <p><strong>LYNX Lining</strong><br>
-Ing. Kurt Haidecker<br>
+Ing. Martin F. Heidecker<br>
 Schillerstraße 13<br>
 4020 Linz, Austria<br>
 Email: <a href="mailto:office@lynx-lining.com">office@lynx-lining.com</a></p>
@@ -290,7 +290,7 @@ const agbDE = `
 <h2>Allgemeine Geschäftsbedingungen (AGB)</h2>
 
 <h3>1. Geltungsbereich</h3>
-<p>Diese Allgemeinen Geschäftsbedingungen gelten für alle Geschäftsbeziehungen zwischen LYNX Lining (Ing. Kurt Haidecker, Schillerstraße 13, 4020 Linz, Österreich) – nachfolgend „Verkäufer" – und dem Kunden – nachfolgend „Käufer". Abweichende Geschäftsbedingungen des Käufers werden nicht anerkannt, es sei denn, der Verkäufer stimmt ihrer Geltung ausdrücklich schriftlich zu.</p>
+<p>Diese Allgemeinen Geschäftsbedingungen gelten für alle Geschäftsbeziehungen zwischen LYNX Lining (Ing. Martin F. Heidecker, Schillerstraße 13, 4020 Linz, Österreich) – nachfolgend „Verkäufer" – und dem Kunden – nachfolgend „Käufer". Abweichende Geschäftsbedingungen des Käufers werden nicht anerkannt, es sei denn, der Verkäufer stimmt ihrer Geltung ausdrücklich schriftlich zu.</p>
 
 <h3>2. Vertragsschluss</h3>
 <p>Bestellungen über den Online-Shop oder per E-Mail stellen ein Angebot des Käufers zum Abschluss eines Kaufvertrages dar. Der Vertrag kommt erst durch die schriftliche Auftragsbestätigung des Verkäufers zustande. Die Darstellung der Produkte im Online-Shop stellt kein rechtlich bindendes Angebot dar.</p>
@@ -319,7 +319,7 @@ const agbDE = `
 <div style="border:1px solid #ccc;padding:15px;margin:10px 0;background:#f9f9f9;">
 <p><strong>An:</strong><br>
 LYNX Lining<br>
-Ing. Kurt Haidecker<br>
+Ing. Martin F. Heidecker<br>
 Schillerstraße 13, 4020 Linz, Österreich<br>
 E-Mail: office@lynx-lining.com</p>
 <p>Hiermit widerrufe(n) ich/wir (*) den von mir/uns (*) abgeschlossenen Vertrag über den Kauf der folgenden Waren (*):</p>
@@ -349,7 +349,7 @@ const agbEN = `
 <h2>General Terms and Conditions</h2>
 
 <h3>1. Scope of Application</h3>
-<p>These General Terms and Conditions apply to all business relationships between LYNX Lining (Ing. Kurt Haidecker, Schillerstraße 13, 4020 Linz, Austria) – hereinafter referred to as "Seller" – and the customer – hereinafter referred to as "Buyer". Deviating terms and conditions of the Buyer are not recognized unless the Seller expressly agrees to their validity in writing.</p>
+<p>These General Terms and Conditions apply to all business relationships between LYNX Lining (Ing. Martin F. Heidecker, Schillerstraße 13, 4020 Linz, Austria) – hereinafter referred to as "Seller" – and the customer – hereinafter referred to as "Buyer". Deviating terms and conditions of the Buyer are not recognized unless the Seller expressly agrees to their validity in writing.</p>
 
 <h3>2. Conclusion of Contract</h3>
 <p>Orders via the online shop or by email constitute an offer by the Buyer to conclude a purchase contract. The contract is only concluded upon written order confirmation by the Seller. The presentation of products in the online shop does not constitute a legally binding offer.</p>
@@ -378,7 +378,7 @@ const agbEN = `
 <div style="border:1px solid #ccc;padding:15px;margin:10px 0;background:#f9f9f9;">
 <p><strong>To:</strong><br>
 LYNX Lining<br>
-Ing. Kurt Haidecker<br>
+Ing. Martin F. Heidecker<br>
 Schillerstraße 13, 4020 Linz, Austria<br>
 Email: office@lynx-lining.com</p>
 <p>I/We (*) hereby withdraw from the contract concluded by me/us (*) for the purchase of the following goods (*):</p>

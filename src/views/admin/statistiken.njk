@@ -1,0 +1,392 @@
+{% extends "layouts/admin.njk" %}
+
+{% block admin_content %}
+
+{# Zeitraum Filter #}
+<div class="flex items-center gap-2 mb-6">
+  <span class="text-sm text-stone font-medium">Zeitraum:</span>
+  <div class="flex bg-white rounded-lg border border-black/10 overflow-hidden">
+    <button onclick="setDays(7)" data-days="7" class="days-btn px-4 py-2 text-sm font-medium transition-colors">7 Tage</button>
+    <button onclick="setDays(30)" data-days="30" class="days-btn px-4 py-2 text-sm font-medium transition-colors bg-[#D64545] text-white">30 Tage</button>
+    <button onclick="setDays(90)" data-days="90" class="days-btn px-4 py-2 text-sm font-medium transition-colors">90 Tage</button>
+  </div>
+</div>
+
+{# Übersichtskarten #}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <div class="bg-white rounded-xl p-6 border border-black/5 shadow-sm">
+    <div class="flex justify-between items-start">
+      <div>
+        <p class="text-sm text-stone font-medium">Heute</p>
+        <p class="text-3xl font-bold text-[#1E1E1E] mt-1" id="stat-today-views">–</p>
+      </div>
+      <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center">
+        <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+      </div>
+    </div>
+    <p class="text-xs text-stone mt-2"><span id="stat-today-unique">–</span> unique</p>
+  </div>
+
+  <div class="bg-white rounded-xl p-6 border border-black/5 shadow-sm">
+    <div class="flex justify-between items-start">
+      <div>
+        <p class="text-sm text-stone font-medium" id="label-period">Letzte 30 Tage</p>
+        <p class="text-3xl font-bold text-[#1E1E1E] mt-1" id="stat-period-views">–</p>
+      </div>
+      <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center">
+        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+      </div>
+    </div>
+    <p class="text-xs text-stone mt-2"><span id="stat-period-unique">–</span> unique</p>
+  </div>
+
+  <div class="bg-white rounded-xl p-6 border border-black/5 shadow-sm">
+    <div class="flex justify-between items-start">
+      <div>
+        <p class="text-sm text-stone font-medium">Gesamt</p>
+        <p class="text-3xl font-bold text-[#1E1E1E] mt-1" id="stat-total-views">–</p>
+      </div>
+      <div class="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center">
+        <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4"/></svg>
+      </div>
+    </div>
+    <p class="text-xs text-stone mt-2"><span id="stat-total-unique">–</span> unique</p>
+  </div>
+
+  <div class="bg-white rounded-xl p-6 border border-black/5 shadow-sm">
+    <div class="flex justify-between items-start">
+      <div>
+        <p class="text-sm text-stone font-medium">Durchschnitt/Tag</p>
+        <p class="text-3xl font-bold text-[#1E1E1E] mt-1" id="stat-avg">–</p>
+      </div>
+      <div class="w-10 h-10 bg-orange-50 rounded-lg flex items-center justify-center">
+        <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+      </div>
+    </div>
+    <p class="text-xs text-stone mt-2">Seitenaufrufe</p>
+  </div>
+</div>
+
+{# Charts Row 1: Tägliche Zugriffe #}
+<div class="bg-white rounded-xl border border-black/5 shadow-sm mb-8">
+  <div class="px-6 py-4 border-b border-black/5">
+    <h2 class="font-bold text-[#1E1E1E]">Tägliche Zugriffe</h2>
+  </div>
+  <div class="p-6">
+    <canvas id="chart-daily" height="100"></canvas>
+  </div>
+</div>
+
+{# Charts Row 2: Seiten + Geräte #}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+  <div class="bg-white rounded-xl border border-black/5 shadow-sm">
+    <div class="px-6 py-4 border-b border-black/5">
+      <h2 class="font-bold text-[#1E1E1E]">Top Seiten</h2>
+    </div>
+    <div class="p-6">
+      <canvas id="chart-pages" height="200"></canvas>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl border border-black/5 shadow-sm">
+    <div class="px-6 py-4 border-b border-black/5">
+      <h2 class="font-bold text-[#1E1E1E]">Gerätetypen</h2>
+    </div>
+    <div class="p-6 flex justify-center">
+      <div style="max-width:300px;width:100%">
+        <canvas id="chart-devices"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+{# Row 3: Browser + OS #}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+  <div class="bg-white rounded-xl border border-black/5 shadow-sm">
+    <div class="px-6 py-4 border-b border-black/5">
+      <h2 class="font-bold text-[#1E1E1E]">Browser</h2>
+    </div>
+    <div class="p-6">
+      <canvas id="chart-browsers" height="150"></canvas>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl border border-black/5 shadow-sm">
+    <div class="px-6 py-4 border-b border-black/5">
+      <h2 class="font-bold text-[#1E1E1E]">Betriebssysteme</h2>
+    </div>
+    <div class="p-6">
+      <canvas id="chart-os" height="150"></canvas>
+    </div>
+  </div>
+</div>
+
+{# Row 4: Länder + Referrer #}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <div class="bg-white rounded-xl border border-black/5 shadow-sm">
+    <div class="px-6 py-4 border-b border-black/5">
+      <h2 class="font-bold text-[#1E1E1E]">Länder</h2>
+    </div>
+    <div class="divide-y divide-black/5" id="table-countries">
+      <div class="px-6 py-8 text-center text-stone text-sm">Lade...</div>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-xl border border-black/5 shadow-sm">
+    <div class="px-6 py-4 border-b border-black/5">
+      <h2 class="font-bold text-[#1E1E1E]">Herkunft (Referrer)</h2>
+    </div>
+    <div class="divide-y divide-black/5" id="table-referrers">
+      <div class="px-6 py-8 text-center text-stone text-sm">Lade...</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script>
+const COLORS = {
+  primary: '#D64545',
+  primaryLight: 'rgba(214, 69, 69, 0.1)',
+  blue: '#3B82F6',
+  blueLight: 'rgba(59, 130, 246, 0.1)',
+  green: '#22C55E',
+  amber: '#F59E0B',
+  purple: '#8B5CF6',
+  gray: '#9CA3AF'
+};
+
+const CHART_COLORS = ['#D64545', '#3B82F6', '#22C55E', '#F59E0B', '#8B5CF6', '#EC4899', '#14B8A6', '#F97316', '#6366F1', '#84CC16'];
+
+let currentDays = 30;
+let charts = {};
+
+const COUNTRY_NAMES = {
+  AT: 'Österreich', DE: 'Deutschland', CH: 'Schweiz', US: 'USA', GB: 'Großbritannien',
+  FR: 'Frankreich', IT: 'Italien', ES: 'Spanien', NL: 'Niederlande', BE: 'Belgien',
+  PL: 'Polen', CZ: 'Tschechien', SK: 'Slowakei', HU: 'Ungarn', RO: 'Rumänien',
+  SE: 'Schweden', NO: 'Norwegen', DK: 'Dänemark', FI: 'Finnland', PT: 'Portugal',
+  RU: 'Russland', CN: 'China', JP: 'Japan', KR: 'Südkorea', IN: 'Indien',
+  BR: 'Brasilien', AU: 'Australien', CA: 'Kanada', MX: 'Mexiko', TR: 'Türkei',
+  ZA: 'Südafrika', AE: 'VAE', SA: 'Saudi-Arabien', CL: 'Chile', AR: 'Argentinien',
+  SI: 'Slowenien', HR: 'Kroatien', RS: 'Serbien', BG: 'Bulgarien', UA: 'Ukraine',
+  GR: 'Griechenland', IE: 'Irland', LU: 'Luxemburg', LI: 'Liechtenstein'
+};
+
+function countryName(code) {
+  return COUNTRY_NAMES[code] || code;
+}
+
+function countryFlag(code) {
+  if (!code || code.length !== 2) return '';
+  return String.fromCodePoint(...[...code.toUpperCase()].map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
+}
+
+function setDays(d) {
+  currentDays = d;
+  document.querySelectorAll('.days-btn').forEach(btn => {
+    btn.classList.remove('bg-[#D64545]', 'text-white');
+    if (parseInt(btn.dataset.days) === d) {
+      btn.classList.add('bg-[#D64545]', 'text-white');
+    }
+  });
+  document.getElementById('label-period').textContent = 'Letzte ' + d + ' Tage';
+  loadAll();
+}
+
+async function fetchJSON(url) {
+  const res = await fetch(url);
+  return res.json();
+}
+
+function destroyChart(name) {
+  if (charts[name]) { charts[name].destroy(); charts[name] = null; }
+}
+
+async function loadOverview() {
+  const data = await fetchJSON('/admin/api/stats/overview?days=' + currentDays);
+  document.getElementById('stat-today-views').textContent = data.today.views.toLocaleString('de');
+  document.getElementById('stat-today-unique').textContent = data.today.unique_visitors.toLocaleString('de');
+  document.getElementById('stat-period-views').textContent = data.period.views.toLocaleString('de');
+  document.getElementById('stat-period-unique').textContent = data.period.unique_visitors.toLocaleString('de');
+  document.getElementById('stat-total-views').textContent = data.total.views.toLocaleString('de');
+  document.getElementById('stat-total-unique').textContent = data.total.unique_visitors.toLocaleString('de');
+  const avg = currentDays > 0 ? Math.round(data.period.views / currentDays) : 0;
+  document.getElementById('stat-avg').textContent = avg.toLocaleString('de');
+}
+
+async function loadDaily() {
+  const data = await fetchJSON('/admin/api/stats/daily?days=' + currentDays);
+  const labels = data.map(r => {
+    const d = new Date(r.date);
+    return d.getDate() + '.' + (d.getMonth() + 1) + '.';
+  });
+  destroyChart('daily');
+  charts.daily = new Chart(document.getElementById('chart-daily'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Seitenaufrufe',
+          data: data.map(r => r.views),
+          borderColor: COLORS.primary,
+          backgroundColor: COLORS.primaryLight,
+          fill: true,
+          tension: 0.3,
+          pointRadius: 2
+        },
+        {
+          label: 'Unique Visitors',
+          data: data.map(r => r.unique_visitors),
+          borderColor: COLORS.blue,
+          backgroundColor: COLORS.blueLight,
+          fill: true,
+          tension: 0.3,
+          pointRadius: 2
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'top' } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    }
+  });
+}
+
+async function loadPages() {
+  const data = await fetchJSON('/admin/api/stats/pages?days=' + currentDays);
+  const top10 = data.slice(0, 10);
+  destroyChart('pages');
+  charts.pages = new Chart(document.getElementById('chart-pages'), {
+    type: 'bar',
+    data: {
+      labels: top10.map(r => r.path.length > 30 ? r.path.substring(0, 30) + '...' : r.path),
+      datasets: [{
+        label: 'Aufrufe',
+        data: top10.map(r => r.views),
+        backgroundColor: COLORS.primary,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { x: { beginAtZero: true, ticks: { precision: 0 } } }
+    }
+  });
+}
+
+async function loadDevices() {
+  const data = await fetchJSON('/admin/api/stats/devices?days=' + currentDays);
+
+  // Gerätetypen Doughnut
+  const deviceLabels = { desktop: 'Desktop', mobile: 'Mobil', tablet: 'Tablet' };
+  destroyChart('devices');
+  charts.devices = new Chart(document.getElementById('chart-devices'), {
+    type: 'doughnut',
+    data: {
+      labels: data.devices.map(r => deviceLabels[r.device_type] || r.device_type),
+      datasets: [{
+        data: data.devices.map(r => r.count),
+        backgroundColor: [COLORS.primary, COLORS.blue, COLORS.amber],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom' } }
+    }
+  });
+
+  // Browser
+  destroyChart('browsers');
+  charts.browsers = new Chart(document.getElementById('chart-browsers'), {
+    type: 'bar',
+    data: {
+      labels: data.browsers.map(r => r.browser),
+      datasets: [{
+        label: 'Zugriffe',
+        data: data.browsers.map(r => r.count),
+        backgroundColor: CHART_COLORS,
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    }
+  });
+
+  // OS
+  destroyChart('os');
+  charts.os = new Chart(document.getElementById('chart-os'), {
+    type: 'bar',
+    data: {
+      labels: data.systems.map(r => r.os),
+      datasets: [{
+        label: 'Zugriffe',
+        data: data.systems.map(r => r.count),
+        backgroundColor: CHART_COLORS.slice(3),
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    }
+  });
+}
+
+async function loadCountries() {
+  const data = await fetchJSON('/admin/api/stats/countries?days=' + currentDays);
+  const el = document.getElementById('table-countries');
+  if (!data.length) {
+    el.innerHTML = '<div class="px-6 py-8 text-center text-stone text-sm">Keine Daten</div>';
+    return;
+  }
+  el.innerHTML = data.map(r => `
+    <div class="px-6 py-3 flex justify-between items-center">
+      <div>
+        <span class="mr-2">${countryFlag(r.country)}</span>
+        <span class="text-sm font-medium text-[#1E1E1E]">${countryName(r.country)}</span>
+      </div>
+      <div class="text-right">
+        <span class="text-sm font-bold text-[#1E1E1E]">${r.views.toLocaleString('de')}</span>
+        <span class="text-xs text-stone ml-2">${r.unique_visitors} unique</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function loadReferrers() {
+  const data = await fetchJSON('/admin/api/stats/referrers?days=' + currentDays);
+  const el = document.getElementById('table-referrers');
+  if (!data.length) {
+    el.innerHTML = '<div class="px-6 py-8 text-center text-stone text-sm">Keine Daten</div>';
+    return;
+  }
+  el.innerHTML = data.map(r => `
+    <div class="px-6 py-3 flex justify-between items-center">
+      <span class="text-sm font-medium text-[#1E1E1E]">${r.source}</span>
+      <span class="text-sm font-bold text-[#1E1E1E]">${r.views.toLocaleString('de')}</span>
+    </div>
+  `).join('');
+}
+
+function loadAll() {
+  loadOverview();
+  loadDaily();
+  loadPages();
+  loadDevices();
+  loadCountries();
+  loadReferrers();
+}
+
+loadAll();
+</script>
+
+{% endblock %}

@@ -737,4 +737,116 @@ router.post('/fotos/delete', requireAuth, async (req, res) => {
   res.redirect('/admin/fotos');
 });
 
+// ===== STATISTIKEN =====
+router.get('/statistiken', requireAuth, async (req, res) => {
+  res.render('admin/statistiken.njk', {
+    title: 'Statistiken',
+    adminPage: 'statistiken'
+  });
+});
+
+// API: Übersicht
+router.get('/api/stats/overview', requireAuth, async (req, res) => {
+  const days = parseInt(req.query.days) || 30;
+  try {
+    const [[todayViews]] = await db.query(
+      `SELECT COUNT(*) as views, COUNT(DISTINCT ip_hash) as unique_visitors FROM page_views WHERE DATE(created_at) = CURDATE()`
+    );
+    const [[periodViews]] = await db.query(
+      `SELECT COUNT(*) as views, COUNT(DISTINCT ip_hash) as unique_visitors FROM page_views WHERE created_at >= DATE_SUB(NOW(), INTERVAL ? DAY)`, [days]
+    );
+    const [[totalViews]] = await db.query(
+      `SELECT COUNT(*) as views, COUNT(DISTINCT ip_hash) as unique_visitors FROM page_views`
+    );
+    res.json({
+      today: todayViews,
+      period: { ...periodViews, days },
+      total: totalViews
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// API: Tägliche Zugriffe
+router.get('/api/stats/daily', requireAuth, async (req, res) => {
+  const days = parseInt(req.query.days) || 30;
+  try {
+    const [rows] = await db.query(
+      `SELECT DATE(created_at) as date, COUNT(*) as views, COUNT(DISTINCT ip_hash) as unique_visitors
+       FROM page_views WHERE created_at >= DATE_SUB(NOW(), INTERVAL ? DAY)
+       GROUP BY DATE(created_at) ORDER BY date ASC`, [days]
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// API: Top Seiten
+router.get('/api/stats/pages', requireAuth, async (req, res) => {
+  const days = parseInt(req.query.days) || 30;
+  try {
+    const [rows] = await db.query(
+      `SELECT path, COUNT(*) as views, COUNT(DISTINCT ip_hash) as unique_visitors
+       FROM page_views WHERE created_at >= DATE_SUB(NOW(), INTERVAL ? DAY)
+       GROUP BY path ORDER BY views DESC LIMIT 20`, [days]
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// API: Länder
+router.get('/api/stats/countries', requireAuth, async (req, res) => {
+  const days = parseInt(req.query.days) || 30;
+  try {
+    const [rows] = await db.query(
+      `SELECT country, COUNT(*) as views, COUNT(DISTINCT ip_hash) as unique_visitors
+       FROM page_views WHERE created_at >= DATE_SUB(NOW(), INTERVAL ? DAY) AND country IS NOT NULL
+       GROUP BY country ORDER BY views DESC LIMIT 20`, [days]
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// API: Geräte / Browser / OS
+router.get('/api/stats/devices', requireAuth, async (req, res) => {
+  const days = parseInt(req.query.days) || 30;
+  try {
+    const [devices] = await db.query(
+      `SELECT device_type, COUNT(*) as count FROM page_views WHERE created_at >= DATE_SUB(NOW(), INTERVAL ? DAY) GROUP BY device_type ORDER BY count DESC`, [days]
+    );
+    const [browsers] = await db.query(
+      `SELECT browser, COUNT(*) as count FROM page_views WHERE created_at >= DATE_SUB(NOW(), INTERVAL ? DAY) GROUP BY browser ORDER BY count DESC LIMIT 10`, [days]
+    );
+    const [systems] = await db.query(
+      `SELECT os, COUNT(*) as count FROM page_views WHERE created_at >= DATE_SUB(NOW(), INTERVAL ? DAY) GROUP BY os ORDER BY count DESC LIMIT 10`, [days]
+    );
+    res.json({ devices, browsers, systems });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// API: Referrer
+router.get('/api/stats/referrers', requireAuth, async (req, res) => {
+  const days = parseInt(req.query.days) || 30;
+  try {
+    const [rows] = await db.query(
+      `SELECT
+         CASE WHEN referrer = '' THEN 'Direkt' ELSE SUBSTRING_INDEX(SUBSTRING_INDEX(REPLACE(REPLACE(referrer, 'https://', ''), 'http://', ''), '/', 1), '?', 1) END as source,
+         COUNT(*) as views
+       FROM page_views WHERE created_at >= DATE_SUB(NOW(), INTERVAL ? DAY)
+       GROUP BY source ORDER BY views DESC LIMIT 20`, [days]
+    );
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;

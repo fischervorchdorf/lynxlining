@@ -69,6 +69,7 @@
     <span class="inline-block px-5 py-2 bg-lynx-red/8 text-lynx-red text-xs font-bold tracking-widest uppercase rounded-full mb-5">{{ t('sections.applications') }}</span>
     <h2 class="font-heading text-4xl lg:text-5xl font-extrabold text-stone-dark leading-tight">{{ t('sections.applications_title') }}</h2>
     <p class="text-lg text-stone max-w-2xl mx-auto mt-4">{{ t('sections.applications_subtitle') }}</p>
+    <p class="text-base text-stone max-w-3xl mx-auto mt-3">{{ t('sections.applications_intro') }}</p>
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -90,12 +91,12 @@
     {% else %}
       {# Statische Fallback-Daten wenn DB nicht verfügbar #}
       {% set staticApps = [
-        { title: "Bergbau", desc: "Aufgabebunker, Förderbänder und Übergabestellen für höchste Beanspruchung", img: "/images/applications/application_bergbau.jpg" },
-        { title: "Industrie", desc: "Verschleißschutz für Materialtransport, Staubabsaugung und Schleifmittel", img: "/images/applications/application_industrie1.jpg" },
-        { title: "Recycling", desc: "Baurestmassen, Zuschlagstoffaufbereitung und Recycling-Anlagen", img: "/images/applications/application_recycling.jpg" },
-        { title: "Schüttgut", desc: "Trichterauskleidung, Übergabestellen und Förderbandabdichtung", img: "/images/applications/application_schuettgut.jpg" },
-        { title: "Schienenfahrzeuge", desc: "Speziallösungen für den Schienenverkehr und Transportfahrzeuge", img: "/images/applications/application_schienen.jpg" },
-        { title: "Maschinen- & Anlagenbau", desc: "Übergabestellen, Recyclinganlagen und individuelle Maschinenauskleidung", img: "/images/applications/application_maschinen.jpg" }
+        { title: "Schüttgutaufbereitung", desc: "Auskleidung von Trichtern, Verschleißschutz bei Übergabepunkten, Abdichtungen bei Förderbändern, Staubkapselung", img: "/images/applications/application_schuettgut.jpg" },
+        { title: "Bergbau", desc: "Aufgabebunker, hochabrasive, feuchte und klebrige Materialien", img: "/images/applications/application_bergbau.jpg" },
+        { title: "Industrie", desc: "Verschleißauskleidung für feste, staubförmige und flüssige Materialförderung, Schleifstaubabsaugungen, Förderbänder mit Aufpanzerung, Oberflächenschutz", img: "/images/applications/application_industrie1.jpg" },
+        { title: "Maschinen- und Anlagenbau", desc: "Übergabepunkte und Verkleidungen in der Betonproduktion, Aufgabetrichter bei verschiedenen Recyclinganlagen", img: "/images/applications/application_maschinen.jpg" },
+        { title: "Recycling & Aufbereitung", desc: "Recycling und Aufbereitung von Bauschutt, Gesteinsmaterial für Kiesproduktion und andere organische Stoffe", img: "/images/applications/application_recycling.jpg" },
+        { title: "Schienenfahrzeuge & Transportwirtschaft", desc: "Verschleißauskleidung für Schienenbearbeitungszüge (Schotterbunker und Silos), Auskleidungen für Kippermulden und Kehrmaschinen", img: "/images/applications/application_schienen.jpg" }
       ] %}
       {% for app in staticApps %}
         <div class="group card-hover bg-white rounded-2xl overflow-hidden shadow-md border border-black/4">
@@ -125,12 +126,12 @@
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
     {% set staticAdvantages = [
-      { icon: "🛡️", title: "Extrem verschleißfest", desc: "Bis zu 30x längere Lebensdauer als herkömmliche Verschleißschutzmaterialien" },
-      { icon: "🔇", title: "Schalldämpfend", desc: "Erhebliche Reduzierung der Lärmbelastung beim Materialtransport" },
-      { icon: "🌸", title: "Anti-Haft", desc: "Materialanbackungen werden zuverlässig verhindert – weniger Stillstand" },
-      { icon: "📈", title: "Vibrationsreduktion", desc: "Spürbare Dämpfung von Vibrationen für längere Anlagenlebensdauer" },
-      { icon: "♻️", title: "100% recyclebar", desc: "Nachhaltiger Verschleißschutz – vollständig wiederverwertbar" },
-      { icon: "🇦🇹", title: "Made in Austria", desc: "Höchste Qualität durch Produktion in Österreich" }
+      { icon: "🛡️", title: "Verschleißfest", desc: "Unsere LYNX Lining Produkte überzeugen durch eine enorme Verschleißfestigkeit, welche die Lebensdauer und die Kosteneinsparungen jeweils positiv verstärken." },
+      { icon: "🔇", title: "Schalldämpfung", desc: "Durch Verwendung unserer LYNX Lining Produkte können bestehende Lärmemissionen um bis zu 21 DB reduziert werden." },
+      { icon: "🌸", title: "Anti-Haft", desc: "Kein Verkleben mehr von Förderrinnen oder LKW-Kippern. Die Antihafteigenschaft ist auch bekannt als „Lotuseffekt"." },
+      { icon: "📈", title: "Vibrationsreduktion", desc: "Vibrationen werden durch die Beschichtung mit LYNX Lining Produkten deutlich vermindert. Dadurch hält Ihre Produktionsausrüstung um ein vielfaches länger." },
+      { icon: "♻️", title: "100% recyclebar", desc: "Unsere Produkte werden in Österreich mit höchster Qualität produziert und sind zu 100 % recyclebar, was einen enormen Vorteil für unsere Umwelt darstellt." },
+      { icon: "🇦🇹", title: "Made in Austria", desc: "Höchste Qualität durch Produktion in Österreich." }
     ] %}
     {% set advList = advantages if advantages.length else staticAdvantages %}
 

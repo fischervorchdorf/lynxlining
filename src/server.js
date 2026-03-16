@@ -6,6 +6,7 @@ const session = require('express-session');
 const helmet = require('helmet');
 const compression = require('compression');
 const { i18n } = require('./middleware/i18n');
+const analyticsMiddleware = require('./middleware/analytics');
 const db = require('./config/database');
 
 const app = express();
@@ -77,6 +78,9 @@ app.use((req, res, next) => {
   res.locals.session = req.session || {};
   next();
 });
+
+// Analytics Tracking (vor Routes, nach Session)
+app.use(analyticsMiddleware);
 
 // Routes
 const publicRoutes = require('./routes/index');
@@ -183,6 +187,29 @@ async function runMigrations() {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         INDEX idx_read (is_read),
         INDEX idx_created (created_at DESC)
+      )
+    `);
+
+    // Analytics: page_views Tabelle
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS page_views (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        path VARCHAR(500) NOT NULL,
+        method VARCHAR(10) DEFAULT 'GET',
+        status_code INT,
+        country VARCHAR(100),
+        city VARCHAR(200),
+        device_type ENUM('desktop','tablet','mobile') DEFAULT 'desktop',
+        browser VARCHAR(100),
+        os VARCHAR(100),
+        referrer VARCHAR(1000),
+        language VARCHAR(10),
+        session_id VARCHAR(255),
+        ip_hash VARCHAR(64),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        INDEX idx_created_at (created_at),
+        INDEX idx_path (path(191)),
+        INDEX idx_country (country)
       )
     `);
 

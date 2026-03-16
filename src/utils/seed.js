@@ -36,28 +36,28 @@ async function seed() {
   // ===== ANWENDUNGSBEREICHE =====
   const applications = [
     { slug: 'schuettgut', img: '/images/applications/application_schuettgut.jpg', sort: 1,
-      de: { title: 'Schüttgutaufbereitung', description: 'Trichterauskleidung, Übergabestellen, Förderbandabdichtung und Staubkapselung' },
-      en: { title: 'Bulk Material Processing', description: 'Hopper lining, transfer points, conveyor belt sealing and dust encapsulation' }
+      de: { title: 'Schüttgutaufbereitung', description: 'Auskleidung von Trichtern, Verschleißschutz bei Übergabepunkten, Abdichtungen bei Förderbändern, Staubkapselung' },
+      en: { title: 'Solid Bulk Material Processing', description: 'Lining of funnels, wear protection of interconnection points, seal gasket for conveyor belts, dust containment' }
     },
     { slug: 'bergbau', img: '/images/applications/application_bergbau.jpg', sort: 2,
-      de: { title: 'Bergbau', description: 'Aufgabebunker, Förderbänder und Übergabestellen für höchste Beanspruchung bei hoch abrasiven Materialien' },
-      en: { title: 'Mining', description: 'Feed bunkers, conveyor belts and transfer points for highest demands with highly abrasive materials' }
+      de: { title: 'Bergbau', description: 'Aufgabebunker, hochabrasive, feuchte und klebrige Materialien' },
+      en: { title: 'Mining', description: 'Feed bunker, highly abrasive, damp and sticky materials' }
     },
     { slug: 'industrie', img: '/images/applications/application_industrie1.jpg', sort: 3,
-      de: { title: 'Industrie', description: 'Verschleißschutz für Materialtransport, Schleifstaub-Absaugung und industrielle Anwendungen' },
-      en: { title: 'Industry', description: 'Wear protection for material transport, grinding dust extraction and industrial applications' }
+      de: { title: 'Industrie', description: 'Verschleißauskleidung für feste, staubförmige und flüssige Materialförderung, Schleifstaubabsaugungen, Förderbänder mit Aufpanzerung, Oberflächenschutz' },
+      en: { title: 'Industry', description: 'Wear protection for solid, powdered and liquid material transportation, abrasive dust suction unit, conveyor belts with armouring, surface protection' }
     },
     { slug: 'maschinen', img: '/images/applications/application_maschinen.jpg', sort: 4,
-      de: { title: 'Maschinen- und Anlagenbau', description: 'Übergabestellen, Recyclinganlagen und individuelle Maschinenauskleidung' },
-      en: { title: 'Machinery & Plant Construction', description: 'Transfer points, recycling equipment and individual machine lining' }
+      de: { title: 'Maschinen- und Anlagenbau', description: 'Übergabepunkte und Verkleidungen in der Betonproduktion, Aufgabetrichter bei verschiedenen Recyclinganlagen' },
+      en: { title: 'Mechanical & Plant Engineering', description: 'Interconnection points and wear linings in concrete production, feed hoppers for all kinds of recycling equipment' }
     },
     { slug: 'recycling', img: '/images/applications/application_recycling.jpg', sort: 5,
-      de: { title: 'Recycling & Aufbereitung', description: 'Baurestmassen, Zuschlagstoffaufbereitung und Recycling-Anlagen' },
-      en: { title: 'Recycling & Processing', description: 'Construction waste, aggregate processing and recycling plants' }
+      de: { title: 'Recycling & Aufbereitung', description: 'Recycling und Aufbereitung von Bauschutt, Gesteinsmaterial für Kiesproduktion und andere organische Stoffe' },
+      en: { title: 'Recycling & Processing', description: 'Recycling and processing of construction waste, rock material for gravel production and other organic substances' }
     },
     { slug: 'schienen', img: '/images/applications/application_schienen.jpg', sort: 6,
-      de: { title: 'Schienenfahrzeuge', description: 'Speziallösungen für den Schienenverkehr und Transportfahrzeuge' },
-      en: { title: 'Rail Vehicles', description: 'Special solutions for rail transport and transport vehicles' }
+      de: { title: 'Schienenfahrzeuge & Transportwirtschaft', description: 'Verschleißauskleidung für Schienenbearbeitungszüge (Schotterbunker und Silos), Auskleidungen für Kippermulden und Kehrmaschinen' },
+      en: { title: 'Rail Vehicles & Transport Industry', description: 'Wear-resistant liner for railway maintenance machines (gravel bunker and silos), lining for dumper and street sweepers' }
     }
   ];
 
@@ -76,28 +76,28 @@ async function seed() {
   // ===== VORTEILE =====
   const advantages = [
     { slug: 'verschleissfest', icon: '/images/advantages/verschleissfest.png', sort: 1,
-      de: { title: 'Extrem verschleißfest', description: 'Bis zu 30x längere Lebensdauer als herkömmliche Verschleißschutzmaterialien' },
-      en: { title: 'Extremely wear-resistant', description: 'Up to 30x longer service life than conventional wear protection materials' }
+      de: { title: 'Verschleißfest', description: 'Unsere LYNX Lining Produkte überzeugen durch eine enorme Verschleißfestigkeit, welche die Lebensdauer und die Kosteneinsparungen jeweils positiv verstärken.' },
+      en: { title: 'Wear Resistance', description: 'Our LYNX Lining products impress with enormous wear resistance, which positively enhances both service life and cost savings.' }
     },
     { slug: 'schalldaempfung', icon: '/images/advantages/schalldaempfung.png', sort: 2,
-      de: { title: 'Schalldämpfend', description: 'Erhebliche Reduzierung der Lärmbelastung beim Materialtransport' },
-      en: { title: 'Sound dampening', description: 'Significant reduction of noise pollution during material transport' }
+      de: { title: 'Schalldämpfung', description: 'Durch Verwendung unserer LYNX Lining Produkte können bestehende Lärmemissionen um bis zu 21 DB reduziert werden.' },
+      en: { title: 'Noise Protection', description: 'By using our LYNX Lining products, existing noise emissions can be reduced by up to 21 DB.' }
     },
     { slug: 'antihaft', icon: '/images/advantages/anithaft.png', sort: 3,
-      de: { title: 'Anti-Haft', description: 'Materialanbackungen werden zuverlässig verhindert – weniger Stillstand' },
-      en: { title: 'Anti-adhesion', description: 'Material build-up is reliably prevented – less downtime' }
+      de: { title: 'Anti-Haft', description: 'Kein Verkleben mehr von Förderrinnen oder LKW-Kippern. Die Antihafteigenschaft ist auch bekannt als „Lotuseffekt".' },
+      en: { title: 'Non-Stick', description: 'No more sticking of conveyor troughs or truck tippers. The non-stick property is also known as the "lotus effect".' }
     },
     { slug: 'vibration', icon: '/images/advantages/vibrations.png', sort: 4,
-      de: { title: 'Vibrationsreduktion', description: 'Spürbare Dämpfung von Vibrationen für längere Anlagenlebensdauer' },
-      en: { title: 'Vibration reduction', description: 'Noticeable dampening of vibrations for longer plant service life' }
+      de: { title: 'Vibrationsreduktion', description: 'Vibrationen werden durch die Beschichtung mit LYNX Lining Produkten deutlich vermindert. Dadurch hält Ihre Produktionsausrüstung um ein vielfaches länger.' },
+      en: { title: 'Reduction of Vibrations', description: 'Vibrations are significantly reduced by coating with LYNX Lining products. This means your production equipment lasts many times longer.' }
     },
     { slug: 'recyclebar', icon: '/images/advantages/recyclebar.png', sort: 5,
-      de: { title: '100% recyclebar', description: 'Nachhaltiger Verschleißschutz – vollständig wiederverwertbar' },
-      en: { title: '100% recyclable', description: 'Sustainable wear protection – fully recyclable' }
+      de: { title: '100% recyclebar', description: 'Unsere Produkte werden in Österreich mit höchster Qualität produziert und sind zu 100 % recyclebar, was einen enormen Vorteil für unsere Umwelt darstellt.' },
+      en: { title: '100% Recyclability', description: 'Our products are manufactured in Austria with the highest quality and are 100% recyclable, which represents an enormous advantage for our environment.' }
     },
     { slug: 'made-in-austria', icon: '/images/icons/made_in_austria.png', sort: 6,
-      de: { title: 'Made in Austria', description: 'Höchste Qualität durch Produktion in Österreich' },
-      en: { title: 'Made in Austria', description: 'Highest quality through production in Austria' }
+      de: { title: 'Made in Austria', description: 'Höchste Qualität durch Produktion in Österreich.' },
+      en: { title: 'Made in Austria', description: 'Highest quality through production in Austria.' }
     }
   ];
 
