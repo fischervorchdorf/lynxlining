@@ -22,18 +22,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
 
-// LinkedIn-Bilder: separater Ordner (wird ins Git committet, überlebt Redeploys)
-const linkedinDir = path.join(__dirname, '..', 'public', 'images', 'linkedin');
-if (!fs.existsSync(linkedinDir)) fs.mkdirSync(linkedinDir, { recursive: true });
-
-const linkedinStorage = multer.diskStorage({
-  destination: (req, file, cb) => { cb(null, linkedinDir); },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    cb(null, Date.now() + '-' + Math.random().toString(36).substring(7) + ext);
-  }
-});
-const linkedinUpload = multer({ storage: linkedinStorage, limits: { fileSize: 10 * 1024 * 1024 } });
+// LinkedIn-Bilder: gleicher uploads-Ordner (persistiert via Coolify Volume)
+const linkedinUpload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
 
 // ============================================================
 // AUTH
@@ -387,7 +377,7 @@ router.get('/linkedin/:id', requireAuth, async (req, res) => {
 router.post('/linkedin', requireAuth, linkedinUpload.single('image'), async (req, res) => {
   try {
     const { linkedin_url, slug, author_name, title_de, excerpt_de, content_de, title_en, excerpt_en, content_en, is_visible, sort_order } = req.body;
-    const imagePath = req.file ? '/images/linkedin/' + req.file.filename : '';
+    const imagePath = req.file ? '/images/uploads/' + req.file.filename : '';
     const autoSlug = slug || (title_de || '').toLowerCase().replace(/[äöüß]/g, m => ({ä:'ae',ö:'oe',ü:'ue',ß:'ss'}[m]||m)).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 80);
 
     const [result] = await db.query(
@@ -413,7 +403,7 @@ router.post('/linkedin/:id', requireAuth, linkedinUpload.single('image'), async 
 
     // Bild: Neues Upload > bestehendes Bild > bisheriges in DB behalten
     if (req.file) {
-      const imagePath = '/images/linkedin/' + req.file.filename;
+      const imagePath = '/images/uploads/' + req.file.filename;
       await db.query(
         'UPDATE linkedin_posts SET slug = ?, linkedin_url = ?, image_path = ?, author_name = ?, is_visible = ?, sort_order = ? WHERE id = ?',
         [autoSlug, linkedin_url || '', imagePath, author_name || 'Martin F. Heidecker', is_visible ? 1 : 0, sort_order || 0, req.params.id]
@@ -660,7 +650,8 @@ function getImageCategories() {
     { key: 'products', label: 'Produkte', dir: 'products', accept: 'image/*' },
     { key: 'gallery', label: 'Galerie', dir: 'gallery', accept: 'image/*' },
     { key: 'testimonials', label: 'Kundenstimmen', dir: 'testimonials', accept: 'image/*' },
-    { key: 'icons', label: 'Icons & Badges', dir: 'icons', accept: 'image/*' }
+    { key: 'icons', label: 'Icons & Badges', dir: 'icons', accept: 'image/*' },
+    { key: 'uploads', label: 'Uploads (persistent)', dir: 'uploads', accept: 'image/*' }
   ];
 
   for (const cat of categories) {
@@ -693,15 +684,28 @@ router.post('/fotos/replace', requireAuth, upload.single('new_image'), async (re
   if (!req.file) return res.redirect('/admin/fotos');
 
   const baseDir = path.join(__dirname, '..', 'public', 'images');
-  const oldPath = path.join(baseDir, category, old_filename);
 
-  // Altes Bild löschen (falls es nicht exakt derselbe Pfad ist, andernfalls direkt überschreiben)
-  // Neues Bild mit exakt demselben Dateinamen speichern, um Brüche zu vermeiden
-  const newFilename = old_filename; 
-  const newPath = path.join(baseDir, category, newFilename);
+  // Neues Bild bleibt in uploads/ (persistiert via Volume)
+  // Zusätzlich kopieren wir es auch in den Kategorie-Ordner (für sofortige Anzeige)
+  const categoryPath = path.join(baseDir, category, old_filename);
+  try {
+    fs.copyFileSync(req.file.path, categoryPath);
+  } catch (e) {
+    console.warn('Kopie in Kategorie-Ordner fehlgeschlagen:', e.message);
+  }
 
-  // Multer hat das File in uploads/ gespeichert, verschieben wir es
-  fs.renameSync(req.file.path, newPath);
+  // DB-Einträge aktualisieren: alle Referenzen auf das alte Bild auf den neuen uploads-Pfad umleiten
+  const oldImagePath = '/images/' + category + '/' + old_filename;
+  const newImagePath = '/images/uploads/' + req.file.filename;
+  try {
+    await db.query('UPDATE applications SET image_path = ? WHERE image_path = ?', [newImagePath, oldImagePath]);
+    await db.query('UPDATE advantages SET icon_path = ? WHERE icon_path = ?', [newImagePath, oldImagePath]);
+    await db.query('UPDATE shop_products SET image_path = ? WHERE image_path = ?', [newImagePath, oldImagePath]);
+    await db.query('UPDATE linkedin_posts SET image_path = ? WHERE image_path = ?', [newImagePath, oldImagePath]);
+    await db.query('UPDATE news_posts SET image_path = ? WHERE image_path = ?', [newImagePath, oldImagePath]);
+  } catch (e) {
+    console.warn('DB-Update bei Foto-Replace:', e.message);
+  }
 
   res.redirect('/admin/fotos?success=true');
 });
@@ -718,9 +722,13 @@ router.post('/fotos/upload', requireAuth, upload.single('new_image'), async (req
     fs.mkdirSync(targetDir, { recursive: true });
   }
 
-  // Multer hat das File in uploads/ gespeichert, verschieben wir es
-  const newPath = path.join(targetDir, req.file.filename);
-  fs.renameSync(req.file.path, newPath);
+  // Datei in Kategorie-Ordner kopieren (für sofortige Anzeige) UND in uploads/ belassen (für Persistenz)
+  const categoryPath = path.join(targetDir, req.file.filename);
+  try {
+    fs.copyFileSync(req.file.path, categoryPath);
+  } catch (e) {
+    console.warn('Kopie in Kategorie-Ordner fehlgeschlagen:', e.message);
+  }
 
   res.redirect('/admin/fotos?success=true');
 });

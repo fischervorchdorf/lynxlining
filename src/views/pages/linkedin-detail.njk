@@ -27,7 +27,8 @@
   {% if post.image_path %}
     <div class="mb-8 float-right ml-6 mb-4 w-64 lg:w-80">
       <div class="rounded-xl overflow-hidden shadow-md border border-black/5">
-        <img src="{{ post.image_path }}" alt="{{ post.title }}" class="w-full h-auto">
+        <img src="{{ post.image_path }}" alt="{{ post.title }}" class="w-full h-auto"
+             onerror="this.parentElement.parentElement.style.display='none'">
       </div>
     </div>
   {% endif %}
