@@ -63,7 +63,7 @@ async function seed() {
 
   for (const app of applications) {
     const [result] = await db.query(`INSERT INTO applications (slug, image_path, sort_order) VALUES (?, ?, ?)
-      ON DUPLICATE KEY UPDATE image_path = VALUES(image_path), sort_order = VALUES(sort_order)`,
+      ON DUPLICATE KEY UPDATE sort_order = VALUES(sort_order)`,
       [app.slug, app.img, app.sort]);
     const appId = result.insertId || (await db.query(`SELECT id FROM applications WHERE slug = ?`, [app.slug]))[0][0].id;
     await db.query(`INSERT INTO application_translations (application_id, locale, title, description) VALUES (?, 'de', ?, ?)
@@ -103,7 +103,7 @@ async function seed() {
 
   for (const adv of advantages) {
     const [result] = await db.query(`INSERT INTO advantages (slug, icon_path, sort_order) VALUES (?, ?, ?)
-      ON DUPLICATE KEY UPDATE icon_path = VALUES(icon_path), sort_order = VALUES(sort_order)`,
+      ON DUPLICATE KEY UPDATE sort_order = VALUES(sort_order)`,
       [adv.slug, adv.icon, adv.sort]);
     const advId = result.insertId || (await db.query(`SELECT id FROM advantages WHERE slug = ?`, [adv.slug]))[0][0].id;
     await db.query(`INSERT INTO advantage_translations (advantage_id, locale, title, description) VALUES (?, 'de', ?, ?)
@@ -131,7 +131,7 @@ async function seed() {
 
   for (const prod of products) {
     const [result] = await db.query(`INSERT INTO products (slug, image_path, sort_order) VALUES (?, ?, ?)
-      ON DUPLICATE KEY UPDATE image_path = VALUES(image_path), sort_order = VALUES(sort_order)`,
+      ON DUPLICATE KEY UPDATE sort_order = VALUES(sort_order)`,
       [prod.slug, prod.img, prod.sort]);
     const prodId = result.insertId || (await db.query(`SELECT id FROM products WHERE slug = ?`, [prod.slug]))[0][0].id;
     await db.query(`INSERT INTO product_translations (product_id, locale, title, subtitle, description) VALUES (?, 'de', ?, ?, ?)
