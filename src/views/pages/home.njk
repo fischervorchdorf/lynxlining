@@ -152,7 +152,7 @@
 </section>
 
 {# ===== LYNX LINING STEHT FÜR ===== #}
-<section class="bg-[#FAFAF9] py-24">
+<section class="bg-[#F0EFED] py-24">
   <div class="max-w-5xl mx-auto px-6 lg:px-10 text-center">
     <h2 class="font-heading text-2xl lg:text-3xl font-extrabold text-stone-dark mb-4">{{ t('sections.revolution_text') }}</h2>
     <img src="/images/logo/logo_lynx_large.png" alt="LYNX Lining" class="max-w-sm mx-auto my-10" loading="lazy">
@@ -253,7 +253,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="news-grid">
       {# Instagram Posts #}
       {% for post in instagramPosts %}
-        <div class="news-item card-hover rounded-2xl overflow-hidden bg-[#FAFAF9] border border-black/6" data-type="instagram">
+        <div class="news-item card-hover rounded-2xl overflow-hidden bg-[#F0EFED] border border-black/6" data-type="instagram">
           {% if post.local_image_path %}
             <img src="{{ post.local_image_path }}" alt="Instagram Post" class="w-full h-60 object-cover" loading="lazy">
           {% endif %}
@@ -267,7 +267,7 @@
 
       {# Firmen-News #}
       {% for news in newsPosts %}
-        <div class="news-item card-hover rounded-2xl overflow-hidden bg-[#FAFAF9] border border-black/6" data-type="company">
+        <div class="news-item card-hover rounded-2xl overflow-hidden bg-[#F0EFED] border border-black/6" data-type="company">
           {% if news.image_path %}
             <img src="{{ news.image_path }}" alt="{{ news.title }}" class="w-full h-60 object-cover" loading="lazy">
           {% endif %}
