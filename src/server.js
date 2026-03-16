@@ -213,49 +213,91 @@ async function runMigrations() {
       )
     `);
 
-    // ===== UNIQUE KEYS für alle Tabellen sicherstellen =====
+    // ===== DUPLIKAT-BEREINIGUNG & UNIQUE KEYS =====
     // Ohne UNIQUE KEY funktioniert ON DUPLICATE KEY UPDATE nicht!
+    // Strategie: Alle Duplikate + verwaiste Daten löschen, dann UNIQUE KEY anlegen, dann Seed füllt alles korrekt
 
-    // 1. Haupttabellen: UNIQUE KEY auf slug
-    for (const table of ['products', 'advantages', 'applications']) {
+    const mainTables = [
+      { table: 'products', transTable: 'product_translations', fkCol: 'product_id' },
+      { table: 'advantages', transTable: 'advantage_translations', fkCol: 'advantage_id' },
+      { table: 'applications', transTable: 'application_translations', fkCol: 'application_id' }
+    ];
+
+    for (const { table, transTable, fkCol } of mainTables) {
+      // 1. UNIQUE KEY auf slug (Haupttabelle)
       try {
         const [keys] = await db.query(`SHOW INDEX FROM ${table} WHERE Key_name = 'uq_slug'`);
         if (!keys.length) {
-          // Duplikate entfernen (behalte niedrigste ID pro slug)
-          await db.query(`
-            DELETE t1 FROM ${table} t1
-            INNER JOIN ${table} t2
-            WHERE t1.id > t2.id AND t1.slug = t2.slug
+          console.log(`Bereinige Duplikate in ${table}...`);
+
+          // Für jeden slug: behalte die ID die Übersetzungen hat, sonst die niedrigste
+          const [dupes] = await db.query(`
+            SELECT slug, COUNT(*) as cnt FROM ${table} GROUP BY slug HAVING cnt > 1
           `);
+
+          for (const dupe of dupes) {
+            // Finde alle IDs für diesen slug
+            const [rows] = await db.query(`SELECT id FROM ${table} WHERE slug = ? ORDER BY id`, [dupe.slug]);
+
+            // Finde welche ID Übersetzungen hat
+            const [withTrans] = await db.query(`
+              SELECT DISTINCT ${fkCol} as pid FROM ${transTable}
+              WHERE ${fkCol} IN (${rows.map(r => r.id).join(',')}) AND title IS NOT NULL AND title != ''
+            `);
+
+            // Behalte die ID mit Übersetzungen, oder die letzte (neueste)
+            const keepId = withTrans.length > 0 ? withTrans[0].pid : rows[rows.length - 1].id;
+            const deleteIds = rows.filter(r => r.id !== keepId).map(r => r.id);
+
+            if (deleteIds.length > 0) {
+              // Übersetzungen der zu löschenden IDs entfernen
+              await db.query(`DELETE FROM ${transTable} WHERE ${fkCol} IN (${deleteIds.join(',')})`);
+              // Duplikat-Zeilen entfernen
+              await db.query(`DELETE FROM ${table} WHERE id IN (${deleteIds.join(',')})`);
+              console.log(`  ${table}: slug="${dupe.slug}" - behalte ID ${keepId}, lösche IDs ${deleteIds.join(',')}`);
+            }
+          }
+
           await db.query(`ALTER TABLE ${table} ADD UNIQUE KEY uq_slug (slug)`);
           console.log(`✓ UNIQUE KEY (slug) für ${table} angelegt`);
         }
       } catch (e) {
         console.warn(`${table} UNIQUE KEY:`, e.message);
       }
-    }
 
-    // 2. Übersetzungstabellen: UNIQUE KEY auf (parent_id, locale)
-    const translationTables = [
-      { table: 'product_translations', parentCol: 'product_id', keyName: 'uq_product_locale' },
-      { table: 'advantage_translations', parentCol: 'advantage_id', keyName: 'uq_advantage_locale' },
-      { table: 'application_translations', parentCol: 'application_id', keyName: 'uq_application_locale' }
-    ];
-    for (const { table, parentCol, keyName } of translationTables) {
+      // 2. UNIQUE KEY auf (parent_id, locale) (Übersetzungstabelle)
       try {
-        const [keys] = await db.query(`SHOW INDEX FROM ${table} WHERE Key_name = '${keyName}'`);
+        const keyName = `uq_${fkCol.replace('_id', '')}_locale`;
+        const [keys] = await db.query(`SHOW INDEX FROM ${transTable} WHERE Key_name = '${keyName}'`);
         if (!keys.length) {
-          // Duplikate entfernen - behalte die Zeile MIT Inhalt (höchste ID, da Seed-Updates neuere Daten haben)
+          // Duplikate entfernen - behalte die Zeile MIT Inhalt (höchste ID = neueste Seed-Daten)
           await db.query(`
-            DELETE t1 FROM ${table} t1
-            INNER JOIN ${table} t2
-            WHERE t1.id < t2.id AND t1.${parentCol} = t2.${parentCol} AND t1.locale = t2.locale
+            DELETE t1 FROM ${transTable} t1
+            INNER JOIN ${transTable} t2
+            WHERE t1.id < t2.id AND t1.${fkCol} = t2.${fkCol} AND t1.locale = t2.locale
           `);
-          await db.query(`ALTER TABLE ${table} ADD UNIQUE KEY ${keyName} (${parentCol}, locale)`);
-          console.log(`✓ UNIQUE KEY für ${table} angelegt`);
+          await db.query(`ALTER TABLE ${transTable} ADD UNIQUE KEY ${keyName} (${fkCol}, locale)`);
+          console.log(`✓ UNIQUE KEY für ${transTable} angelegt`);
         }
       } catch (e) {
-        console.warn(`${table} UNIQUE KEY:`, e.message);
+        console.warn(`${transTable} UNIQUE KEY:`, e.message);
+      }
+    }
+
+    // 3. Verwaiste Einträge ohne Übersetzungen entfernen (werden vom Seed neu angelegt)
+    for (const { table, transTable, fkCol } of mainTables) {
+      try {
+        const [orphans] = await db.query(`
+          SELECT t.id, t.slug FROM ${table} t
+          LEFT JOIN ${transTable} tt ON t.id = tt.${fkCol}
+          WHERE tt.id IS NULL
+        `);
+        if (orphans.length > 0) {
+          await db.query(`DELETE FROM ${table} WHERE id IN (${orphans.map(o => o.id).join(',')})`);
+          console.log(`✓ ${orphans.length} verwaiste Einträge aus ${table} entfernt: ${orphans.map(o => o.slug).join(', ')}`);
+        }
+      } catch (e) {
+        console.warn(`Orphan cleanup ${table}:`, e.message);
       }
     }
 
