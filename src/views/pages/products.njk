@@ -21,10 +21,12 @@
           <div class="overflow-hidden">
             <img src="{{ prod.image_path }}" alt="{{ prod.title }}" class="img-zoom w-full h-64 object-cover" loading="lazy">
           </div>
-          <div class="p-8">
-            <span class="inline-block px-3 py-1 bg-lynx-red/8 text-lynx-red text-xs font-bold rounded-full uppercase tracking-wider mb-4">{{ prod.subtitle }}</span>
+          <div class="p-8 flex flex-col">
+            <div class="min-h-[3rem] mb-2 flex items-end">
+              <span class="inline-block px-3 py-1 bg-lynx-red/8 text-lynx-red text-xs font-bold rounded-full uppercase tracking-wider">{{ prod.subtitle }}</span>
+            </div>
             <h2 class="font-heading text-2xl font-bold text-stone-dark mb-3">{{ prod.title }}</h2>
-            <p class="text-stone leading-relaxed mb-6">{{ prod.description }}</p>
+            <p class="text-stone leading-relaxed mb-6 flex-1">{{ prod.description }}</p>
             <a href="/{{ locale }}/shop{% if 'comfort' in prod.slug or 'ultra' in prod.slug %}#comfort-ultra{% else %}#standard{% endif %}" class="btn-lift inline-flex items-center gap-2 px-6 py-3 bg-lynx-red text-white rounded-xl font-semibold text-sm shadow-md hover:bg-lynx-red-dark">
               {{ t('products_page.shop_cta') }} &rarr;
             </a>
