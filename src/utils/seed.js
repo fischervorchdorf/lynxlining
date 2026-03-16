@@ -215,10 +215,14 @@ async function seed() {
   console.log('✓ 1 Download (PDF)');
 
   console.log('\n✅ Seeding abgeschlossen! Alle Daten erfolgreich eingespielt.');
-  process.exit(0);
 }
 
-seed().catch(err => {
-  console.error('Seeding-Fehler:', err);
-  process.exit(1);
-});
+// Wenn direkt ausgeführt (node src/utils/seed.js), mit process.exit
+if (require.main === module) {
+  seed().then(() => process.exit(0)).catch(err => {
+    console.error('Seeding-Fehler:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = seed;

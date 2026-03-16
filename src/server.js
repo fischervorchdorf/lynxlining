@@ -268,7 +268,15 @@ async function runMigrations() {
   }
 }
 
-runMigrations();
+runMigrations().then(async () => {
+  // Seed nach Migrationen ausführen (idempotent, überschreibt keine Admin-Bilder)
+  try {
+    const seed = require('./utils/seed');
+    await seed();
+  } catch (e) {
+    console.warn('Seed-Warnung:', e.message);
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`LYNX Lining Server läuft auf http://localhost:${PORT}`);
