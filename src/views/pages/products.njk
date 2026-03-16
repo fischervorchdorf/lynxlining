@@ -16,6 +16,7 @@
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     {% if products.length %}
       {% for prod in products %}
+        {% if prod.title %}
         <div class="group bg-white rounded-2xl overflow-hidden shadow-lg border border-black/4 hover:-translate-y-2 transition-all duration-300">
           <div class="overflow-hidden">
             <img src="{{ prod.image_path }}" alt="{{ prod.title }}" class="img-zoom w-full h-64 object-cover" loading="lazy">
@@ -29,6 +30,7 @@
             </a>
           </div>
         </div>
+        {% endif %}
       {% endfor %}
     {% else %}
       {% set staticProducts = [
