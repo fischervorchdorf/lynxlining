@@ -6,303 +6,57 @@
 <section class="bg-gradient-to-br from-stone-dark to-[#1a1c1e] py-12 lg:py-20">
   <div class="max-w-7xl mx-auto px-6 lg:px-10 text-center">
     <span class="inline-block px-5 py-2 bg-lynx-red/15 text-lynx-red text-xs font-bold tracking-widest uppercase rounded-full mb-3">{{ t('nav.advantages') }}</span>
-    <h1 class="font-heading text-3xl lg:text-5xl font-extrabold text-white leading-tight">
-      {% if locale == 'de' %}Verlängern Sie die Lebensdauer Ihres Equipments{% else %}Expand the Lifetime of Your Equipment{% endif %}
-    </h1>
-    <p class="text-base lg:text-lg text-white/60 max-w-3xl mx-auto mt-4">
-      {% if locale == 'de' %}Entwickelt für optimale Verschleißleistung und Langlebigkeit von hoch beanspruchten Ausrüstungsgegenständen.{% else %}Engineered for optimally wear-resistance and longevity of heavy-duty equipment.{% endif %}
-    </p>
+    <h1 class="font-heading text-3xl lg:text-5xl font-extrabold text-white leading-tight">{{ t('advantages_page.title') }}</h1>
+    <p class="text-base text-white/60 max-w-2xl mx-auto mt-3">{{ t('advantages_page.subtitle') }}</p>
   </div>
 </section>
 
-{# ===== KEY NUMBERS ===== #}
-<section class="max-w-7xl mx-auto px-6 lg:px-10 -mt-8 relative z-10 pb-16">
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-    <div class="bg-white rounded-2xl p-6 lg:p-8 shadow-lg border border-black/4 text-center">
-      <div class="font-heading text-4xl lg:text-5xl font-extrabold text-lynx-red mb-2">30x</div>
-      <p class="text-stone text-sm">{% if locale == 'de' %}längere Lebensdauer{% else %}longer lifespan{% endif %}</p>
-    </div>
-    <div class="bg-white rounded-2xl p-6 lg:p-8 shadow-lg border border-black/4 text-center">
-      <div class="font-heading text-4xl lg:text-5xl font-extrabold text-lynx-red mb-2">-21 dB</div>
-      <p class="text-stone text-sm">{% if locale == 'de' %}Lärmreduktion{% else %}noise reduction{% endif %}</p>
-    </div>
-    <div class="bg-white rounded-2xl p-6 lg:p-8 shadow-lg border border-black/4 text-center">
-      <div class="font-heading text-4xl lg:text-5xl font-extrabold text-lynx-red mb-2">-50%</div>
-      <p class="text-stone text-sm">{% if locale == 'de' %}Vibrationen{% else %}vibrations{% endif %}</p>
-    </div>
-    <div class="bg-white rounded-2xl p-6 lg:p-8 shadow-lg border border-black/4 text-center">
-      <div class="font-heading text-4xl lg:text-5xl font-extrabold text-lynx-red mb-2">1/6</div>
-      <p class="text-stone text-sm">{% if locale == 'de' %}Gewicht vs. Stahl{% else %}weight vs. steel{% endif %}</p>
-    </div>
+{# ===== VORTEILE GRID ===== #}
+<section class="max-w-7xl mx-auto px-6 lg:px-10 -mt-8 relative z-10 pb-24">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    {% set staticAdvantages = [
+      { icon: "🛡️", title: "Verschleißfest", desc: "Unsere LYNX Lining Produkte überzeugen durch eine enorme Verschleißfestigkeit, welche die Lebensdauer und die Kosteneinsparungen jeweils positiv verstärken." },
+      { icon: "🔇", title: "Schalldämpfung", desc: "Durch Verwendung unserer LYNX Lining Produkte können bestehende Lärmemissionen um bis zu 21 DB reduziert werden." },
+      { icon: "🌸", title: "Anti-Haft", desc: "Kein Verkleben mehr von Förderrinnen oder LKW-Kippern. Die Antihafteigenschaft ist auch bekannt als ‚Lotuseffekt'." },
+      { icon: "📈", title: "Vibrationsreduktion", desc: "Vibrationen werden durch die Beschichtung mit LYNX Lining Produkten deutlich vermindert. Dadurch hält Ihre Produktionsausrüstung um ein vielfaches länger." },
+      { icon: "♻️", title: "100% recyclebar", desc: "Unsere Produkte werden in Österreich mit höchster Qualität produziert und sind zu 100 % recyclebar, was einen enormen Vorteil für unsere Umwelt darstellt." },
+      { icon: "🇦🇹", title: "Made in Austria", desc: "Höchste Qualität durch Produktion in Österreich." }
+    ] %}
+    {% set advList = advantages if advantages.length else staticAdvantages %}
+
+    {% for adv in advList %}
+      <div class="bg-white rounded-2xl p-10 shadow-lg border border-black/4 hover:-translate-y-2 transition-all duration-300">
+        <div class="w-16 h-16 bg-lynx-red/8 rounded-2xl flex items-center justify-center mx-auto mb-6 text-3xl">
+          {% if adv.icon_path %}
+            <img src="{{ adv.icon_path }}" alt="{{ adv.title }}" class="w-10 h-10">
+          {% else %}
+            {{ adv.icon }}
+          {% endif %}
+        </div>
+        <h3 class="font-heading text-xl font-bold text-stone-dark mb-4 text-center">{{ adv.title }}</h3>
+        <p class="text-stone leading-relaxed text-center">{{ adv.desc or adv.description }}</p>
+      </div>
+    {% endfor %}
   </div>
 </section>
 
-{# ===== HAUPTVORTEILE - ABWECHSELND ===== #}
-<section class="pb-16">
-
-  {# --- Verschleißreduktion --- #}
-  <div class="bg-white py-16 lg:py-20">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div>
-          <span class="inline-block px-4 py-1.5 bg-lynx-red/8 text-lynx-red text-xs font-bold rounded-full uppercase tracking-wider mb-4">
-            {% if locale == 'de' %}Verschleißreduktion{% else %}Wear Reduction{% endif %}
-          </span>
-          <h2 class="font-heading text-2xl lg:text-3xl font-extrabold text-stone-dark mb-6">
-            {% if locale == 'de' %}Bis zu 30x längere Lebensdauer{% else %}Up to 30x Longer Lifespan{% endif %}
-          </h2>
-          <p class="text-stone leading-relaxed mb-6">
-            {% if locale == 'de' %}Im Vergleich zu herkömmlichen Materialien (Gummi, Hardox, Stahl) z.B. 20x längere Lebensdauer als Gummi, bis 20x länger als Mn-Stahl bei Korngrößen &gt; 40 mm - 50 mm. 10x längere Lebensdauer als Hardox, 5x längere Lebensdauer als Gieß-PU.{% else %}In comparison to conventional materials (rubber, hardened steel, ordinary steel) for example 20x longer lifespan than rubber, up to 20x longer than Mn-steel at particle size 40 mm - 50 mm. 10x longer lifespan than Hardox / hardened steel, 5x longer lifespan than cast-PU.{% endif %}
-          </p>
-          <p class="text-stone-dark font-medium leading-relaxed">
-            {% if locale == 'de' %}Weniger Stillstände aufgrund geringer Wartungsarbeiten, höhere Produktivität, weniger Betriebskosten (Anlagen werden effizienter) = mehr GEWINN!{% else %}Less downtime due to less maintenance work required, higher productivity, less operating costs accordingly (equipment is more efficient) = more PROFIT!{% endif %}
-          </p>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div class="bg-[#FAFAF9] rounded-xl p-5 border border-black/4 text-center">
-            <div class="font-heading text-2xl font-extrabold text-lynx-red">20x</div>
-            <p class="text-xs text-stone mt-1">{% if locale == 'de' %}vs. Gummi{% else %}vs. rubber{% endif %}</p>
-          </div>
-          <div class="bg-[#FAFAF9] rounded-xl p-5 border border-black/4 text-center">
-            <div class="font-heading text-2xl font-extrabold text-lynx-red">20x</div>
-            <p class="text-xs text-stone mt-1">{% if locale == 'de' %}vs. Mn-Stahl{% else %}vs. Mn-steel{% endif %}</p>
-          </div>
-          <div class="bg-[#FAFAF9] rounded-xl p-5 border border-black/4 text-center">
-            <div class="font-heading text-2xl font-extrabold text-lynx-red">10x</div>
-            <p class="text-xs text-stone mt-1">vs. Hardox</p>
-          </div>
-          <div class="bg-[#FAFAF9] rounded-xl p-5 border border-black/4 text-center">
-            <div class="font-heading text-2xl font-extrabold text-lynx-red">5x</div>
-            <p class="text-xs text-stone mt-1">{% if locale == 'de' %}vs. Gieß-PU{% else %}vs. cast-PU{% endif %}</p>
-          </div>
-        </div>
-      </div>
+{# ===== WEITERE VORTEILE LISTE ===== #}
+<section class="bg-white py-24">
+  <div class="max-w-4xl mx-auto px-6 lg:px-10">
+    <div class="text-center mb-16">
+      <h2 class="font-heading text-3xl lg:text-4xl font-extrabold text-stone-dark">{{ t('advantages_page.benefits_title') }}</h2>
     </div>
-  </div>
-
-  {# --- Antihafteigenschaft --- #}
-  <div class="bg-[#FAFAF9] py-16 lg:py-20">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div class="lg:order-2">
-          <span class="inline-block px-4 py-1.5 bg-lynx-red/8 text-lynx-red text-xs font-bold rounded-full uppercase tracking-wider mb-4">
-            {% if locale == 'de' %}Antihafteigenschaft{% else %}Non-Stick Properties{% endif %}
-          </span>
-          <h2 class="font-heading text-2xl lg:text-3xl font-extrabold text-stone-dark mb-6">
-            {% if locale == 'de' %}Kein Verkleben mehr{% else %}No More Sticking{% endif %}
-          </h2>
-          <p class="text-stone leading-relaxed">
-            {% if locale == 'de' %}Einfach zu reinigen, sehr gute Gleiteigenschaften. Anbackungen sind mit LYNX Lining ausgeschlossen. Egal ob nasser Lehm oder Phosphor transportiert wird - durch die Antihafteigenschaft verliert man keine unnötige Zeit mehr, um das Transportgut von der Ladefläche zu bekommen.{% else %}Easy to clean, excellent slide properties. Freezing or bake on of materials is with LYNX Lining impossible. Regardless of wet brickearth or phosphor which is transported - due to the non-stick properties you will not lose needless time anymore, by cleaning up sticky material from loading platform.{% endif %}
-          </p>
-        </div>
-        <div class="lg:order-1 flex justify-center">
-          <div class="bg-white rounded-2xl p-10 shadow-lg border border-black/4 text-center max-w-sm">
-            <div class="text-6xl mb-4">🌸</div>
-            <h3 class="font-heading text-lg font-bold text-stone-dark mb-2">{% if locale == 'de' %}Lotuseffekt{% else %}Lotus Effect{% endif %}</h3>
-            <p class="text-stone text-sm">{% if locale == 'de' %}Keine Anbackungen, keine Verstopfungen, kein Stillstand{% else %}No build-up, no clogging, no downtime{% endif %}</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {% for benefit in t('advantages_page.benefits') %}
+        <div class="flex items-start gap-4 p-5 bg-[#FAFAF9] rounded-xl border border-black/4">
+          <div class="flex-shrink-0 w-8 h-8 bg-lynx-red/10 rounded-lg flex items-center justify-center">
+            <svg class="w-4 h-4 text-lynx-red" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/>
+            </svg>
           </div>
+          <span class="text-stone-dark font-medium">{{ benefit }}</span>
         </div>
-      </div>
-    </div>
-  </div>
-
-  {# --- Lärmreduktion --- #}
-  <div class="bg-white py-16 lg:py-20">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div>
-          <span class="inline-block px-4 py-1.5 bg-lynx-red/8 text-lynx-red text-xs font-bold rounded-full uppercase tracking-wider mb-4">
-            {% if locale == 'de' %}Lärmreduktion{% else %}Noise Reduction{% endif %}
-          </span>
-          <h2 class="font-heading text-2xl lg:text-3xl font-extrabold text-stone-dark mb-6">
-            {% if locale == 'de' %}-21 dB Lärmreduktion{% else %}-21 dB Noise Reduction{% endif %}
-          </h2>
-          <p class="text-stone leading-relaxed mb-6">
-            {% if locale == 'de' %}LYNX Linings reduzieren den Geräuschpegel signifikant. Lärmmessungen haben dies in Tests nachgewiesen z.B. -21 dB mit LYNX Linings im Vergleich zu Stahloberfläche.{% else %}LYNX Linings reduce the noise level significant. Noise measurements has shown these circumstances in tests. For example -21 dB noise reduction with LYNX Linings in comparison to steel surface.{% endif %}
-          </p>
-          <p class="text-stone leading-relaxed">
-            {% if locale == 'de' %}Weniger Lärmbelastung in der Produktion und bessere Arbeitsbedingungen für die Mitarbeiter. Arbeitsmedizinische Auflagen können leichter eingehalten werden. Zusätzlicher USP im Verkauf - leisere Anlagen als z.B. von Mitbewerbern.{% else %}Less noise load caused in the production and as result better working conditions for staff. Terms of safety for employees can be met easier. Additional USP for manufacturer in sales - less noisy equipment as for example from the competitor.{% endif %}
-          </p>
-        </div>
-        <div class="flex justify-center">
-          <div class="relative">
-            <div class="w-48 h-48 rounded-full bg-lynx-red/5 flex items-center justify-center">
-              <div class="w-36 h-36 rounded-full bg-lynx-red/10 flex items-center justify-center">
-                <div class="text-center">
-                  <div class="font-heading text-4xl font-extrabold text-lynx-red">-21</div>
-                  <div class="text-sm font-bold text-stone-dark">dB</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {# --- Vibrationsreduktion --- #}
-  <div class="bg-[#FAFAF9] py-16 lg:py-20">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div class="lg:order-2">
-          <span class="inline-block px-4 py-1.5 bg-lynx-red/8 text-lynx-red text-xs font-bold rounded-full uppercase tracking-wider mb-4">
-            {% if locale == 'de' %}Vibrationsreduktion{% else %}Reduction of Vibrations{% endif %}
-          </span>
-          <h2 class="font-heading text-2xl lg:text-3xl font-extrabold text-stone-dark mb-6">
-            {% if locale == 'de' %}Nahezu 50% weniger Vibrationen{% else %}Almost 50% Less Vibrations{% endif %}
-          </h2>
-          <p class="text-stone leading-relaxed mb-6">
-            {% if locale == 'de' %}LYNX Linings reduzieren die Vibrationen um nahezu 50%. Sehr großer Vorteil für Mensch (Gesundheit) und Maschine bzw. Ausrüstung da Vibrationen auf Dauer die Ausrüstung zerstören.{% else %}Vibrations can be reduced almost 50% by use of LYNX Linings. Huge advantage for human (health care) and machine respective equipment, because vibrations can destroy it in the long run.{% endif %}
-          </p>
-          <p class="text-stone leading-relaxed">
-            {% if locale == 'de' %}Gesetzliche Auflagen hinsichtlich Arbeitsmedizin in Bezug auf Gesundheitsschutz können so leichter erfüllt werden. Manche Länder haben diesbezüglich schon sehr hohe Standards vorgegeben.{% else %}Legal terms on behalf of occupational health can be fulfilled hereby easier. Some countries have in this regard have already set very high standards.{% endif %}
-          </p>
-        </div>
-        <div class="lg:order-1 flex justify-center">
-          <div class="relative">
-            <div class="w-48 h-48 rounded-full bg-lynx-red/5 flex items-center justify-center">
-              <div class="w-36 h-36 rounded-full bg-lynx-red/10 flex items-center justify-center">
-                <div class="text-center">
-                  <div class="font-heading text-4xl font-extrabold text-lynx-red">-50</div>
-                  <div class="text-sm font-bold text-stone-dark">%</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {# --- Gewichtsreduktion --- #}
-  <div class="bg-white py-16 lg:py-20">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div>
-          <span class="inline-block px-4 py-1.5 bg-lynx-red/8 text-lynx-red text-xs font-bold rounded-full uppercase tracking-wider mb-4">
-            {% if locale == 'de' %}Gewichtsreduktion{% else %}Reduction of Weight{% endif %}
-          </span>
-          <h2 class="font-heading text-2xl lg:text-3xl font-extrabold text-stone-dark mb-6">
-            {% if locale == 'de' %}Weniger als 1/6 vom Gewicht{% else %}Less Than 1/6 of the Weight{% endif %}
-          </h2>
-          <p class="text-stone leading-relaxed mb-6">
-            {% if locale == 'de' %}Durch die extreme Beständigkeit von LYNX Linings im Vergleich zu herkömmlichen Gummi, kann die Dicke von LYNX Linings wesentlich geringer gewählt werden. So z.B. ca. 1/4 im Vergleich zu herkömmlichen Verschleißgummi. LYNX Lining (1,2 kg/dm&sup3;) hat weniger als 1/6 vom Gewicht im Vergleich zu Stahl oder Hardox (8 kg/dm&sup3;).{% else %}Due to extreme durability of LYNX Linings in comparison to traditional rubber, the thickness of LYNX Lining can be chosen significant, thinner. For example, in comparison to traditional rubber, 1/4 of thickness of LYNX Lining has better durability than the rubber. LYNX Lining (1.2 kg/dm&sup3;) has less than 1/6 of weight, in comparison to ordinary steel or Hardox/hardened steel (8 kg/dm&sup3;).{% endif %}
-          </p>
-          <p class="text-stone leading-relaxed">
-            {% if locale == 'de' %}Anlagen werden leichter - somit ergibt sich eine Kostenersparnis aufgrund der Materialkosten und dadurch ein Wettbewerbsvorteil.{% else %}The weight of equipment can be reduced - therefore a reduction of material cost can be achieved, which brings an advantage in competition.{% endif %}
-          </p>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div class="bg-[#FAFAF9] rounded-xl p-6 border border-black/4 text-center">
-            <div class="font-heading text-3xl font-extrabold text-lynx-red">1,2</div>
-            <p class="text-xs text-stone mt-1">kg/dm&sup3; LYNX Lining</p>
-          </div>
-          <div class="bg-[#FAFAF9] rounded-xl p-6 border border-black/4 text-center">
-            <div class="font-heading text-3xl font-extrabold text-stone/40">8,0</div>
-            <p class="text-xs text-stone mt-1">{% if locale == 'de' %}kg/dm&sup3; Stahl/Hardox{% else %}kg/dm&sup3; steel/Hardox{% endif %}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {# --- Kostenersparung --- #}
-  <div class="bg-[#FAFAF9] py-16 lg:py-20">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div class="lg:order-2">
-          <span class="inline-block px-4 py-1.5 bg-lynx-red/8 text-lynx-red text-xs font-bold rounded-full uppercase tracking-wider mb-4">
-            {% if locale == 'de' %}Kostenersparung{% else %}Cost Savings{% endif %}
-          </span>
-          <h2 class="font-heading text-2xl lg:text-3xl font-extrabold text-stone-dark mb-6">
-            {% if locale == 'de' %}Nachhaltig investieren, langfristig profitieren{% else %}Invest Sustainably, Profit Long-Term{% endif %}
-          </h2>
-          <p class="text-stone leading-relaxed">
-            {% if locale == 'de' %}In Europa, wo die Produktionskosten aufgrund der Lohn- &amp; Lohnnebenkosten relativ hoch sind, lohnt es sich für Unternehmen in nachhaltige Produkte wie LYNX Linings zu investieren. Dank LYNX Linings ergeben sich vielfach längere Standzeiten, was zu einer Reduktion der Instandhaltungskosten bei verschleißanfälligen Bauteilen führt.{% else %}In Europe, where we have high production costs caused by wages and associated employer outlay, it pays off for companies to invest in sustainable products as for example, LYNX Lining. Thanks to LYNX Linings an enhanced lifespan of equipment is given and this helps to reduce the cost for maintenance of liable to wear equipment.{% endif %}
-          </p>
-        </div>
-        <div class="lg:order-1 flex justify-center">
-          <div class="bg-white rounded-2xl p-8 shadow-lg border border-black/4 max-w-sm w-full">
-            <div class="space-y-4">
-              <div class="flex items-center gap-3">
-                <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                <span class="text-sm text-stone-dark">{% if locale == 'de' %}Längere Standzeiten{% else %}Extended service life{% endif %}</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                <span class="text-sm text-stone-dark">{% if locale == 'de' %}Weniger Wartung{% else %}Less maintenance{% endif %}</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                <span class="text-sm text-stone-dark">{% if locale == 'de' %}Höhere Produktivität{% else %}Higher productivity{% endif %}</span>
-              </div>
-              <div class="flex items-center gap-3">
-                <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                <span class="text-sm text-stone-dark">{% if locale == 'de' %}Weniger Betriebskosten{% else %}Lower operating costs{% endif %}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-{# ===== WEITERE VORTEILE - KOMPAKTE KARTEN ===== #}
-<section class="bg-white py-16 lg:py-20">
-  <div class="max-w-7xl mx-auto px-6 lg:px-10">
-    <div class="text-center mb-12">
-      <h2 class="font-heading text-2xl lg:text-3xl font-extrabold text-stone-dark">
-        {% if locale == 'de' %}Weitere Vorteile{% else %}More Benefits{% endif %}
-      </h2>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-      {# Temperatur #}
-      <div class="bg-[#FAFAF9] rounded-2xl p-6 border border-black/4">
-        <div class="w-12 h-12 bg-lynx-red/8 rounded-xl flex items-center justify-center mb-4">
-          <svg class="w-6 h-6 text-lynx-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        </div>
-        <h3 class="font-heading text-base font-bold text-stone-dark mb-2">{% if locale == 'de' %}Temperaturbeständig{% else %}Temperature Resistant{% endif %}</h3>
-        <p class="text-stone text-sm leading-relaxed mb-3">
-          {% if locale == 'de' %}Einsatzbereich -70 &deg;C bis +200 &deg;C. Für Dauertemperaturbelastung empfehlen wir max. 80 &deg;C.{% else %}Application range -70 &deg;C up to +200 &deg;C. For permanent temperature load, we recommend max. 80 &deg;C.{% endif %}
-        </p>
-        <div class="font-heading text-lg font-extrabold text-lynx-red">-70 &deg;C bis +200 &deg;C</div>
-      </div>
-
-      {# Recycling #}
-      <div class="bg-[#FAFAF9] rounded-2xl p-6 border border-black/4">
-        <div class="w-12 h-12 bg-lynx-red/8 rounded-xl flex items-center justify-center mb-4 text-2xl">
-          ♻️
-        </div>
-        <h3 class="font-heading text-base font-bold text-stone-dark mb-2">{% if locale == 'de' %}100% Recyclebar{% else %}100% Recyclable{% endif %}</h3>
-        <p class="text-stone text-sm leading-relaxed">
-          {% if locale == 'de' %}LYNX Linings sind 100 % recyclebar und ökologisch unbedenklich. Verschnitte können gesammelt und recycled werden und brauchen nicht teuer als Sonderabfall entsorgt werden.{% else %}LYNX Linings can be recycled for 100% and are ecological uncritical. Scrap material can be collected for recycling and no costly waste disposal is necessary.{% endif %}
-        </p>
-      </div>
-
-      {# Gesundheit #}
-      <div class="bg-[#FAFAF9] rounded-2xl p-6 border border-black/4">
-        <div class="w-12 h-12 bg-lynx-red/8 rounded-xl flex items-center justify-center mb-4">
-          <svg class="w-6 h-6 text-lynx-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-        </div>
-        <h3 class="font-heading text-base font-bold text-stone-dark mb-2">{% if locale == 'de' %}Gesundheitlich unbedenklich{% else %}Health Safe{% endif %}</h3>
-        <p class="text-stone text-sm leading-relaxed">
-          {% if locale == 'de' %}LYNX Linings stellen keine gesundheitliche Bedrohung dar (keine hautreizenden Inhaltsstoffe) und enthalten keine Weichmacher - somit auch keine Materialalterung.{% else %}LYNX Linings do not represent a health threat (no skin irritating ingredients) and no plasticiser included - therefore no material ageing given.{% endif %}
-        </p>
-      </div>
-
-      {# Einfache Installation #}
-      <div class="bg-[#FAFAF9] rounded-2xl p-6 border border-black/4">
-        <div class="w-12 h-12 bg-lynx-red/8 rounded-xl flex items-center justify-center mb-4">
-          <svg class="w-6 h-6 text-lynx-red" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        </div>
-        <h3 class="font-heading text-base font-bold text-stone-dark mb-2">{% if locale == 'de' %}Einfache Installation{% else %}Easy Installation{% endif %}</h3>
-        <p class="text-stone text-sm leading-relaxed">
-          {% if locale == 'de' %}LYNX Linings können einfach mittels Heißluftfön oder Schweißgerät mit passendem LYNX-TPU Schweißdraht verschweißt werden und somit komplexe Geometrien beschichtet werden. Genauso leicht können diese auch wieder mit einem Fön entfernt werden.{% else %}LYNX Linings can be easily welded by hot air gun or by welding equipment with the appropriate LYNX-TPU wire and therefore complex geometries can be coated. In the same way LYNX Linings can be removed with a hot air gun.{% endif %}
-        </p>
-      </div>
-
+      {% endfor %}
     </div>
   </div>
 </section>
