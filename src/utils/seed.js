@@ -116,16 +116,16 @@ async function seed() {
   // ===== PRODUKTE =====
   const products = [
     { slug: 'lynx-lining-standard', img: '/images/products/produkt.JPG', sort: 1,
-      de: { title: 'LYNX Lining Standard', subtitle: 'Der Allrounder', description: 'Unser Standardprodukt für vielfältige Anwendungen im Verschleißschutz. Ideal für moderate Beanspruchung.' },
-      en: { title: 'LYNX Lining Standard', subtitle: 'The all-rounder', description: 'Our standard product for versatile wear protection applications. Ideal for moderate stress.' }
+      de: { title: 'LYNX Lining Standard', subtitle: 'Rollenware', description: 'Unsere Standard Rollenware kann für jede beliebige Anwendung detailgerecht zugeschnitten werden. Dadurch werden Maschinen und Material vor Verschleiß geschont und Lärm und Vibrationen deutlich verringert.' },
+      en: { title: 'LYNX Lining Standard', subtitle: 'In coils', description: 'Our standard material in coil can be cut tailor-made for any various applications. Thereby the wear on machine and material can be reduced as well noise pollution and vibrations, significantly.' }
     },
     { slug: 'lynx-lining-comfort', img: '/images/products/produkt.JPG', sort: 2,
-      de: { title: 'LYNX Lining Comfort', subtitle: 'Maximaler Komfort', description: 'Erweiterte Schalldämpfung und Vibrationsreduktion. Perfekt für lärmempfindliche Umgebungen.' },
-      en: { title: 'LYNX Lining Comfort', subtitle: 'Maximum comfort', description: 'Enhanced sound dampening and vibration reduction. Perfect for noise-sensitive environments.' }
+      de: { title: 'LYNX Lining Comfort', subtitle: 'Vormontiert auf Blech oder Stahlplatte', description: 'Die Comfort Linie besteht aus dem Standardprodukt, welche auf eine beliebige Trägerplatte aus Blech oder Stahl in gewünschter Stärke aufgeklebt wird. Somit kann die Trägerplatte einfach überall installiert werden. Unsere Comfort-Schiene kann für jede beliebige Anwendung auf Maß bestellt werden. Dadurch werden Maschinen und Material vor Verschleiß geschont und Lärm und Vibrationen deutlich verringert.' },
+      en: { title: 'LYNX Lining Comfort', subtitle: 'Pre-installed on plate or steel sheet', description: 'The Comfort line consists of the Standard product, which can be variously installed to any plate made of sheet metal or steel in any thickness. Therefore, the carrier plate can easily be mounted anywhere. Our Comfort-line can be ordered to measure all applications and is tailor-made. This protects machines and material from wear and tear, noise and vibrations are significantly reduced.' }
     },
     { slug: 'lynx-lining-ultra', img: '/images/products/6675642.jpg', sort: 3,
-      de: { title: 'LYNX Lining Ultra', subtitle: 'Extreme Belastung', description: 'Für extremste Beanspruchung im Bergbau und bei hoch abrasiven Materialien. Maximale Lebensdauer.' },
-      en: { title: 'LYNX Lining Ultra', subtitle: 'Extreme load', description: 'For extreme demands in mining and with highly abrasive materials. Maximum service life.' }
+      de: { title: 'LYNX Lining Ultra', subtitle: 'Für spezielle Anforderungen', description: 'LYNX Lining Ultra besteht aus einer Kombination des Standardprodukts in der gewünschten Stärke und wird mit einem extrem widerstandsfähigen Spezialschaumstoff kombiniert, welcher in den Stärken 12,5 mm und 25 mm erhältlich ist. Unsere Standard Rollenware kann für jede beliebige Anwendung auf Maß detailgerecht zugeschnitten werden. Dadurch werden Maschinen und Material vor Verschleiß geschont und Lärm und Vibrationen deutlich verringert.' },
+      en: { title: 'LYNX Lining Ultra', subtitle: 'For special requirements', description: 'LYNX Lining Ultra consists of a composite of Standard product in various thickness and an extreme durable expanded material, which is available in thickness 12.5 mm and 25 mm. Our LYNX Lining standard in coils can be used for any various applications and cut tailor-made. Thereby the wear on machine and material can be reduced as well noise pollution and vibrations, significantly.' }
     }
   ];
 
