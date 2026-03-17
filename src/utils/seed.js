@@ -165,6 +165,9 @@ async function seed() {
     }
   ];
 
+  // Alte Testimonials entfernen (Translations werden per CASCADE gelöscht)
+  await db.query('DELETE FROM testimonials');
+
   for (const test of testimonials) {
     const [result] = await db.query(`INSERT INTO testimonials (photo_path, sort_order) VALUES (?, ?)`, [test.photo, test.sort]);
     const testId = result.insertId;
