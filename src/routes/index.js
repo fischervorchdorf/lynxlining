@@ -135,6 +135,11 @@ router.get('/:locale/anwendungen', validateLocale, async (req, res) => {
   }
 });
 
+// Montage & Befestigung
+router.get('/:locale/montage', validateLocale, (req, res) => {
+  res.render('pages/mounting.njk', { title: res.locals.t('nav.mounting'), page: 'mounting' });
+});
+
 // Referenzen
 router.get('/:locale/referenzen', validateLocale, async (req, res) => {
   try {

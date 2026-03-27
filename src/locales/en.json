@@ -13,7 +13,8 @@
     "gallery": "Gallery",
     "news": "News",
     "shop": "Shop",
-    "contact": "Contact"
+    "contact": "Contact",
+    "mounting": "Installation"
   },
   "hero": {
     "title": "LYNX LINING",
@@ -177,6 +178,39 @@
       "Temperature resistant from -40°C to +80°C",
       "Flexible adaptation to various surfaces"
     ]
+  },
+  "mounting_page": {
+    "title": "Installation & Mounting",
+    "subtitle": "Two proven methods for securely fastening LYNX Lining TPU sheets",
+    "methods_title": "Mounting Methods",
+    "adhesive_title": "Adhesive Bonding",
+    "adhesive_desc": "LYNX Lining TPU sheets can be bonded to virtually any clean and prepared surface using special industrial adhesives. This method is particularly suitable for smooth surfaces and applications where a full-surface bond is desired.",
+    "adhesive_features": [
+      "Full-surface bond without drilling",
+      "Ideal for smooth surfaces",
+      "Quick and easy application",
+      "No weakening of the substrate"
+    ],
+    "screw_title": "Mechanical Fastening",
+    "screw_badge": "NEW",
+    "screw_desc": "Thanks to special countersunk screws with washers, LYNX Lining TPU sheets can now also be mechanically fastened. The countersunk head sits flush with the TPU surface, ensuring no protruding edges.",
+    "screw_features": [
+      "Countersunk screws with hex socket",
+      "Flush finish with the surface",
+      "Can be removed and reused at any time",
+      "Ideal for rough or uneven substrates"
+    ],
+    "benefits_title": "Benefits of Flexible Mounting",
+    "benefits": [
+      "Choose the optimal method for each application",
+      "Combination of both methods possible",
+      "Mechanical fastening allows easy replacement of individual sheets",
+      "Adhesive bonding provides full-surface contact for maximum adhesion",
+      "Both methods ensure long-term wear protection"
+    ],
+    "products_hint": "Flexible Installation",
+    "products_hint_text": "LYNX Lining sheets can be both bonded and screwed.",
+    "products_hint_link": "More about mounting methods"
   },
   "applications_page": {
     "title": "Application Areas",

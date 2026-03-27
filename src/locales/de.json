@@ -13,7 +13,8 @@
     "gallery": "Galerie",
     "news": "News",
     "shop": "Shop",
-    "contact": "Kontakt"
+    "contact": "Kontakt",
+    "mounting": "Montage"
   },
   "hero": {
     "title": "LYNX LINING",
@@ -281,6 +282,39 @@
       "Bei Dauerbelastung bis +120°C",
       "Flexible Anpassung an verschiedene Oberflächen"
     ]
+  },
+  "mounting_page": {
+    "title": "Montage & Befestigung",
+    "subtitle": "Zwei bewährte Methoden zur sicheren Befestigung von LYNX Lining TPU-Platten",
+    "methods_title": "Befestigungsmethoden",
+    "adhesive_title": "Verklebung",
+    "adhesive_desc": "LYNX Lining TPU-Platten können mit speziellen Industrieklebern auf nahezu jede saubere und vorbereitete Oberfläche aufgeklebt werden. Diese Methode eignet sich besonders für glatte Flächen und Anwendungen, bei denen eine vollflächige Verbindung gewünscht ist.",
+    "adhesive_features": [
+      "Vollflächige Verbindung ohne Bohrungen",
+      "Ideal für glatte Oberflächen",
+      "Schnelle und einfache Verarbeitung",
+      "Keine Schwächung des Untergrunds"
+    ],
+    "screw_title": "Mechanische Verschraubung",
+    "screw_badge": "NEU",
+    "screw_desc": "Dank spezieller Senkkopfschrauben mit Unterlegscheiben können LYNX Lining TPU-Platten nun auch mechanisch befestigt werden. Der Senkkopf schließt bündig mit der TPU-Oberfläche ab, sodass keine störenden Erhebungen entstehen.",
+    "screw_features": [
+      "Senkkopfschrauben mit Innensechskant",
+      "Bündiger Abschluss mit der Oberfläche",
+      "Jederzeit demontierbar und wiederverwendbar",
+      "Ideal bei rauen oder unebenen Untergründen"
+    ],
+    "benefits_title": "Vorteile der flexiblen Befestigung",
+    "benefits": [
+      "Je nach Anwendung die optimale Methode wählbar",
+      "Kombination beider Methoden möglich",
+      "Mechanische Befestigung ermöglicht einfachen Austausch einzelner Platten",
+      "Verklebung bietet vollflächigen Kontakt für maximale Haftung",
+      "Beide Methoden gewährleisten langfristigen Verschleißschutz"
+    ],
+    "products_hint": "Flexible Montage",
+    "products_hint_text": "LYNX Lining Platten können sowohl verklebt als auch verschraubt werden.",
+    "products_hint_link": "Mehr zu Befestigungsmethoden"
   },
   "applications_page": {
     "title": "Anwendungsgebiete",
