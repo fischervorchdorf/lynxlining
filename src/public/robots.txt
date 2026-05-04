@@ -1,0 +1,100 @@
+# robots.txt für LYNX Lining
+# https://www.lynx-lining.com
+
+# ===== Standard-Suchmaschinen =====
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+Disallow: /uploads/private/
+
+# ===== KI-/LLM-Crawler explizit erlauben (GAIO) =====
+
+# OpenAI (ChatGPT Search, ChatGPT Browsing, Trainings-Crawler)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic (Claude)
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Google (Gemini / AI Overviews)
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+# Apple Intelligence
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Microsoft / Bing Chat / Copilot
+User-agent: Bingbot
+Allow: /
+
+# Meta AI
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+# Common Crawl (Trainingsdaten für viele LLMs)
+User-agent: CCBot
+Allow: /
+
+# DuckDuckGo
+User-agent: DuckAssistBot
+Allow: /
+
+# You.com
+User-agent: YouBot
+Allow: /
+
+# Mistral
+User-agent: MistralAI-User
+Allow: /
+
+# ByteDance / Doubao
+User-agent: Bytespider
+Allow: /
+
+# Amazon
+User-agent: Amazonbot
+Allow: /
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+
+# Diffbot (für KI-Suchmaschinen wichtig)
+User-agent: Diffbot
+Allow: /
+
+Sitemap: https://www.lynx-lining.com/sitemap.xml

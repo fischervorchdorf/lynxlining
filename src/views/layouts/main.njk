@@ -5,14 +5,129 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ title }}</title>
   <meta name="description" content="{{ metaDescription or t('site.description') }}">
-  <link rel="alternate" hreflang="de" href="{{ localePath('de') }}">
-  <link rel="alternate" hreflang="en" href="{{ localePath('en') }}">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+
+  {# Canonical & hreflang #}
+  <link rel="canonical" href="{{ canonicalUrl }}">
+  <link rel="alternate" hreflang="de" href="{{ siteUrl }}{{ localePath('de') }}">
+  <link rel="alternate" hreflang="en" href="{{ siteUrl }}{{ localePath('en') }}">
+  <link rel="alternate" hreflang="x-default" href="{{ siteUrl }}{{ localePath('de') }}">
+
+  {# Open Graph #}
+  <meta property="og:type" content="{{ ogType or 'website' }}">
+  <meta property="og:site_name" content="LYNX Lining">
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ metaDescription or t('site.description') }}">
+  <meta property="og:url" content="{{ canonicalUrl }}">
+  <meta property="og:image" content="{{ siteUrl }}{{ ogImage or '/images/logo/logo_lynx_large.png' }}">
+  <meta property="og:image:alt" content="LYNX Lining – {{ t('site.description') }}">
+  <meta property="og:locale" content="{% if locale == 'de' %}de_AT{% else %}en_US{% endif %}">
+  <meta property="og:locale:alternate" content="{% if locale == 'de' %}en_US{% else %}de_AT{% endif %}">
+
+  {# Twitter Card #}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ title }}">
+  <meta name="twitter:description" content="{{ metaDescription or t('site.description') }}">
+  <meta name="twitter:image" content="{{ siteUrl }}{{ ogImage or '/images/logo/logo_lynx_large.png' }}">
+
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#D64545">
   <link rel="stylesheet" href="/css/output.css">
+
+  {# ===== Strukturierte Daten (Schema.org) für KI-Suche & Google ===== #}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "{{ siteUrl }}/#organization",
+        "name": "LYNX Lining",
+        "alternateName": "LYNX Lining – Ing. Martin F. Heidecker",
+        "url": "{{ siteUrl }}",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "{{ siteUrl }}/images/logo/logo_lynx_large.png",
+          "width": 512,
+          "height": 512
+        },
+        "email": "office@lynx-lining.com",
+        "founder": {
+          "@type": "Person",
+          "name": "Ing. Martin F. Heidecker"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Schillerstraße 13",
+          "postalCode": "4020",
+          "addressLocality": "Linz",
+          "addressRegion": "Oberösterreich",
+          "addressCountry": "AT"
+        },
+        "sameAs": [
+          "https://www.instagram.com/lynx_lining/",
+          "https://www.linkedin.com/in/martin-f-heidecker-951103204/"
+        ],
+        "areaServed": ["AT", "DE", "CH", "EU"],
+        "knowsAbout": [
+          "Verschleißschutz",
+          "Thermoplastisches Polyurethan (TPU)",
+          "Bergbau-Auskleidung",
+          "Anlagenbau",
+          "Maschinenbau",
+          "Schüttgut-Aufbereitung",
+          "Recycling-Anlagen",
+          "Schienenfahrzeuge",
+          "Antihaft-Beschichtung",
+          "Schalldämpfung",
+          "Vibrationsreduktion"
+        ]
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "{{ siteUrl }}/#localbusiness",
+        "name": "LYNX Lining",
+        "image": "{{ siteUrl }}/images/logo/logo_lynx_large.png",
+        "url": "{{ siteUrl }}",
+        "email": "office@lynx-lining.com",
+        "priceRange": "€€",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Schillerstraße 13",
+          "postalCode": "4020",
+          "addressLocality": "Linz",
+          "addressRegion": "Oberösterreich",
+          "addressCountry": "AT"
+        },
+        "areaServed": ["AT", "DE", "CH", "EU"],
+        "description": "{% if locale == 'de' %}Vertrieb und Verarbeitung von Verschleißschutzfolien aus thermoplastischem Polyurethan (TPU) für Berg-, Maschinen- und Anlagenbau. Bis zu 30x längere Lebensdauer, 100% recyclebar, Made in Austria.{% else %}Sales and processing of wear protection films made from thermoplastic polyurethane (TPU) for mining, machinery and plant construction. Up to 30x longer service life, 100% recyclable, Made in Austria.{% endif %}"
+      },
+      {
+        "@type": "WebSite",
+        "@id": "{{ siteUrl }}/#website",
+        "url": "{{ siteUrl }}",
+        "name": "LYNX Lining",
+        "publisher": { "@id": "{{ siteUrl }}/#organization" },
+        "inLanguage": ["de-AT", "en-US"]
+      },
+      {
+        "@type": "WebPage",
+        "@id": "{{ canonicalUrl }}#webpage",
+        "url": "{{ canonicalUrl }}",
+        "name": "{{ title }}",
+        "description": "{{ metaDescription or t('site.description') }}",
+        "inLanguage": "{% if locale == 'de' %}de-AT{% else %}en-US{% endif %}",
+        "isPartOf": { "@id": "{{ siteUrl }}/#website" },
+        "about": { "@id": "{{ siteUrl }}/#organization" }
+      }
+    ]
+  }
+  </script>
+  {% block jsonld %}{% endblock %}
+
   {% block head %}{% endblock %}
 </head>
 <body class="font-body text-stone antialiased bg-[#F0EFED]">
