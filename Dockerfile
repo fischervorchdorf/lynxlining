@@ -2,18 +2,16 @@ FROM node:22-alpine AS build
 
 WORKDIR /app
 
-# Dependencies zuerst (wird gecacht wenn sich package.json nicht ändert)
+# Dependencies inkl. devDependencies (Tailwind wird zum Bauen gebraucht)
+# --include=dev nötig, weil Coolify NODE_ENV=production als Build-Arg setzt
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
-
-# Tailwind CLI separat installieren für CSS-Build
-RUN npm i --save-dev @tailwindcss/cli
+RUN npm ci --include=dev
 
 # Source kopieren und CSS bauen
 COPY . .
 RUN npm run css:build
 
-# Dev-Dependencies wieder entfernen
+# Dev-Dependencies entfernen für schlankeres Production-Image
 RUN npm prune --omit=dev
 
 # --- Production Stage ---
