@@ -369,8 +369,46 @@
     "compliance": "Compliance & Data Security",
     "contact": "Contact",
     "copyright": "All rights reserved.",
-    "ai_notice": "Parts of this website were created with the support of AI tools.",
+    "ai_notice": "Parts of this website were created with AI tools (EU AI Act 2024/1689 – Deployer).",
     "made_in": "Made with ❤ in Austria"
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Everything you need to know about LYNX Lining TPU wear protection",
+    "items": [
+      {
+        "q": "What is LYNX Lining and what is it made of?",
+        "a": "LYNX Lining is a wear protection film made of thermoplastic polyurethane (TPU), manufactured in Austria. The material protects surfaces in mining, mechanical and plant engineering against extreme wear, corrosion and noise."
+      },
+      {
+        "q": "How much longer does LYNX Lining last compared to steel or rubber?",
+        "a": "LYNX Lining achieves up to 30 times longer service life compared to steel, HDPE or rubber. In an independent master's thesis, LYNX Lining achieved the lowest abrasion value among 13 tested materials."
+      },
+      {
+        "q": "What applications is LYNX Lining suitable for?",
+        "a": "LYNX Lining is suitable for bulk material conveyors, hoppers and feed bunkers in mining, truck tipper bodies and rail vehicles, recycling systems, as well as mechanical and plant engineering – wherever high material wear occurs."
+      },
+      {
+        "q": "How is LYNX Lining installed?",
+        "a": "There are two methods: adhesive bonding with contact adhesive on smooth substrates (steel, concrete, wood) and mechanical screw fastening for highly stressed areas. Installation is possible without special tools."
+      },
+      {
+        "q": "Is LYNX Lining recyclable?",
+        "a": "Yes, LYNX Lining consists of 100% recyclable thermoplastic polyurethane (TPU) and is fully recyclable at the end of its service life."
+      },
+      {
+        "q": "Does LYNX Lining also reduce noise and vibrations?",
+        "a": "Yes, LYNX Lining reduces noise emissions by up to 21 dB and effectively dampens vibrations. This extends the service life of production equipment and improves working conditions."
+      },
+      {
+        "q": "In what versions is LYNX Lining available?",
+        "a": "LYNX Lining is available in 5 mm thickness as rolls or cut-to-size pieces. There are three versions: Standard (general wear protection), Comfort and Ultra (for extreme applications)."
+      },
+      {
+        "q": "Does LYNX Lining deliver internationally?",
+        "a": "Yes, LYNX Lining delivers throughout Austria as well as to Germany, Switzerland and the entire EU."
+      }
+    ]
   },
   "cookie": {
     "title": "Cookie Settings",

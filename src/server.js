@@ -72,13 +72,24 @@ env.addFilter('nl2br', function(str) {
 app.use(i18n);
 
 // Global template variables
-const SITE_URL = (process.env.SITE_URL || 'https://www.lynx-lining.com').replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL || 'https://lynx-lining.com').replace(/\/$/, '');
 app.use((req, res, next) => {
   res.locals.currentYear = new Date().getFullYear();
   res.locals.currentPath = req.path;
   res.locals.session = req.session || {};
   res.locals.siteUrl = SITE_URL;
   res.locals.canonicalUrl = SITE_URL + req.originalUrl.split('?')[0];
+  next();
+});
+
+// www → non-www redirect (verhindert Loop zwischen Coolify und nginx)
+app.use((req, res, next) => {
+  const host = req.headers.host || '';
+  if (host.startsWith('www.')) {
+    const proto = req.headers['x-forwarded-proto'] || 'https';
+    const nonWwwHost = host.replace(/^www\./, '');
+    return res.redirect(301, `${proto}://${nonWwwHost}${req.originalUrl}`);
+  }
   next();
 });
 

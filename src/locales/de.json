@@ -473,8 +473,46 @@
     "compliance": "Compliance & Datensicherheit",
     "contact": "Kontakt",
     "copyright": "Alle Rechte vorbehalten.",
-    "ai_notice": "Teile dieser Website wurden mit Unterstützung von KI-Werkzeugen erstellt.",
+    "ai_notice": "Teile dieser Website wurden mit KI-Werkzeugen erstellt (EU AI Act 2024/1689 – Deployer).",
     "made_in": "Made with ❤ in Austria"
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "subtitle": "Alle wichtigen Antworten zu LYNX Lining TPU-Verschleißschutz",
+    "items": [
+      {
+        "q": "Was ist LYNX Lining und woraus besteht es?",
+        "a": "LYNX Lining ist eine Verschleißschutzfolie aus thermoplastischem Polyurethan (TPU), hergestellt in Österreich. Das Material schützt Oberflächen in Bergbau, Maschinen- und Anlagenbau vor extremem Verschleiß, Korrosion und Lärm."
+      },
+      {
+        "q": "Wie viel länger hält LYNX Lining im Vergleich zu Stahl oder Gummi?",
+        "a": "LYNX Lining erreicht bis zu 30-fach längere Standzeiten gegenüber Stahl, HDPE oder Gummi. In einer unabhängigen Masterarbeit erzielte LYNX Lining den niedrigsten Abriebwert unter 13 getesteten Materialien."
+      },
+      {
+        "q": "Für welche Anwendungsbereiche ist LYNX Lining geeignet?",
+        "a": "LYNX Lining eignet sich für Schüttgutförderer, Trichter und Aufgabebunker im Bergbau, Kippermulden für LKW und Schienenfahrzeuge, Recyclinganlagen sowie Maschinen- und Anlagenbau – überall dort, wo hoher Materialverschleiß entsteht."
+      },
+      {
+        "q": "Wie wird LYNX Lining montiert?",
+        "a": "Es gibt zwei Methoden: Verklebung mit Kontaktkleber auf glatten Untergründen (Stahl, Beton, Holz) und mechanische Verschraubung für stark beanspruchte Bereiche. Die Montage ist ohne Spezialwerkzeug möglich."
+      },
+      {
+        "q": "Ist LYNX Lining recyclebar?",
+        "a": "Ja, LYNX Lining besteht zu 100 % aus recyclebarem thermoplastischem Polyurethan (TPU) und ist am Ende seiner Lebensdauer vollständig wiederverwertbar."
+      },
+      {
+        "q": "Reduziert LYNX Lining auch Lärm und Vibrationen?",
+        "a": "Ja, LYNX Lining reduziert Lärmemissionen um bis zu 21 dB und dämpft Vibrationen effektiv. Das verlängert die Lebensdauer der Produktionsanlagen und verbessert Arbeitsbedingungen."
+      },
+      {
+        "q": "In welchen Ausführungen ist LYNX Lining erhältlich?",
+        "a": "LYNX Lining ist in 5 mm Stärke als Rolle oder Zuschnitt lieferbar. Es gibt drei Ausführungen: Standard (allgemeiner Verschleißschutz), Comfort und Ultra (für höchste Beanspruchungen)."
+      },
+      {
+        "q": "Liefert LYNX Lining auch ins Ausland?",
+        "a": "Ja, LYNX Lining liefert österreichweit sowie nach Deutschland, in die Schweiz und in die gesamte EU."
+      }
+    ]
   },
   "cookie": {
     "title": "Cookie-Einstellungen",

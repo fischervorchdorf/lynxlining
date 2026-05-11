@@ -26,7 +26,7 @@ router.get('/:locale', validateLocale, (req, res) => {
 
 // ===== sitemap.xml (dynamisch) =====
 router.get('/sitemap.xml', async (req, res) => {
-  const siteUrl = (process.env.SITE_URL || 'https://www.lynx-lining.com').replace(/\/$/, '');
+  const siteUrl = (process.env.SITE_URL || 'https://lynx-lining.com').replace(/\/$/, '');
   const today = new Date().toISOString().split('T')[0];
 
   const staticPaths = [

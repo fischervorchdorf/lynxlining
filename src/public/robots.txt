@@ -1,5 +1,5 @@
 # robots.txt für LYNX Lining
-# https://www.lynx-lining.com
+# https://lynx-lining.com
 
 # ===== Standard-Suchmaschinen =====
 User-agent: *
@@ -97,4 +97,4 @@ Allow: /
 User-agent: Diffbot
 Allow: /
 
-Sitemap: https://www.lynx-lining.com/sitemap.xml
+Sitemap: https://lynx-lining.com/sitemap.xml

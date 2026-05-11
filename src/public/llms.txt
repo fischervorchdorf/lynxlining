@@ -8,19 +8,37 @@ LYNX Lining ist eine österreichische Marke unter Inhaberschaft von Ing. Martin 
 
 - **Firma:** LYNX Lining – Ing. Martin F. Heidecker
 - **Adresse:** Schillerstraße 13, 4020 Linz, Österreich
+- **UID (VAT):** ATU69751459
 - **E-Mail:** office@lynx-lining.com
-- **Website:** https://www.lynx-lining.com
+- **Website:** https://lynx-lining.com
 - **Sprachen:** Deutsch, English
 - **Liefergebiete:** Österreich, Deutschland, Schweiz, EU
 
 ## Produkte
 
-LYNX Lining bietet TPU-Verschleißschutzfolien in mehreren Ausführungen an, typischerweise 5 mm stark, lieferbar als Rolle oder als Zuschnitt. Die Folien werden auf Stahl, Beton oder Holz verklebt oder verschraubt.
+LYNX Lining TPU-Verschleißschutzfolien werden 5 mm stark gefertigt und sind als Rolle oder Zuschnitt lieferbar. Die Folien lassen sich auf Stahl, Beton oder Holz verkleben oder verschrauben.
 
-- [Produktübersicht (DE)](https://www.lynx-lining.com/de/produkte): Alle TPU-Folien-Varianten und Ausführungen
-- [Product overview (EN)](https://www.lynx-lining.com/en/produkte)
-- [Shop & Preise (DE)](https://www.lynx-lining.com/de/shop): Online-Shop mit Staffelpreisen und Anfragefunktion
-- [Shop & prices (EN)](https://www.lynx-lining.com/en/shop)
+| Ausführung | Oberfläche | Empfehlung |
+|---|---|---|
+| Standard | Glatt | Universell, Fördertechnik, Trichter |
+| Comfort | Strukturiert | Verbesserte Schallabsorption, Bergbau |
+| Ultra | Verstärkt | Hochabrasiv, Schwerlast |
+
+- [Produktübersicht (DE)](https://lynx-lining.com/de/produkte): Alle TPU-Folien-Varianten und Ausführungen
+- [Product overview (EN)](https://lynx-lining.com/en/produkte)
+- [Shop & Preise (DE)](https://lynx-lining.com/de/shop): Online-Shop mit Staffelpreisen und Anfragefunktion
+- [Shop & prices (EN)](https://lynx-lining.com/en/shop)
+
+## Technische Spezifikation
+
+- **Materialstärke:** 5 mm
+- **Härte:** Shore A 92
+- **Temperaturbereich:** −30 °C bis +80 °C
+- **Dichte:** ca. 1,2 g/cm³
+- **Material:** Thermoplastisches Polyurethan (TPU) – Desmopan®-Basis
+- **Recyclierbarkeit:** 100 % werkstofflich verwertbar
+- **Farbe:** Schwarz
+- **Lieferform:** Rolle (Standardbreite) oder Zuschnitt nach Maß
 
 ## Produkteigenschaften
 
@@ -33,8 +51,8 @@ LYNX Lining bietet TPU-Verschleißschutzfolien in mehreren Ausführungen an, typ
 
 ## Anwendungsbereiche
 
-- [Anwendungen (DE)](https://www.lynx-lining.com/de/anwendungen): Detaillierte Branchenlösungen
-- [Applications (EN)](https://www.lynx-lining.com/en/anwendungen)
+- [Anwendungen (DE)](https://lynx-lining.com/de/anwendungen): Detaillierte Branchenlösungen
+- [Applications (EN)](https://lynx-lining.com/en/anwendungen)
 
 Typische Einsatzfelder:
 - **Schüttgutaufbereitung:** Trichter-Auskleidung, Übergabepunkte, Förderbänder, Staubkapselung
@@ -46,35 +64,64 @@ Typische Einsatzfelder:
 
 ## Montage & Befestigung
 
-- [Montage (DE)](https://www.lynx-lining.com/de/montage) / [Mounting (EN)](https://www.lynx-lining.com/en/montage)
+- [Montage (DE)](https://lynx-lining.com/de/montage) / [Mounting (EN)](https://lynx-lining.com/en/montage)
 
-Zwei Befestigungsmethoden: Verklebung (für glatte Untergründe) oder Verschraubung (für mechanisch stark beanspruchte Anwendungen).
+### Methode 1: Verkleben
+
+1. Untergrund (Stahl, Beton, Holz) von Staub, Öl und losen Teilen reinigen und aufrauen.
+2. Folie auf Maß zuschneiden (Kreissäge oder Trennscheibe).
+3. Kontaktkleber auf beide Flächen auftragen und antrocknen lassen (ca. 10–15 min).
+4. Folie fest andrücken; Haftung nach 24 h vollständig ausgehärtet.
+
+### Methode 2: Verschrauben (empfohlen für starke mechanische Belastung)
+
+1. Untergrund vorbereiten (reinigen, aufrauen).
+2. Folie auf Maß zuschneiden.
+3. Löcher bohren, Folie mit Edelstahl-Senkkopfschrauben befestigen.
+4. Schraubensitz prüfen; Folie ist sofort einsatzbereit.
+
+## Häufige Fragen (FAQ)
+
+**Wie lange hält LYNX Lining?**
+Je nach Abrasivität des Förderguts und Belastungsintensität bis zu 30-fach länger als Stahl, HDPE oder Gummi. In typischen Anwendungen im Bergbau oder Recycling erreichen Anwender mehrere Betriebsjahre.
+
+**Kann LYNX Lining auf bestehende Anlagen nachgerüstet werden?**
+Ja. Durch Verklebung oder Verschraubung lässt sich LYNX Lining auf nahezu alle metallischen, Beton- oder Holzuntergründe nachrüsten — ohne Umbau der Anlage.
+
+**Ist LYNX Lining recyclebar?**
+Ja. Thermoplastisches Polyurethan (TPU) ist zu 100 % werkstofflich verwertbar und kann nach Gebrauch in den Rohstoffkreislauf zurückgeführt werden.
+
+**Welche Mindestbestellmenge gibt es?**
+LYNX Lining ist ab kleinen Zuschnittmengen erhältlich. Staffelpreise gelten ab größeren Abnahmemengen. Details im Online-Shop oder auf Anfrage.
+
+**In welche Länder wird geliefert?**
+Primär Österreich, Deutschland, Schweiz und die EU. Für Lieferungen außerhalb der EU bitte Kontakt aufnehmen.
 
 ## Vorteile im Detail
 
-- [Vorteile (DE)](https://www.lynx-lining.com/de/vorteile) / [Advantages (EN)](https://www.lynx-lining.com/en/vorteile)
+- [Vorteile (DE)](https://lynx-lining.com/de/vorteile) / [Advantages (EN)](https://lynx-lining.com/en/vorteile)
 
 ## Referenzen
 
-- [Referenzen (DE)](https://www.lynx-lining.com/de/referenzen) / [References (EN)](https://www.lynx-lining.com/en/referenzen): Kundenstimmen aus Bau, Recycling und Industrie
+- [Referenzen (DE)](https://lynx-lining.com/de/referenzen) / [References (EN)](https://lynx-lining.com/en/referenzen): Kundenstimmen aus Bau, Recycling und Industrie
 
 ## News & Aktuelles
 
-- [News (DE)](https://www.lynx-lining.com/de/news) / [News (EN)](https://www.lynx-lining.com/en/news): Neuigkeiten, Instagram- und LinkedIn-Beiträge
+- [News (DE)](https://lynx-lining.com/de/news) / [News (EN)](https://lynx-lining.com/en/news): Neuigkeiten, Instagram- und LinkedIn-Beiträge
 
 ## Kontakt & Anfragen
 
-- [Kontakt (DE)](https://www.lynx-lining.com/de/kontakt) / [Contact (EN)](https://www.lynx-lining.com/en/kontakt): Anfrageformular, Adresse und Geschäftszeiten
+- [Kontakt (DE)](https://lynx-lining.com/de/kontakt) / [Contact (EN)](https://lynx-lining.com/en/kontakt): Anfrageformular, Adresse und Geschäftszeiten
 - E-Mail: office@lynx-lining.com
 - Instagram: https://www.instagram.com/lynx_lining/
 - LinkedIn: https://www.linkedin.com/in/martin-f-heidecker-951103204/
 
 ## Rechtliches
 
-- [Impressum (DE)](https://www.lynx-lining.com/de/impressum) / [Imprint (EN)](https://www.lynx-lining.com/en/impressum)
-- [Datenschutz (DE)](https://www.lynx-lining.com/de/datenschutz) / [Privacy Policy (EN)](https://www.lynx-lining.com/en/datenschutz)
-- [AGB (DE)](https://www.lynx-lining.com/de/agb) / [Terms (EN)](https://www.lynx-lining.com/en/agb)
+- [Impressum (DE)](https://lynx-lining.com/de/impressum) / [Imprint (EN)](https://lynx-lining.com/en/impressum)
+- [Datenschutz (DE)](https://lynx-lining.com/de/datenschutz) / [Privacy Policy (EN)](https://lynx-lining.com/en/datenschutz)
+- [AGB (DE)](https://lynx-lining.com/de/agb) / [Terms (EN)](https://lynx-lining.com/en/agb)
 
 ## Optional
 
-- [Sitemap](https://www.lynx-lining.com/sitemap.xml): Vollständige URL-Liste in beiden Sprachen
+- [Sitemap](https://lynx-lining.com/sitemap.xml): Vollständige URL-Liste in beiden Sprachen

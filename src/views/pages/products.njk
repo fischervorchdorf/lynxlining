@@ -1,5 +1,18 @@
 {% extends "layouts/main.njk" %}
 
+{% block jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://lynx-lining.com/{{ locale }}/"},
+    { "@type": "ListItem", "position": 2, "name": {% if locale == "de" %}"Produkte"{% else %}"Products"{% endif %}, "item": "https://lynx-lining.com/{{ locale }}/produkte" }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 
 {# ===== HERO ===== #}

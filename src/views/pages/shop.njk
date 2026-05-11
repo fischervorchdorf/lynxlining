@@ -1,5 +1,61 @@
 {% extends "layouts/main.njk" %}
 
+{% block jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "LYNX Lining Produkte",
+  "itemListElement": [
+    {% for prod in products %}
+    {
+      "@type": "ListItem",
+      "position": {{ loop.index }},
+      "item": {
+        "@type": "Product",
+        "name": {{ prod.name | dump | safe }},
+        "description": {{ prod.short_description | dump | safe }},
+        "brand": { "@type": "Brand", "name": "LYNX Lining" },
+        "manufacturer": {
+          "@type": "Organization",
+          "name": "LYNX Lining – Ing. Martin F. Heidecker",
+          "url": "https://lynx-lining.com"
+        },
+        "material": "Thermoplastisches Polyurethan (TPU)",
+        "image": "https://lynx-lining.com{{ prod.image_path }}",
+        "url": "https://lynx-lining.com/{{ locale }}/shop",
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "EUR",
+          {% if prod.price_tiers and prod.price_tiers.length %}
+          "price": {{ (prod.price_tiers[0].price_per_unit | float * 0.80) | round(2) }},
+          {% else %}
+          "price": "0",
+          {% endif %}
+          "availability": "https://schema.org/InStock",
+          "seller": {
+            "@type": "Organization",
+            "name": "LYNX Lining"
+          }
+        }
+      }
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://lynx-lining.com/{{ locale }}/" },
+    { "@type": "ListItem", "position": 2, "name": "Shop", "item": "https://lynx-lining.com/{{ locale }}/shop" }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 
 {# ===== HERO ===== #}

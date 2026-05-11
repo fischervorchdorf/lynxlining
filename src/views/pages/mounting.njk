@@ -1,5 +1,62 @@
 {% extends "layouts/main.njk" %}
 
+{% block jsonld %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": {% if locale == "de" %}"LYNX Lining TPU-Folie montieren – Anleitung"{% else %}"How to install LYNX Lining TPU wear protection"{% endif %},
+  "description": {% if locale == "de" %}"Schritt-für-Schritt-Anleitung zur Montage von LYNX Lining Verschleißschutzfolien aus TPU per Verklebung oder Verschraubung."{% else %}"Step-by-step guide for installing LYNX Lining TPU wear protection film by adhesive bonding or mechanical screw fastening."{% endif %},
+  "image": "https://lynx-lining.com/images/mounting/befestigung_schrauben.png",
+  "totalTime": "PT30M",
+  "supply": [
+    { "@type": "HowToSupply", "name": {% if locale == "de" %}"LYNX Lining TPU-Folie (5 mm)"{% else %}"LYNX Lining TPU film (5 mm)"{% endif %} },
+    { "@type": "HowToSupply", "name": {% if locale == "de" %}"Kontaktkleber oder Edelstahlschrauben"{% else %}"Contact adhesive or stainless steel screws"{% endif %} }
+  ],
+  "tool": [
+    { "@type": "HowToTool", "name": {% if locale == "de" %}"Schleifpapier / Drahtbürste"{% else %}"Sandpaper / wire brush"{% endif %} },
+    { "@type": "HowToTool", "name": {% if locale == "de" %}"Akkubohrer"{% else %}"Cordless drill"{% endif %} }
+  ],
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": 1,
+      "name": {% if locale == "de" %}"Untergrund vorbereiten"{% else %}"Prepare the substrate"{% endif %},
+      "text": {% if locale == "de" %}"Untergrund (Stahl, Beton oder Holz) von Staub, Öl und losen Teilen reinigen und aufrauen."{% else %}"Clean the substrate (steel, concrete or wood) from dust, oil and loose parts and roughen the surface."{% endif %}
+    },
+    {
+      "@type": "HowToStep",
+      "position": 2,
+      "name": {% if locale == "de" %}"Folie zuschneiden"{% else %}"Cut the film to size"{% endif %},
+      "text": {% if locale == "de" %}"LYNX Lining auf das gewünschte Maß zuschneiden. Die Folie lässt sich mit einer Kreissäge oder Trennscheibe bearbeiten."{% else %}"Cut LYNX Lining to the desired size. The film can be processed with a circular saw or cutting disc."{% endif %}
+    },
+    {
+      "@type": "HowToStep",
+      "position": 3,
+      "name": {% if locale == "de" %}"Befestigung wählen: Verkleben oder Verschrauben"{% else %}"Choose fastening method: adhesive or screw"{% endif %},
+      "text": {% if locale == "de" %}"Für Verklebung: Kontaktkleber auf beide Flächen auftragen, antrocknen lassen und fest andrücken. Für Verschraubung: Löcher bohren und Folie mit Senkkopfschrauben befestigen."{% else %}"For adhesive: apply contact adhesive to both surfaces, let dry until tacky and press firmly. For screwing: drill holes and secure film with countersunk screws."{% endif %}
+    },
+    {
+      "@type": "HowToStep",
+      "position": 4,
+      "name": {% if locale == "de" %}"Prüfen und in Betrieb nehmen"{% else %}"Check and commission"{% endif %},
+      "text": {% if locale == "de" %}"Gleichmäßige Haftung bzw. festen Sitz der Schrauben prüfen. Die Folie ist sofort nach der Montage einsatzbereit."{% else %}"Check even adhesion or secure fit of screws. The film is ready for use immediately after installation."{% endif %}
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://lynx-lining.com/{{ locale }}/" },
+    { "@type": "ListItem", "position": 2, "name": {% if locale == "de" %}"Montage & Befestigung"{% else %}"Mounting & Fastening"{% endif %}, "item": "https://lynx-lining.com/{{ locale }}/montage" }
+  ]
+}
+</script>
+{% endblock %}
+
 {% block content %}
 
 {# ===== HERO ===== #}

@@ -29,7 +29,7 @@ Website: <a href="https://www.lynx-lining.com">www.lynx-lining.com</a>
 <p>Vertrieb und Verarbeitung von Verschleißschutzfolien aus thermoplastischem Polyurethan (TPU) für den Berg-, Maschinen- und Anlagenbau.</p>
 
 <h3>Umsatzsteuer-Identifikationsnummer</h3>
-<p>UID-Nr: ATU__________ <em>(bitte ergänzen)</em></p>
+<p>UID-Nr: ATU69751459</p>
 
 <h3>Aufsichtsbehörde</h3>
 <p>Bezirkshauptmannschaft Linz</p>
@@ -48,8 +48,15 @@ Website: <a href="https://www.lynx-lining.com">www.lynx-lining.com</a>
 <h3>Bildnachweis</h3>
 <p>Alle Bilder und Grafiken auf dieser Website sind Eigentum von LYNX Lining bzw. wurden mit Genehmigung der jeweiligen Rechteinhaber verwendet.</p>
 
-<h3>Hinweis zum Einsatz von Künstlicher Intelligenz</h3>
-<p>Teile dieser Website (Texte, Gestaltung) wurden mit Unterstützung von KI-basierten Werkzeugen erstellt. Alle Inhalte werden von uns inhaltlich geprüft und freigegeben. Die Verantwortung für die veröffentlichten Inhalte liegt bei LYNX Lining.</p>
+<h3>Hinweis zum Einsatz von Künstlicher Intelligenz (EU AI Act)</h3>
+<p>LYNX Lining setzt KI-basierte Werkzeuge unterstützend bei der Erstellung und Pflege dieser Website ein. Der Einsatz erfolgt in Übereinstimmung mit der Verordnung (EU) 2024/1689 (EU AI Act), die ab 02.08.2026 vollständig anwendbar ist.</p>
+<ul>
+  <li><strong>Texte:</strong> Teile der Website-Texte wurden mit Unterstützung von KI-Sprachmodellen erstellt oder überarbeitet.</li>
+  <li><strong>Gestaltung:</strong> Einzelne gestalterische Elemente der Website wurden unter Zuhilfenahme von KI-Werkzeugen konzipiert.</li>
+  <li><strong>Menschliche Prüfung:</strong> Alle KI-generierten oder KI-unterstützten Inhalte werden von uns inhaltlich geprüft und freigegeben. Die inhaltliche Verantwortung liegt ausschließlich bei LYNX Lining.</li>
+  <li><strong>Keine automatisierten Entscheidungen:</strong> Gegenüber Besuchern dieser Website werden keine automatisierten Entscheidungen im Sinne von Art. 22 DSGVO durch KI-Systeme getroffen.</li>
+</ul>
+<p>LYNX Lining agiert ausschließlich als <strong>Deployer (Nutzer)</strong> von KI-Systemen im Sinne von Art. 3 Nr. 4 EU AI Act und betreibt oder vermarktet keine eigenen KI-Systeme gegenüber Dritten.</p>
 `;
 
 // ===== IMPRESSUM (EN) =====
@@ -74,7 +81,7 @@ Website: <a href="https://www.lynx-lining.com">www.lynx-lining.com</a>
 <p>Sales and processing of wear protection films made from thermoplastic polyurethane (TPU) for mining, machinery and plant construction.</p>
 
 <h3>VAT Identification Number</h3>
-<p>VAT ID: ATU__________ <em>(to be added)</em></p>
+<p>VAT ID: ATU69751459</p>
 
 <h3>Supervisory Authority</h3>
 <p>District Authority Linz (Bezirkshauptmannschaft Linz)</p>
@@ -93,8 +100,15 @@ Website: <a href="https://www.lynx-lining.com">www.lynx-lining.com</a>
 <h3>Image Credits</h3>
 <p>All images and graphics on this website are the property of LYNX Lining or have been used with the permission of the respective rights holders.</p>
 
-<h3>Notice on the Use of Artificial Intelligence</h3>
-<p>Parts of this website (texts, design) were created with the support of AI-based tools. All content is reviewed and approved by us. LYNX Lining is responsible for all published content.</p>
+<h3>Notice on the Use of Artificial Intelligence (EU AI Act)</h3>
+<p>LYNX Lining uses AI-based tools to assist in the creation and maintenance of this website. Their use is in accordance with Regulation (EU) 2024/1689 (EU AI Act), which becomes fully applicable on 02.08.2026.</p>
+<ul>
+  <li><strong>Texts:</strong> Parts of the website texts were created or revised with the support of AI language models.</li>
+  <li><strong>Design:</strong> Individual design elements of the website were developed with the assistance of AI tools.</li>
+  <li><strong>Human Review:</strong> All AI-generated or AI-assisted content is reviewed and approved by us. The editorial responsibility lies exclusively with LYNX Lining.</li>
+  <li><strong>No automated decisions:</strong> No automated decisions within the meaning of Art. 22 GDPR are made by AI systems towards visitors of this website.</li>
+</ul>
+<p>LYNX Lining acts exclusively as a <strong>Deployer</strong> of AI systems within the meaning of Art. 3 No. 4 EU AI Act and does not operate or market its own AI systems to third parties.</p>
 `;
 
 // ===== DATENSCHUTZERKLÄRUNG (DE) =====
@@ -185,10 +199,20 @@ Website: <a href="https://www.dsb.gv.at" target="_blank" rel="noopener">https://
 <h3>9. Datenspeicherung</h3>
 <p>Personenbezogene Daten, die uns über das Kontaktformular oder Bestellformular übermittelt werden, werden nur so lange gespeichert, wie es der Zweck der Verarbeitung erfordert oder gesetzliche Aufbewahrungspflichten bestehen (z.B. steuerrechtliche Aufbewahrungspflichten von 7 Jahren).</p>
 
-<h3>10. Änderungen dieser Datenschutzerklärung</h3>
+<h3>10. Einsatz von Künstlicher Intelligenz</h3>
+<p>Gemäß Art. 50 der Verordnung (EU) 2024/1689 (EU AI Act) informieren wir über den Einsatz von KI auf dieser Website:</p>
+<ul>
+  <li><strong>KI-gestützte Inhaltserstellung:</strong> Teile der Website-Texte und gestalterische Elemente wurden mit Unterstützung von KI-Sprachmodellen und KI-Werkzeugen erstellt. Alle Inhalte wurden von LYNX Lining inhaltlich geprüft und freigegeben.</li>
+  <li><strong>Keine automatisierten Einzelentscheidungen per KI:</strong> Es werden gegenüber Nutzern dieser Website keine automatisierten Einzelentscheidungen gemäß Art. 22 DSGVO durch KI-Systeme getroffen. Preisgestaltung und Produktinformationen basieren auf manuell gepflegten Daten.</li>
+  <li><strong>Kein KI-Chatbot:</strong> Diese Website setzt derzeit keinen KI-gestützten Chatbot oder virtuellen Assistenten ein. Sollte dies künftig der Fall sein, werden wir Sie gemäß Art. 50 Abs. 1 EU AI Act darüber informieren.</li>
+  <li><strong>Website-Analyse:</strong> Das eingesetzte Website-Analyse-System (eigener Server, kein Drittanbieter) arbeitet regelbasiert ohne KI- oder Machine-Learning-Algorithmen.</li>
+</ul>
+<p>LYNX Lining handelt im Sinne des EU AI Act ausschließlich als <strong>Deployer (Nutzer)</strong> von KI-Systemen (Art. 3 Nr. 4 EU AI Act) und ist nicht Anbieter (Provider) eines KI-Systems im Sinne von Art. 3 Nr. 3 EU AI Act.</p>
+
+<h3>11. Änderungen dieser Datenschutzerklärung</h3>
 <p>Wir behalten uns vor, diese Datenschutzerklärung anzupassen, damit sie stets den aktuellen rechtlichen Anforderungen entspricht. Die jeweils aktuelle Datenschutzerklärung ist auf unserer Website abrufbar.</p>
 
-<p><em>Stand: Februar 2026</em></p>
+<p><em>Stand: Mai 2026</em></p>
 `;
 
 // ===== DATENSCHUTZERKLÄRUNG (EN) =====
@@ -279,10 +303,20 @@ Website: <a href="https://www.dsb.gv.at" target="_blank" rel="noopener">https://
 <h3>9. Data Storage</h3>
 <p>Personal data transmitted to us via the contact form or order form is only stored for as long as the purpose of the processing requires or legal retention obligations exist (e.g., tax retention obligations of 7 years).</p>
 
-<h3>10. Changes to this Privacy Policy</h3>
+<h3>10. Use of Artificial Intelligence</h3>
+<p>In accordance with Art. 50 of Regulation (EU) 2024/1689 (EU AI Act), we inform you about the use of AI on this website:</p>
+<ul>
+  <li><strong>AI-assisted content creation:</strong> Parts of the website texts and design elements were created with the support of AI language models and AI tools. All content has been reviewed and approved by LYNX Lining.</li>
+  <li><strong>No automated individual decisions by AI:</strong> No automated individual decisions pursuant to Art. 22 GDPR are made towards users of this website by AI systems. Pricing and product information are based on manually maintained data.</li>
+  <li><strong>No AI chatbot:</strong> This website does not currently use any AI-powered chatbot or virtual assistant. Should this change in future, we will inform you in accordance with Art. 50 para. 1 EU AI Act.</li>
+  <li><strong>Website analytics:</strong> The website analytics system used (own server, no third-party provider) operates on a rule-based basis without AI or machine learning algorithms.</li>
+</ul>
+<p>LYNX Lining acts exclusively as a <strong>Deployer</strong> of AI systems within the meaning of Art. 3 No. 4 EU AI Act and is not a Provider of an AI system within the meaning of Art. 3 No. 3 EU AI Act.</p>
+
+<h3>11. Changes to this Privacy Policy</h3>
 <p>We reserve the right to adapt this privacy policy to ensure it always complies with current legal requirements. The current privacy policy is always available on our website.</p>
 
-<p><em>Last updated: February 2026</em></p>
+<p><em>Last updated: May 2026</em></p>
 `;
 
 // ===== AGB (DE) =====
