@@ -82,17 +82,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// www → non-www redirect (verhindert Loop zwischen Coolify und nginx)
-app.use((req, res, next) => {
-  const host = req.headers.host || '';
-  if (host.startsWith('www.')) {
-    const proto = req.headers['x-forwarded-proto'] || 'https';
-    const nonWwwHost = host.replace(/^www\./, '');
-    return res.redirect(301, `${proto}://${nonWwwHost}${req.originalUrl}`);
-  }
-  next();
-});
-
 // Analytics Tracking (vor Routes, nach Session)
 app.use(analyticsMiddleware);
 
