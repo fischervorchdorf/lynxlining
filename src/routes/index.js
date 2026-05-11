@@ -16,7 +16,12 @@ function validateLocale(req, res, next) {
 
 // Redirect root to default locale
 router.get('/', (req, res) => {
-  res.redirect(301, '/de');
+  res.redirect(301, '/de/');
+});
+
+// Redirect /:locale (without trailing slash) to /:locale/
+router.get('/:locale', validateLocale, (req, res) => {
+  res.redirect(301, `/${req.params.locale}/`);
 });
 
 // ===== sitemap.xml (dynamisch) =====
@@ -46,13 +51,13 @@ router.get('/sitemap.xml', async (req, res) => {
   for (const { path, priority, changefreq } of staticPaths) {
     for (const locale of SUPPORTED_LOCALES) {
       urls.push({
-        loc: `${siteUrl}/${locale}${path}`,
+        loc: `${siteUrl}/${locale}${path || '/'}`,
         lastmod: today,
         changefreq,
         priority,
         alternates: SUPPORTED_LOCALES.map(l => ({
           hreflang: l,
-          href: `${siteUrl}/${l}${path}`
+          href: `${siteUrl}/${l}${path || '/'}`
         }))
       });
     }
@@ -102,7 +107,7 @@ router.get('/sitemap.xml', async (req, res) => {
 });
 
 // Homepage
-router.get('/:locale', validateLocale, async (req, res) => {
+router.get('/:locale/', validateLocale, async (req, res) => {
   const locale = req.locale;
   try {
     const [applications] = await db.query(`
