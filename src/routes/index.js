@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const router = express.Router({ strict: true });
 const db = require('../config/database');
 
 const SUPPORTED_LOCALES = ['de', 'en'];

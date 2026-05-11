@@ -14,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 
 // Trust proxy (Coolify/nginx Reverse Proxy)
 app.set('trust proxy', 1);
+app.set('strict routing', true);
 
 // Security & compression
 app.use(helmet({
