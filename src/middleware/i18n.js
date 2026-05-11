@@ -41,7 +41,7 @@ function i18n(req, res, next) {
   res.locals.localePath = function(targetLocale) {
     const currentPath = req.originalUrl;
     const cleanPath = currentPath.replace(/^\/(de|en)(\/|$)/, '/');
-    return `/${targetLocale}${cleanPath === '/' ? '' : cleanPath}`;
+    return `/${targetLocale}${cleanPath === '/' ? '/' : cleanPath}`;
   };
 
   next();
