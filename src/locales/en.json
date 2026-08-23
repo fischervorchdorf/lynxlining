@@ -23,6 +23,8 @@
     "shop_description": "Order TPU wear protection films online: Standard, Comfort and Ultra. With volume pricing and inquiry option for bulk orders.",
     "news_title": "News – Latest from LYNX Lining",
     "news_description": "News, LinkedIn and Instagram posts about LYNX Lining wear protection and TPU applications.",
+    "about_title": "About us – The story of LYNX Lining",
+    "about_description": "In Desmopan TPU wear lining sales since 2012, founded as a trading company in Linz in 2020: the story of LYNX Lining and Ing. Martin F. Heidecker.",
     "contact_title": "Contact – Inquiry & Address | LYNX Lining",
     "contact_description": "Contact LYNX Lining in Linz. Inquiry form, email and business hours. We advise you on TPU wear protection.",
     "imprint_title": "Imprint | LYNX Lining",
@@ -42,7 +44,50 @@
     "news": "News",
     "shop": "Shop",
     "contact": "Contact",
-    "mounting": "Installation"
+    "mounting": "Installation",
+    "about": "About us"
+  },
+  "about_page": {
+    "title": "The story of LYNX Lining",
+    "subtitle": "From selling the first Desmopan TPU linings to an own brand from Linz, Austria",
+    "story_label": "Our story",
+    "milestones": [
+      {
+        "year": "2012",
+        "title": "Getting started in wear protection",
+        "text": "Ing. Martin F. Heidecker starts business development and sales of Desmopan TPU wear linings, building years of application experience in mining, industry and plant engineering."
+      },
+      {
+        "year": "2019",
+        "title": "Production launch in Austria",
+        "text": "In December 2019, the first production run of the Desmopan TPU material is successfully launched at AGRU – The Plastics Experts in Bad Hall, Upper Austria. Manufacturing “Made in Austria” becomes reality."
+      },
+      {
+        "year": "2020",
+        "title": "Founding of LYNX Lining",
+        "text": "In early 2020, Martin Heidecker founds the trading company in Linz for international distribution of Desmopan TPU wear linings – with LYNX Lining as its own brand."
+      },
+      {
+        "year": "Today",
+        "title": "Wear protection for industry and mining",
+        "text": "LYNX Lining supplies customers in Austria, Germany, Switzerland and the EU – from hopper linings and tipper bodies to railway applications. Consulting, sales and quality control remain in one hand."
+      }
+    ],
+    "facts_label": "What defines us",
+    "facts": [
+      {
+        "title": "Made in Austria",
+        "text": "The TPU material is manufactured in Upper Austria – short distances, reliable quality and full control over every roll."
+      },
+      {
+        "title": "Desmopan® 385",
+        "text": "LYNX Lining relies on thermoplastic polyurethane based on Desmopan: up to 30 times longer service life than steel, HDPE or rubber – and 100% recyclable."
+      },
+      {
+        "title": "Direct line to the owner",
+        "text": "Whoever contacts LYNX Lining talks to the founder himself: from the first wear analysis to the finished lining."
+      }
+    ]
   },
   "hero": {
     "title": "LYNX LINING",
@@ -421,5 +466,121 @@
     "accept_necessary": "Necessary only",
     "save": "Save selection",
     "privacy_link": "Privacy Policy"
+  },
+  "preview": {
+    "meta": {
+      "title": "LYNX Lining — What holds when everything else gives in.",
+      "description": "TPU wear protection, made in Austria. Thirty times the lifespan of steel, rubber and HDPE. One decision."
+    },
+    "nav": {
+      "home": "Home",
+      "analysis": "Request an analysis",
+      "shop": "Shop"
+    },
+    "hero": {
+      "eyebrow": "TPU wear protection · Made in Austria",
+      "headline_1": "What holds",
+      "headline_2": "when everything else gives in.",
+      "subline_1": "Thirty times the lifespan.",
+      "subline_2": "One single decision.",
+      "body_1": "Steel gives in. Rubber tears. HDPE turns brittle.",
+      "body_2": "It doesn't.",
+      "cta_primary": "Request a wear analysis",
+      "cta_primary_note": "free of charge · on-site if needed",
+      "cta_secondary": "See standard rolls in the shop"
+    },
+    "scene": {
+      "eyebrow": "The promise",
+      "headline": "Picture a quarter without a single wear issue.",
+      "p1": "You walk through the plant. The hopper roars — same as always.",
+      "p1_strong": "Quieter, now.",
+      "p2": "You lay a hand on the liner.",
+      "p2_strong": "Smooth. Warm.",
+      "p3": "Not chewed up. Not worn through.",
+      "p4": "After eighteen months.",
+      "p5": "You spend your time on other things.",
+      "p5_strong": "Finally."
+    },
+    "scenes": {
+      "eyebrow": "Three machines. One material.",
+      "headline": "Where it hurts the most — that's where it lasts the longest.",
+      "tile_1_title": "Mixer.",
+      "tile_1_text": "Concrete, sand, mortar. Day in, day out. The liner looks like day one — after three seasons.",
+      "tile_2_title": "Tipper.",
+      "tile_2_text": "Stone, gravel, sharp edges. Fifty thousand loads. It still tips today.",
+      "tile_3_title": "Transfer hopper.",
+      "tile_3_text": "Powder, granulate, impact. What gives in after weeks elsewhere holds with us for the whole year — and the next."
+    },
+    "zahl": {
+      "eyebrow": "The one number",
+      "numeral": "30",
+      "caption": "THIRTY TIMES THE LIFESPAN",
+      "body_1": "An independent master's thesis tested our material against steel, rubber and HDPE. Continuous load. Real conditions.",
+      "body_strong": "We won, thirty times over.",
+      "body_2": "That means thirty shutdowns that don't happen. Thirty maintenance windows you keep. An annual budget you spend somewhere else.",
+      "link": "Read the master's thesis (PDF)"
+    },
+    "proof": {
+      "eyebrow": "The proof",
+      "headline_1": "One tipper.",
+      "headline_2": "43 months.",
+      "headline_3": "50,000 loads.",
+      "body_1": "Johann Arthofer lined his tipper with LYNX Lining in 2021. We took this photo in spring 2025.",
+      "body_2_strong": "The liner is still there.",
+      "body_3_strong": "The tipper is still running.",
+      "body_4": "We asked Johann when he's planning the next service.",
+      "body_4_strong": "He laughed.",
+      "quote": "The investment paid for itself within months. Today I just don't think about it anymore.",
+      "quote_author": "Johann Arthofer",
+      "quote_company": "Arthofer Bau GmbH",
+      "cta_primary": "Request a wear analysis for my plant",
+      "cta_secondary": "See more customer cases"
+    },
+    "process": {
+      "eyebrow": "How we work",
+      "headline": "Three steps. No sales pitch.",
+      "step_1_label": "Step 1 — Analysis",
+      "step_1_text": "You send us a photo of your plant and tell us what's wearing out. We reply within two business days with a material recommendation. Free of charge. No sales pressure.",
+      "step_2_label": "Step 2 — Sample",
+      "step_2_text": "You get a sample in the right thickness. The material in your hand explains itself faster than any datasheet.",
+      "step_3_label": "Step 3 — Delivery",
+      "step_3_text": "Roll goods, pre-bonded to steel plate (Comfort) or as a composite (Ultra). Shipped from Austria, EU-wide within a week.",
+      "cta": "Start with step 1 — request a wear analysis"
+    },
+    "paths": {
+      "eyebrow": "Which path fits your situation?",
+      "headline": "Two ways.",
+      "card_1_quote": "I want guidance.",
+      "card_1_title": "Request a wear analysis",
+      "card_1_text": "You'll get a written recommendation, a matching sample and a direct contact. Reply within two business days.",
+      "card_1_cta": "Start the analysis",
+      "card_2_quote": "I know what I need.",
+      "card_2_title": "Go to the shop — standard rolls",
+      "card_2_text": "Order directly, ex stock Austria. Volume pricing shown.",
+      "card_2_cta": "Open the shop"
+    },
+    "footer": {
+      "tagline": "Wear protection, made in Austria. Trusted for years.",
+      "address_1": "LYNX Lining · Ing. Martin F. Heidecker",
+      "address_2": "Schillerstraße 13 · 4020 Linz · Austria",
+      "email": "office@lynx-lining.com",
+      "copyright": "All rights reserved.",
+      "back_to_live": "View the current live site"
+    },
+    "contact": {
+      "eyebrow": "Wear analysis",
+      "headline_1": "Tell us",
+      "headline_2": "about your plant.",
+      "intro": "Four fields. No sales pitch. Reply within two business days with a material recommendation and a matching sample.",
+      "field_name": "Name",
+      "field_company": "Company",
+      "field_email": "Email",
+      "field_message": "What's wearing out? (plant, material, load)",
+      "field_photo": "Optional: photo of the plant (JPG / PNG, max. 8 MB)",
+      "submit": "Request the analysis",
+      "privacy_note": "We use your details only to answer your enquiry. More in our privacy policy.",
+      "thanks_headline": "Thank you.",
+      "thanks_body": "We've got your enquiry. Reply within two business days."
+    }
   }
 }

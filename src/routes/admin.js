@@ -374,11 +374,21 @@ router.get('/linkedin/:id', requireAuth, async (req, res) => {
   }
 });
 
+// Slug immer normalisieren — auch von Hand eingetragene: ein Titel mit
+// Leerzeichen/Umlauten im Slug-Feld erzeugte sonst ungültige URLs in der Sitemap
+function slugify(text) {
+  return (text || '').toLowerCase()
+    .replace(/[äöüß]/g, m => ({ä:'ae',ö:'oe',ü:'ue',ß:'ss'}[m]||m))
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .substring(0, 80);
+}
+
 router.post('/linkedin', requireAuth, linkedinUpload.single('image'), async (req, res) => {
   try {
     const { linkedin_url, slug, author_name, title_de, excerpt_de, content_de, title_en, excerpt_en, content_en, is_visible, sort_order } = req.body;
     const imagePath = req.file ? '/images/uploads/' + req.file.filename : '';
-    const autoSlug = slug || (title_de || '').toLowerCase().replace(/[äöüß]/g, m => ({ä:'ae',ö:'oe',ü:'ue',ß:'ss'}[m]||m)).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 80);
+    const autoSlug = slugify(slug || title_de);
 
     const [result] = await db.query(
       'INSERT INTO linkedin_posts (slug, linkedin_url, image_path, author_name, published_at, is_visible, sort_order) VALUES (?, ?, ?, ?, NOW(), ?, ?)',
@@ -399,7 +409,7 @@ router.post('/linkedin', requireAuth, linkedinUpload.single('image'), async (req
 router.post('/linkedin/:id', requireAuth, linkedinUpload.single('image'), async (req, res) => {
   try {
     const { linkedin_url, slug, author_name, title_de, excerpt_de, content_de, title_en, excerpt_en, content_en, is_visible, sort_order } = req.body;
-    const autoSlug = slug || (title_de || '').toLowerCase().replace(/[äöüß]/g, m => ({ä:'ae',ö:'oe',ü:'ue',ß:'ss'}[m]||m)).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 80);
+    const autoSlug = slugify(slug || title_de);
 
     // Bild: Neues Upload > bestehendes Bild > bisheriges in DB behalten
     if (req.file) {

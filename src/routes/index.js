@@ -1,8 +1,35 @@
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const router = express.Router({ strict: true });
 const db = require('../config/database');
 
 const SUPPORTED_LOCALES = ['de', 'en'];
+
+// ===== Preview route helper =====
+// Loads locale data directly so the /preview routes can override the locale
+// that the global i18n middleware inferred from the URL path (which always
+// resolves to 'de' under /preview because the first path segment is not a locale).
+const PREVIEW_LOCALES = {
+  de: JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'locales', 'de.json'), 'utf8')),
+  en: JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'locales', 'en.json'), 'utf8'))
+};
+function previewGetNested(obj, keyPath) {
+  return keyPath.split('.').reduce((o, k) => (o && o[k] !== undefined ? o[k] : keyPath), obj);
+}
+function previewLocale(locale) {
+  return (req, res, next) => {
+    req.locale = locale;
+    res.locals.locale = locale;
+    res.locals.t = (key) => previewGetNested(PREVIEW_LOCALES[locale], key);
+    res.locals.localePath = (target) => {
+      const onContact = /\/kontakt$/.test(req.path);
+      if (target === 'de') return onContact ? '/preview/kontakt' : '/preview';
+      return onContact ? '/preview/en/kontakt' : '/preview/en';
+    };
+    next();
+  };
+}
 
 // Locale-Validierung Middleware für alle /:locale Routen
 function validateLocale(req, res, next) {
@@ -14,10 +41,73 @@ function validateLocale(req, res, next) {
   next();
 }
 
+// ===== Preview routes (parallel premium redesign — original / stays unchanged) =====
+router.get('/preview', previewLocale('de'), (req, res) => {
+  res.render('pages/home-preview.njk', {
+    title: PREVIEW_LOCALES.de.preview.meta.title,
+    metaDescription: PREVIEW_LOCALES.de.preview.meta.description,
+    page: 'preview-home'
+  });
+});
+router.get('/preview/en', previewLocale('en'), (req, res) => {
+  res.render('pages/home-preview.njk', {
+    title: PREVIEW_LOCALES.en.preview.meta.title,
+    metaDescription: PREVIEW_LOCALES.en.preview.meta.description,
+    page: 'preview-home'
+  });
+});
+router.get('/preview/kontakt', previewLocale('de'), (req, res) => {
+  res.render('pages/contact-preview.njk', {
+    title: 'Verschleißanalyse anfordern — LYNX Lining',
+    metaDescription: PREVIEW_LOCALES.de.preview.contact.intro,
+    page: 'preview-contact'
+  });
+});
+router.get('/preview/en/kontakt', previewLocale('en'), (req, res) => {
+  res.render('pages/contact-preview.njk', {
+    title: 'Request a wear analysis — LYNX Lining',
+    metaDescription: PREVIEW_LOCALES.en.preview.contact.intro,
+    page: 'preview-contact'
+  });
+});
+
 // Redirect root to default locale
 router.get('/', (req, res) => {
   res.redirect(301, '/de/');
 });
+
+// ===== 301-Weiterleitungen für Alt-URLs =====
+// Die alte Website hatte keine Sprachpräfixe; diese Adressen sind noch in
+// Google/Bing gelistet und liefen bisher auf 404 — für Besucher wie für
+// KI-Crawler eine Sackgasse. 301 vererbt das Ranking auf die neuen URLs.
+const LEGACY_REDIRECTS = {
+  '/index': '/de/',
+  '/home': '/de/',
+  '/produkte': '/de/produkte',
+  '/vorteile': '/de/vorteile',
+  '/anwendungen': '/de/anwendungen',
+  '/montage': '/de/montage',
+  '/referenzen': '/de/referenzen',
+  '/galerie': '/de/galerie',
+  '/galerie-foerderband': '/de/galerie',
+  '/galerie-referenzen': '/de/galerie',
+  '/photo-gallery': '/de/galerie',
+  '/video-gallery': '/de/galerie',
+  '/video-kipper': '/de/galerie',
+  '/video-trichter': '/de/galerie',
+  '/shop': '/de/shop',
+  '/news': '/de/news',
+  '/kontakt': '/de/kontakt',
+  '/impressum': '/de/impressum',
+  '/datenschutz': '/de/datenschutz',
+  '/agb': '/de/agb'
+};
+for (const [from, to] of Object.entries(LEGACY_REDIRECTS)) {
+  router.get([from, `${from}.html`], (req, res) => res.redirect(301, to));
+}
+// Alter Blog: der Geschichte-Artikel lebt unter /de/ueber-uns weiter, Rest im News-Bereich
+router.get('/blog/geschichte-lynx-lining', (req, res) => res.redirect(301, '/de/ueber-uns'));
+router.get(['/blog', '/blog/:slug'], (req, res) => res.redirect(301, '/de/news'));
 
 // Redirect /:locale (without trailing slash) to /:locale/
 router.get('/:locale', validateLocale, (req, res) => {
@@ -36,6 +126,7 @@ router.get('/sitemap.xml', async (req, res) => {
     { path: '/anwendungen', priority: '0.9', changefreq: 'monthly' },
     { path: '/montage', priority: '0.7', changefreq: 'monthly' },
     { path: '/referenzen', priority: '0.7', changefreq: 'monthly' },
+    { path: '/ueber-uns', priority: '0.6', changefreq: 'yearly' },
     { path: '/galerie', priority: '0.6', changefreq: 'monthly' },
     { path: '/shop', priority: '0.9', changefreq: 'weekly' },
     { path: '/news', priority: '0.8', changefreq: 'weekly' },
@@ -69,7 +160,9 @@ router.get('/sitemap.xml', async (req, res) => {
       SELECT slug, id, updated_at FROM linkedin_posts WHERE is_visible = 1
     `);
     for (const post of liPosts) {
-      const slug = post.slug || post.id;
+      // encodeURIComponent: Slugs mit Leerzeichen/Umlauten (Altbestand) würden
+      // sonst eine ungültige URL erzeugen, an der Sitemap-Parser scheitern
+      const slug = encodeURIComponent(post.slug || post.id);
       for (const locale of SUPPORTED_LOCALES) {
         urls.push({
           loc: `${siteUrl}/${locale}/news/linkedin/${slug}`,
@@ -150,14 +243,34 @@ router.get('/:locale/', validateLocale, async (req, res) => {
       LIMIT 3
     `, [locale]);
 
+    let linkedinPosts = [];
+    try {
+      const [liPosts] = await db.query(`
+        SELECT lp.*, lpt.title, lpt.excerpt, lpt.content
+        FROM linkedin_posts lp
+        JOIN linkedin_post_translations lpt ON lp.id = lpt.linkedin_post_id AND lpt.locale = ?
+        WHERE lp.is_visible = 1
+        ORDER BY lp.published_at DESC
+        LIMIT 4
+      `, [locale]);
+      linkedinPosts = liPosts;
+    } catch (e) { /* LinkedIn-Tabelle existiert evtl. noch nicht */ }
+
+    // Alle Quellen mischen und die 4 neuesten zeigen — egal ob Instagram,
+    // LinkedIn oder Firmennews
+    const feedItems = [
+      ...instagramPosts.map(p => ({ ...p, feedType: 'instagram', sortDate: p.timestamp })),
+      ...newsPosts.map(p => ({ ...p, feedType: 'company', sortDate: p.published_at })),
+      ...linkedinPosts.map(p => ({ ...p, feedType: 'linkedin', sortDate: p.published_at }))
+    ].sort((a, b) => new Date(b.sortDate || 0) - new Date(a.sortDate || 0)).slice(0, 4);
+
     res.render('pages/home.njk', {
       title: res.locals.t('meta.home_title'),
       metaDescription: res.locals.t('meta.home_description'),
       applications,
       advantages,
       testimonials,
-      instagramPosts,
-      newsPosts,
+      feedItems,
       page: 'home'
     });
   } catch (err) {
@@ -168,8 +281,7 @@ router.get('/:locale/', validateLocale, async (req, res) => {
       applications: [],
       advantages: [],
       testimonials: [],
-      instagramPosts: [],
-      newsPosts: [],
+      feedItems: [],
       page: 'home',
       dbError: true
     });
@@ -227,6 +339,11 @@ router.get('/:locale/anwendungen', validateLocale, async (req, res) => {
 // Montage & Befestigung
 router.get('/:locale/montage', validateLocale, (req, res) => {
   res.render('pages/mounting.njk', { title: res.locals.t('meta.mounting_title'), metaDescription: res.locals.t('meta.mounting_description'), page: 'mounting' });
+});
+
+// Über uns — Firmengeschichte (Nachfolger des alten Blog-Artikels /blog/geschichte-lynx-lining)
+router.get('/:locale/ueber-uns', validateLocale, (req, res) => {
+  res.render('pages/about.njk', { title: res.locals.t('meta.about_title'), metaDescription: res.locals.t('meta.about_description'), page: 'about' });
 });
 
 // Referenzen

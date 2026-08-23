@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ metaDescription }}">
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#FAF7F2">
+  <link rel="stylesheet" href="/css/output.css">
+
+  <style>
+    body { background: var(--color-cream, #FAF7F2); color: var(--color-ink, #1A1A1A); }
+    main, footer, header { background: var(--color-cream, #FAF7F2); }
+    .preview-container { max-width: 1120px; margin-left: auto; margin-right: auto; padding-left: 1.5rem; padding-right: 1.5rem; }
+    @media (min-width: 1024px) { .preview-container { padding-left: 2.5rem; padding-right: 2.5rem; } }
+    .preview-section { padding-top: clamp(5rem, 12vh, 10rem); padding-bottom: clamp(5rem, 12vh, 10rem); }
+    .preview-divider { width: 100%; height: 1px; background: rgba(26,26,26,0.08); }
+  </style>
+
+  {% block head %}{% endblock %}
+</head>
+<body class="font-body antialiased">
+
+  {# ===== Premium Header — reduced, no red ===== #}
+  <header class="sticky top-0 z-50" style="background: rgba(250, 247, 242, 0.92); backdrop-filter: saturate(140%) blur(8px); border-bottom: 1px solid rgba(26,26,26,0.06);">
+    <div class="preview-container flex items-center justify-between py-4 lg:py-5">
+      <a href="{% if locale == 'en' %}/preview/en{% else %}/preview{% endif %}" class="flex items-center gap-3 no-underline">
+        <img src="/images/logo/logo_lynx.png" alt="LYNX Lining" class="h-9 w-auto" style="filter: brightness(0);">
+        <span class="hidden sm:inline preview-display text-xl tracking-tight" style="color: var(--color-ink);">LYNX Lining</span>
+      </a>
+
+      <nav class="flex items-center gap-6 lg:gap-8">
+        <a href="{% if locale == 'en' %}/preview/en/kontakt{% else %}/preview/kontakt{% endif %}"
+           class="hidden sm:inline-block text-sm font-medium" style="color: var(--color-ink); border-bottom: 1px solid transparent; padding-bottom: 2px;"
+           onmouseover="this.style.borderBottomColor='var(--color-ink)'" onmouseout="this.style.borderBottomColor='transparent'">
+          {{ t('preview.nav.analysis') }}
+        </a>
+        <a href="/{{ locale }}/shop" class="hidden md:inline-block text-sm" style="color: var(--color-stone);">
+          {{ t('preview.nav.shop') }}
+        </a>
+
+        {# Language switch — minimal #}
+        <div class="flex items-center gap-2 text-xs" style="color: var(--color-stone);">
+          <a href="/preview"     style="color: {% if locale == 'de' %}var(--color-ink); font-weight: 600; border-bottom: 1px solid var(--color-ink);{% else %}var(--color-stone);{% endif %} padding-bottom: 1px;">DE</a>
+          <span style="opacity: 0.4;">/</span>
+          <a href="/preview/en"  style="color: {% if locale == 'en' %}var(--color-ink); font-weight: 600; border-bottom: 1px solid var(--color-ink);{% else %}var(--color-stone);{% endif %} padding-bottom: 1px;">EN</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  {# ===== Premium Footer — minimal ===== #}
+  <footer class="preview-section" style="padding-top: 4rem; padding-bottom: 3rem; border-top: 1px solid rgba(26,26,26,0.08);">
+    <div class="preview-container">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
+
+        <div>
+          <div class="preview-display text-2xl mb-3" style="color: var(--color-ink);">LYNX Lining</div>
+          <p class="text-sm leading-relaxed" style="color: var(--color-stone);">{{ t('preview.footer.tagline') }}</p>
+        </div>
+
+        <div class="text-sm leading-relaxed" style="color: var(--color-stone);">
+          <p style="color: var(--color-ink); font-weight: 500;">{{ t('preview.footer.address_1') }}</p>
+          <p>{{ t('preview.footer.address_2') }}</p>
+          <a href="mailto:office@lynx-lining.com" class="preview-link mt-3 inline-block">{{ t('preview.footer.email') }}</a>
+        </div>
+
+        <div class="text-sm" style="color: var(--color-stone);">
+          <a href="{% if locale == 'en' %}/preview/en/kontakt{% else %}/preview/kontakt{% endif %}" class="block py-1 preview-link" style="border-bottom: none;">{{ t('preview.nav.analysis') }}</a>
+          <a href="/{{ locale }}/shop" class="block py-1 preview-link" style="border-bottom: none;">{{ t('preview.nav.shop') }}</a>
+          <a href="/{{ locale }}" class="block py-1 preview-link" style="border-bottom: none; opacity: 0.6;">{{ t('preview.footer.back_to_live') }}</a>
+        </div>
+
+      </div>
+
+      <div class="preview-divider mt-12 mb-6"></div>
+      <div class="flex flex-col md:flex-row justify-between items-center gap-3 text-xs" style="color: var(--color-stone);">
+        <span>&copy; {{ currentYear }} LYNX Lining. {{ t('preview.footer.copyright') }}</span>
+        <span style="opacity: 0.6;">Premium-Vorschau · /preview</span>
+      </div>
+    </div>
+  </footer>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

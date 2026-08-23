@@ -13,16 +13,27 @@ LYNX Lining ist eine österreichische Marke unter Inhaberschaft von Ing. Martin 
 - **Website:** https://lynx-lining.com
 - **Sprachen:** Deutsch, English
 - **Liefergebiete:** Österreich, Deutschland, Schweiz, EU
+- **Gegründet:** Anfang 2020 in Linz; Vertrieb von Desmopan-TPU-Verschleißauskleidungen seit 2012, Produktion des Materials seit Dezember 2019 bei AGRU in Bad Hall (Oberösterreich)
+- [Über uns (DE)](https://lynx-lining.com/de/ueber-uns): Firmengeschichte und Hintergrund
+- [About us (EN)](https://lynx-lining.com/en/ueber-uns)
 
 ## Produkte
 
-LYNX Lining TPU-Verschleißschutzfolien werden 5 mm stark gefertigt und sind als Rolle oder Zuschnitt lieferbar. Die Folien lassen sich auf Stahl, Beton oder Holz verkleben oder verschrauben.
+LYNX Lining TPU-Verschleißschutzfolien sind in den Stärken 2, 3, 5, 8 und 10 mm erhältlich, als Rollenware (Standardbreite 1.515 mm, 2.000 mm auf Anfrage) oder Zuschnitt nach Maß. Die Folien lassen sich auf Stahl, Beton oder Holz verkleben oder verschrauben.
 
-| Ausführung | Oberfläche | Empfehlung |
+| Ausführung | Aufbau | Empfehlung |
 |---|---|---|
-| Standard | Glatt | Universell, Fördertechnik, Trichter |
-| Comfort | Strukturiert | Verbesserte Schallabsorption, Bergbau |
-| Ultra | Verstärkt | Hochabrasiv, Schwerlast |
+| Standard | Rollenware, auf Maß zuschneidbar | Universell, Fördertechnik, Trichter |
+| Comfort | Standardfolie auf Trägerplatte aus Blech/Stahl aufgeklebt (Comfort-Schiene auf Maß) | Einfache Installation überall |
+| Ultra | Standardfolie kombiniert mit extrem widerstandsfähigem Spezialschaumstoff (12,5 oder 25 mm) | Hochabrasiv, Schwerlast |
+
+| Stärke | Gewicht | Empfohlene Anwendungen |
+|---|---|---|
+| 2 mm | 2,4 kg/m² | Feine, klebrige Materialien (Anti-Haft), Lärmschutz, Prallschutz für pulvriges Material (Kalk, Zement, Flüssigbeton) |
+| 3 mm | 3,6 kg/m² | Feines Gestein (Sand, Kies, Beton) 0–32 mm, universeller kostengünstiger Verschleißschutz |
+| 5 mm | 6,0 kg/m² | Sehr vielseitig: Gestein 0–65 mm, Recycling (Glas, Metall, Kunststoff), Schurren, Rutschen, Kippermulden |
+| 8 mm | 9,6 kg/m² | Hohe Beanspruchung 0–100 mm, Aufgabetrichter, Recycling (Beton, Metall, Glas) |
+| 10 mm | 12 kg/m² | Sehr hohe Beanspruchung, Heavy-Duty, Bergbau, Dauerbetrieb 24/7 |
 
 - [Produktübersicht (DE)](https://lynx-lining.com/de/produkte): Alle TPU-Folien-Varianten und Ausführungen
 - [Product overview (EN)](https://lynx-lining.com/en/produkte)
@@ -31,14 +42,17 @@ LYNX Lining TPU-Verschleißschutzfolien werden 5 mm stark gefertigt und sind als
 
 ## Technische Spezifikation
 
-- **Materialstärke:** 5 mm
-- **Härte:** Shore A 92
-- **Temperaturbereich:** −30 °C bis +80 °C
-- **Dichte:** ca. 1,2 g/cm³
-- **Material:** Thermoplastisches Polyurethan (TPU) – Desmopan®-Basis
+- **Material:** Thermoplastisches Polyurethan (TPU) – Desmopan® 385
+- **Materialstärken:** 2, 3, 5, 8, 10 mm
+- **Abriebfestigkeit:** 30 mm³ / ISO 4649
+- **Temperaturbereich:** −70 °C bis +200 °C, Dauerbelastung max. +80 °C
+- **Dichte:** 1,2 kg/dm³
+- **Farbe:** Rot (RAL 3013)
+- **Rollenbreite:** 1.515 mm (±5 mm), 2.000 mm auf Anfrage
+- **Rollenlängen:** 2/3 mm: 40,3 lfm (61,05 m²) · 5 mm: 20,5 lfm (30,52 m²) · 8/10 mm: 12,15 lfm (18,4 m²)
 - **Recyclierbarkeit:** 100 % werkstofflich verwertbar
-- **Farbe:** Schwarz
-- **Lieferform:** Rolle (Standardbreite) oder Zuschnitt nach Maß
+- **Lieferform:** Rolle oder Zuschnitt nach Maß
+- **Chemische Beständigkeit:** langzeitbeständig gegen Benzin, Diesel, Mineralöl, Ammoniak, Süß- und Meerwasser; nicht beständig gegen starke Säuren, Salpeter- und Salzsäure sowie alkalische Lösungen
 
 ## Produkteigenschaften
 

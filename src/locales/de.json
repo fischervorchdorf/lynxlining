@@ -23,6 +23,8 @@
     "shop_description": "TPU-Verschleißschutzfolien online bestellen: Standard, Comfort und Ultra. Mit Staffelpreisen und Anfragefunktion für Großmengen.",
     "news_title": "News – Aktuelles von LYNX Lining",
     "news_description": "Neuigkeiten, LinkedIn- und Instagram-Beiträge rund um LYNX Lining Verschleißschutz und TPU-Anwendungen.",
+    "about_title": "Über uns – Die Geschichte von LYNX Lining",
+    "about_description": "Seit 2012 im Vertrieb von Desmopan-TPU-Verschleißauskleidungen, 2020 als Handelsunternehmen in Linz gegründet: die Geschichte von LYNX Lining und Ing. Martin F. Heidecker.",
     "contact_title": "Kontakt – Anfrage & Adresse | LYNX Lining",
     "contact_description": "Kontakt zu LYNX Lining in Linz. Anfrageformular, E-Mail und Geschäftszeiten. Wir beraten Sie zu Verschleißschutz aus TPU.",
     "imprint_title": "Impressum | LYNX Lining",
@@ -42,7 +44,50 @@
     "news": "News",
     "shop": "Shop",
     "contact": "Kontakt",
-    "mounting": "Montage"
+    "mounting": "Montage",
+    "about": "Über uns"
+  },
+  "about_page": {
+    "title": "Die Geschichte von LYNX Lining",
+    "subtitle": "Vom Vertrieb der ersten Desmopan-TPU-Auskleidungen zur eigenen Marke aus Linz",
+    "story_label": "Unsere Geschichte",
+    "milestones": [
+      {
+        "year": "2012",
+        "title": "Der Anfang im Verschleißschutz",
+        "text": "Ing. Martin F. Heidecker beginnt mit Business Development und Vertrieb von Verschleißauskleidungen aus Desmopan-TPU und sammelt über Jahre Anwendungserfahrung in Bergbau, Industrie und Anlagenbau."
+      },
+      {
+        "year": "2019",
+        "title": "Produktionsstart in Österreich",
+        "text": "Im Dezember 2019 läuft bei AGRU – The Plastics Experts in Bad Hall (Oberösterreich) erfolgreich die erste Produktion des Desmopan-TPU-Materials an. Damit wird die Fertigung „Made in Austria“ Realität."
+      },
+      {
+        "year": "2020",
+        "title": "Gründung von LYNX Lining",
+        "text": "Anfang 2020 gründet Martin Heidecker in Linz das Handelsunternehmen für den internationalen Vertrieb von Desmopan-TPU-Verschleißauskleidungen – mit LYNX Lining als eigener Marke."
+      },
+      {
+        "year": "Heute",
+        "title": "Verschleißschutz für Industrie und Bergbau",
+        "text": "LYNX Lining beliefert Kunden in Österreich, Deutschland, der Schweiz und der EU – von der Trichter-Auskleidung über Kippermulden bis zu Anwendungen im Schienenverkehr. Beratung, Vertrieb und Qualitätskontrolle bleiben in einer Hand."
+      }
+    ],
+    "facts_label": "Was uns ausmacht",
+    "facts": [
+      {
+        "title": "Made in Austria",
+        "text": "Das TPU-Material wird in Oberösterreich gefertigt – kurze Wege, verlässliche Qualität und volle Kontrolle über jede Rolle."
+      },
+      {
+        "title": "Desmopan® 385",
+        "text": "LYNX Lining setzt auf thermoplastisches Polyurethan auf Desmopan-Basis: bis zu 30-fach längere Standzeit als Stahl, HDPE oder Gummi – und zu 100 % werkstofflich recyclebar."
+      },
+      {
+        "title": "Direkter Draht zum Inhaber",
+        "text": "Wer bei LYNX Lining anfragt, spricht mit dem Gründer selbst: von der ersten Verschleißanalyse bis zur fertigen Auskleidung."
+      }
+    ]
   },
   "hero": {
     "title": "LYNX LINING",
@@ -525,5 +570,121 @@
     "accept_necessary": "Nur notwendige",
     "save": "Auswahl speichern",
     "privacy_link": "Datenschutzerklärung"
+  },
+  "preview": {
+    "meta": {
+      "title": "LYNX Lining — Was hält, wenn alles andere aufgibt.",
+      "description": "TPU-Verschleißschutz aus Österreich. Dreißigfache Lebensdauer gegenüber Stahl, Gummi und HDPE. Eine einzige Entscheidung."
+    },
+    "nav": {
+      "home": "Start",
+      "analysis": "Analyse anfordern",
+      "shop": "Shop"
+    },
+    "hero": {
+      "eyebrow": "TPU-Verschleißschutz · Made in Austria",
+      "headline_1": "Was hält,",
+      "headline_2": "wenn alles andere aufgibt.",
+      "subline_1": "Dreißigfache Lebensdauer.",
+      "subline_2": "Eine einzige Entscheidung.",
+      "body_1": "Stahl gibt nach. Gummi reißt. HDPE wird spröde.",
+      "body_2": "Wir nicht.",
+      "cta_primary": "Verschleißanalyse anfordern",
+      "cta_primary_note": "kostenfrei · vor Ort möglich",
+      "cta_secondary": "Rollenware im Shop ansehen"
+    },
+    "scene": {
+      "eyebrow": "Das Versprechen",
+      "headline": "Stell dir vor: drei Monate ohne Stillstand.",
+      "p1": "Du gehst durch die Halle. Der Trichter dröhnt — wie immer.",
+      "p1_strong": "Nur leiser jetzt.",
+      "p2": "Du legst die Hand auf die Auskleidung.",
+      "p2_strong": "Glatt. Warm.",
+      "p3": "Nicht aufgeraut. Nicht durchgebrochen.",
+      "p4": "Nach achtzehn Monaten.",
+      "p5": "Du machst Wichtigeres.",
+      "p5_strong": "Endlich."
+    },
+    "scenes": {
+      "eyebrow": "Drei Anlagen. Ein Material.",
+      "headline": "Wo es am härtesten ist, hält es am längsten.",
+      "tile_1_title": "Rührwerk.",
+      "tile_1_text": "Beton, Sand, Mörtel. Tagein, tagaus. Die Auskleidung sieht aus wie am ersten Tag — nach drei Wintern.",
+      "tile_2_title": "Kippermulde.",
+      "tile_2_text": "Steine, Schotter, scharfe Kanten. Fünfzigtausend Fuhren. Fährt heute noch.",
+      "tile_3_title": "Übergabetrichter.",
+      "tile_3_text": "Pulver, Granulat, Aufprall. Was sonst nach Wochen aufgibt, hält mit LYNX durch das ganze Jahr — und das nächste."
+    },
+    "zahl": {
+      "eyebrow": "Die eine Zahl",
+      "numeral": "30",
+      "caption": "DREISSIGFACHE LEBENSDAUER",
+      "body_1": "Eine unabhängige Masterarbeit hat unser Material gegen Stahl, Gummi und HDPE getestet. Im Dauerlauf. Unter realer Belastung.",
+      "body_strong": "Wir haben dreißig Mal gewonnen.",
+      "body_2": "Das heißt: Dreißig Stillstände weniger. Dreißig Wartungsfenster, die du dir sparst. Ein Jahresbudget für etwas Besseres.",
+      "link": "Die Masterarbeit lesen"
+    },
+    "proof": {
+      "eyebrow": "Der Beweis",
+      "headline_1": "Eine Mulde.",
+      "headline_2": "43 Monate.",
+      "headline_3": "50.000 Fuhren.",
+      "body_1": "Johann Arthofer hat seine Kippermulde 2021 mit LYNX Lining ausgekleidet. Wir haben das Foto im Frühjahr 2025 gemacht.",
+      "body_2_strong": "Die Auskleidung ist noch dran.",
+      "body_3_strong": "Die Mulde fährt noch.",
+      "body_4": "Wir haben Johann gefragt, wann er die nächste Wartung plant.",
+      "body_4_strong": "Er hat gelacht.",
+      "quote": "Die Investition hat sich in wenigen Monaten amortisiert. Heute denke ich nicht mehr darüber nach.",
+      "quote_author": "Johann Arthofer",
+      "quote_company": "Arthofer Bau GmbH",
+      "cta_primary": "Verschleißanalyse für meinen Betrieb anfordern",
+      "cta_secondary": "Mehr Kundenfälle ansehen"
+    },
+    "process": {
+      "eyebrow": "Wie wir arbeiten",
+      "headline": "Drei Schritte. Kein Verkaufsgespräch.",
+      "step_1_label": "Schritt 1 — Analyse",
+      "step_1_text": "Du schickst uns ein Foto deiner Anlage und sagst, was sich abnutzt. Wir antworten innerhalb von zwei Werktagen mit einer Materialempfehlung. Kostenfrei. Ohne Verkaufsdruck.",
+      "step_2_label": "Schritt 2 — Muster",
+      "step_2_text": "Du bekommst ein Muster in der richtigen Stärke. In der Hand verstehst du das Material schneller als in zehn Datenblättern.",
+      "step_3_label": "Schritt 3 — Lieferung",
+      "step_3_text": "Rollenware, vorgeklebt auf Stahlplatte (Comfort) oder im Composite (Ultra). Lieferung aus Österreich, EU-weit in einer Woche.",
+      "cta": "Schritt 1 starten — Verschleißanalyse anfordern"
+    },
+    "paths": {
+      "eyebrow": "Was passt zu deiner Situation?",
+      "headline": "Zwei Wege.",
+      "card_1_quote": "Ich brauche Beratung.",
+      "card_1_title": "Verschleißanalyse anfordern",
+      "card_1_text": "Du bekommst eine schriftliche Empfehlung, ein passendes Muster und einen Ansprechpartner. Antwort in zwei Werktagen.",
+      "card_1_cta": "Analyse starten",
+      "card_2_quote": "Ich weiß, was ich brauche.",
+      "card_2_title": "Rollenware Standard im Shop",
+      "card_2_text": "Direkt bestellen, ab Lager Österreich. Mit Staffelpreisen.",
+      "card_2_cta": "Zum Shop"
+    },
+    "footer": {
+      "tagline": "Verschleißschutz aus Österreich. Seit Jahren bewährt.",
+      "address_1": "LYNX Lining · Ing. Martin F. Heidecker",
+      "address_2": "Schillerstraße 13 · 4020 Linz · Austria",
+      "email": "office@lynx-lining.com",
+      "copyright": "Alle Rechte vorbehalten.",
+      "back_to_live": "Aktuelle Live-Seite anzeigen"
+    },
+    "contact": {
+      "eyebrow": "Verschleißanalyse",
+      "headline_1": "Erzähl uns",
+      "headline_2": "von deiner Anlage.",
+      "intro": "Vier Felder. Kein Verkaufsgespräch. Antwort innerhalb von zwei Werktagen mit einer Materialempfehlung und einem passenden Muster.",
+      "field_name": "Name",
+      "field_company": "Unternehmen",
+      "field_email": "E-Mail",
+      "field_message": "Was nutzt sich ab? (Anlage, Material, Belastung)",
+      "field_photo": "Optional: Foto der Anlage (JPG / PNG, max. 8 MB)",
+      "submit": "Analyse anfordern",
+      "privacy_note": "Wir nutzen deine Angaben ausschließlich für die Beantwortung deiner Anfrage. Mehr in der Datenschutzerklärung.",
+      "thanks_headline": "Danke.",
+      "thanks_body": "Wir haben deine Anfrage. Antwort innerhalb von zwei Werktagen."
+    }
   }
 }

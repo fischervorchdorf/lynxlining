@@ -29,6 +29,78 @@
   --color-stone-dark: #3A3D3F;
   --font-heading: 'Montserrat', sans-serif;
   --font-body: 'Inter', sans-serif;
+
+  /* ===== Preview-only design tokens (additive — only used on /preview routes) ===== */
+  --color-cream: #FAF7F2;
+  --color-cream-deep: #F2EEE5;
+  --color-ink: #1A1A1A;
+  --color-ink-soft: #2E2E2E;
+  --font-display: ui-serif, 'New York', 'Hoefler Text', Garamond, 'Times New Roman', Times, serif;
+}
+
+/* ===== Preview-only styles ===== */
+.preview-display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+.preview-eyebrow {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-stone);
+}
+.preview-rule {
+  width: 32px;
+  height: 1px;
+  background: var(--color-ink);
+  display: inline-block;
+}
+.preview-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 1rem 1.75rem;
+  background: var(--color-ink);
+  color: var(--color-cream);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border-radius: 2px;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.preview-cta:hover {
+  background: var(--color-lynx-red);
+  transform: translateY(-1px);
+}
+.preview-cta-arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+.preview-cta:hover .preview-cta-arrow {
+  transform: translateX(4px);
+}
+.preview-link {
+  font-size: 0.9rem;
+  color: var(--color-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-ink);
+  padding-bottom: 1px;
+  transition: opacity 0.2s ease;
+}
+.preview-link:hover {
+  opacity: 0.6;
+}
+.preview-numeral {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(14rem, 38vw, 28rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: var(--color-ink);
 }
 
 /* Base Styles */

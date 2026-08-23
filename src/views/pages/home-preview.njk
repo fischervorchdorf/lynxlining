@@ -1,0 +1,392 @@
+{% extends "layouts/layout-preview.njk" %}
+
+{% block content %}
+
+{# ============================================================
+   SEKTION 1 — HERO
+   Pippi öffnet. Eine These, kein Listenpunkt.
+============================================================ #}
+<section class="preview-section" style="padding-top: clamp(4rem, 10vh, 7rem);">
+  <div class="preview-container">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+      <div class="lg:col-span-7 order-2 lg:order-1">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="preview-rule"></span>
+          <span class="preview-eyebrow">{{ t('preview.hero.eyebrow') }}</span>
+        </div>
+
+        <h1 class="preview-display" style="font-size: clamp(2.75rem, 7vw, 5.5rem); color: var(--color-ink);">
+          {{ t('preview.hero.headline_1') }}<br>
+          <span style="font-style: italic; color: var(--color-ink-soft);">{{ t('preview.hero.headline_2') }}</span>
+        </h1>
+
+        <div class="mt-10 preview-display" style="font-size: clamp(1.25rem, 2vw, 1.625rem); line-height: 1.4; color: var(--color-stone-dark); max-width: 32rem;">
+          {{ t('preview.hero.subline_1') }}<br>
+          {{ t('preview.hero.subline_2') }}
+        </div>
+
+        <p class="mt-8 text-base lg:text-lg leading-relaxed" style="color: var(--color-stone); max-width: 30rem;">
+          {{ t('preview.hero.body_1') }}<br>
+          <strong style="color: var(--color-ink); font-weight: 500;">{{ t('preview.hero.body_2') }}</strong>
+        </p>
+
+        <div class="mt-12 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
+          <a href="{% if locale == 'en' %}/preview/en/kontakt{% else %}/preview/kontakt{% endif %}" class="preview-cta">
+            <span>{{ t('preview.hero.cta_primary') }}</span>
+            <span class="preview-cta-arrow">→</span>
+          </a>
+          <span class="text-sm" style="color: var(--color-stone);">{{ t('preview.hero.cta_primary_note') }}</span>
+        </div>
+
+        <a href="/{{ locale }}/shop" class="preview-link inline-block mt-8" style="color: var(--color-stone); border-bottom-color: var(--color-stone);">
+          {{ t('preview.hero.cta_secondary') }} →
+        </a>
+      </div>
+
+      <div class="lg:col-span-5 order-1 lg:order-2">
+        <div style="aspect-ratio: 4/5; background: var(--color-cream-deep); overflow: hidden; border-radius: 2px; box-shadow: 0 30px 80px -30px rgba(26,26,26,0.25);">
+          <img src="/images/products/rolle-querschnitt.jpg"
+               alt="TPU-Rolle Querschnitt"
+               style="width: 100%; height: 100%; object-fit: cover; object-position: center; filter: contrast(1.02) brightness(1.02);">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{# ============================================================
+   SEKTION 2 — DAS VERSPRECHEN (Szene)
+   Pippi spielt aus: Sinne, Mikropausen, 2. Person Singular.
+============================================================ #}
+<section class="preview-section" style="background: var(--color-cream-deep);">
+  <div class="preview-container">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+
+      <div class="lg:col-span-6 order-2 lg:order-1">
+        <div style="aspect-ratio: 4/3; background: #1a1a1a; overflow: hidden; border-radius: 2px;">
+          <img src="/images/products/kipper_nach_30_monaten.JPG"
+               alt="Hand auf TPU-Auskleidung nach Monaten im Einsatz"
+               style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.7) contrast(1.15) brightness(0.95);">
+        </div>
+      </div>
+
+      <div class="lg:col-span-6 order-1 lg:order-2">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="preview-rule"></span>
+          <span class="preview-eyebrow">{{ t('preview.scene.eyebrow') }}</span>
+        </div>
+
+        <h2 class="preview-display" style="font-size: clamp(2rem, 4vw, 3.25rem); color: var(--color-ink); max-width: 26rem;">
+          {{ t('preview.scene.headline') }}
+        </h2>
+
+        <div class="mt-10 space-y-6 preview-display" style="font-size: clamp(1.125rem, 1.6vw, 1.5rem); line-height: 1.45; color: var(--color-ink-soft); max-width: 28rem;">
+          <p>
+            {{ t('preview.scene.p1') }}<br>
+            <span style="color: var(--color-ink);">{{ t('preview.scene.p1_strong') }}</span>
+          </p>
+          <p>
+            {{ t('preview.scene.p2') }}<br>
+            <span style="color: var(--color-ink);">{{ t('preview.scene.p2_strong') }}</span>
+          </p>
+          <p>{{ t('preview.scene.p3') }}</p>
+          <p style="color: var(--color-ink);">{{ t('preview.scene.p4') }}</p>
+          <p>
+            {{ t('preview.scene.p5') }}<br>
+            <span style="color: var(--color-ink);">{{ t('preview.scene.p5_strong') }}</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{# ============================================================
+   SEKTION 3 — DREI ANLAGEN
+   Bildkraft + Anwendungen. Echte Industriefotos.
+============================================================ #}
+<section class="preview-section">
+  <div class="preview-container">
+
+    <div class="max-w-3xl">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="preview-rule"></span>
+        <span class="preview-eyebrow">{{ t('preview.scenes.eyebrow') }}</span>
+      </div>
+      <h2 class="preview-display" style="font-size: clamp(2rem, 4vw, 3.25rem); color: var(--color-ink);">
+        {{ t('preview.scenes.headline') }}
+      </h2>
+    </div>
+
+    <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
+
+      <article>
+        <div style="aspect-ratio: 4/5; overflow: hidden; border-radius: 2px; background: #1a1a1a;">
+          <img src="/images/applications/application_schuettgut.jpg"
+               alt="Rührwerk-Anwendung"
+               style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.6) contrast(1.1);">
+        </div>
+        <h3 class="mt-6 preview-display" style="font-size: 1.75rem; color: var(--color-ink);">{{ t('preview.scenes.tile_1_title') }}</h3>
+        <p class="mt-3 text-sm leading-relaxed" style="color: var(--color-stone); max-width: 22rem;">{{ t('preview.scenes.tile_1_text') }}</p>
+      </article>
+
+      <article>
+        <div style="aspect-ratio: 4/5; overflow: hidden; border-radius: 2px; background: #1a1a1a;">
+          <img src="/images/products/kipper_nach_30_monaten.JPG"
+               alt="Kippermulden-Auskleidung"
+               style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.6) contrast(1.1);">
+        </div>
+        <h3 class="mt-6 preview-display" style="font-size: 1.75rem; color: var(--color-ink);">{{ t('preview.scenes.tile_2_title') }}</h3>
+        <p class="mt-3 text-sm leading-relaxed" style="color: var(--color-stone); max-width: 22rem;">{{ t('preview.scenes.tile_2_text') }}</p>
+      </article>
+
+      <article>
+        <div style="aspect-ratio: 4/5; overflow: hidden; border-radius: 2px; background: #1a1a1a;">
+          <img src="/images/applications/application_recycling.jpg"
+               alt="Übergabetrichter-Anwendung"
+               style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.6) contrast(1.1);">
+        </div>
+        <h3 class="mt-6 preview-display" style="font-size: 1.75rem; color: var(--color-ink);">{{ t('preview.scenes.tile_3_title') }}</h3>
+        <p class="mt-3 text-sm leading-relaxed" style="color: var(--color-stone); max-width: 22rem;">{{ t('preview.scenes.tile_3_text') }}</p>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+{# ============================================================
+   SEKTION 4 — DIE EINE ZAHL
+   Spock-Inszenierung: pure Typografie, eine Zahl, drei Konsequenzen.
+============================================================ #}
+<section class="preview-section" style="background: var(--color-ink); color: var(--color-cream);">
+  <div class="preview-container">
+
+    <div class="text-center">
+      <div class="flex items-center justify-center gap-3 mb-12" style="color: var(--color-cream); opacity: 0.7;">
+        <span class="preview-rule" style="background: var(--color-cream);"></span>
+        <span class="preview-eyebrow" style="color: var(--color-cream);">{{ t('preview.zahl.eyebrow') }}</span>
+        <span class="preview-rule" style="background: var(--color-cream);"></span>
+      </div>
+
+      <div class="preview-numeral" style="color: var(--color-cream);">{{ t('preview.zahl.numeral') }}</div>
+
+      <div class="mt-4 text-sm" style="letter-spacing: 0.32em; color: var(--color-cream); opacity: 0.7;">
+        {{ t('preview.zahl.caption') }}
+      </div>
+    </div>
+
+    <div class="mt-20 max-w-xl mx-auto text-center space-y-8">
+      <p class="text-base lg:text-lg leading-relaxed" style="color: var(--color-cream); opacity: 0.85;">
+        {{ t('preview.zahl.body_1') }}
+      </p>
+      <p class="preview-display" style="font-size: clamp(1.5rem, 2.5vw, 2rem); color: var(--color-cream);">
+        {{ t('preview.zahl.body_strong') }}
+      </p>
+      <p class="text-base lg:text-lg leading-relaxed" style="color: var(--color-cream); opacity: 0.85;">
+        {{ t('preview.zahl.body_2') }}
+      </p>
+      <div>
+        <a href="#" class="text-sm" style="color: var(--color-cream); border-bottom: 1px solid var(--color-cream); padding-bottom: 2px; text-decoration: none;">
+          {{ t('preview.zahl.link') }} →
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{# ============================================================
+   SEKTION 5 — DER BEWEIS (Arthofer-Case)
+   Social Proof als Erzählung, nicht als Logo-Reihe.
+============================================================ #}
+<section class="preview-section">
+  <div class="preview-container">
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+
+      <div class="lg:col-span-6">
+        <div class="flex items-center gap-3 mb-8">
+          <span class="preview-rule"></span>
+          <span class="preview-eyebrow">{{ t('preview.proof.eyebrow') }}</span>
+        </div>
+
+        <h2 class="preview-display" style="font-size: clamp(2.25rem, 5vw, 4rem); color: var(--color-ink); line-height: 1.05;">
+          {{ t('preview.proof.headline_1') }}<br>
+          {{ t('preview.proof.headline_2') }}<br>
+          <span style="font-style: italic;">{{ t('preview.proof.headline_3') }}</span>
+        </h2>
+
+        <div class="mt-10 space-y-5 text-base lg:text-lg leading-relaxed" style="color: var(--color-ink-soft); max-width: 30rem;">
+          <p>{{ t('preview.proof.body_1') }}</p>
+          <p class="preview-display" style="font-size: 1.5rem; color: var(--color-ink);">
+            {{ t('preview.proof.body_2_strong') }}<br>
+            {{ t('preview.proof.body_3_strong') }}
+          </p>
+          <p>
+            {{ t('preview.proof.body_4') }}<br>
+            <span class="preview-display" style="font-size: 1.5rem; color: var(--color-ink);">{{ t('preview.proof.body_4_strong') }}</span>
+          </p>
+        </div>
+
+        <blockquote class="mt-12 pl-6" style="border-left: 1px solid var(--color-ink); max-width: 32rem;">
+          <p class="preview-display" style="font-size: clamp(1.25rem, 2vw, 1.625rem); line-height: 1.4; color: var(--color-ink); font-style: italic;">
+            „{{ t('preview.proof.quote') }}"
+          </p>
+          <footer class="mt-4 text-sm" style="color: var(--color-stone);">
+            <span style="color: var(--color-ink); font-weight: 500;">{{ t('preview.proof.quote_author') }}</span> · {{ t('preview.proof.quote_company') }}
+          </footer>
+        </blockquote>
+
+        <div class="mt-12 flex flex-col sm:flex-row gap-5">
+          <a href="{% if locale == 'en' %}/preview/en/kontakt{% else %}/preview/kontakt{% endif %}" class="preview-cta">
+            <span>{{ t('preview.proof.cta_primary') }}</span>
+            <span class="preview-cta-arrow">→</span>
+          </a>
+          <a href="/{{ locale }}/referenzen" class="preview-link self-center">
+            {{ t('preview.proof.cta_secondary') }}
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6">
+        <div style="aspect-ratio: 5/6; overflow: hidden; border-radius: 2px; background: #0a0a0a;">
+          <img src="/images/products/kipper_nach_30_monaten.JPG"
+               alt="Kippermulde nach 43 Monaten — Arthofer Bau"
+               style="width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.5) contrast(1.15);">
+        </div>
+        <p class="mt-3 text-xs" style="color: var(--color-stone); letter-spacing: 0.08em;">
+          Arthofer Bau GmbH · Kippermulde · LYNX Lining Auskleidung · Foto 2025
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{# ============================================================
+   SEKTION 6 — WIE WIR ARBEITEN
+   Drei Schritte als Vertrauensanker. Klarheit reduziert Angst.
+============================================================ #}
+<section class="preview-section" style="background: var(--color-cream-deep);">
+  <div class="preview-container">
+
+    <div class="max-w-3xl">
+      <div class="flex items-center gap-3 mb-8">
+        <span class="preview-rule"></span>
+        <span class="preview-eyebrow">{{ t('preview.process.eyebrow') }}</span>
+      </div>
+      <h2 class="preview-display" style="font-size: clamp(2rem, 4vw, 3.25rem); color: var(--color-ink);">
+        {{ t('preview.process.headline') }}
+      </h2>
+    </div>
+
+    <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+
+      <div>
+        <div class="preview-display" style="font-size: 3rem; line-height: 1; color: var(--color-ink); font-weight: 300;">01</div>
+        <h3 class="mt-4 text-sm font-semibold" style="letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink);">
+          {{ t('preview.process.step_1_label') }}
+        </h3>
+        <p class="mt-4 text-sm leading-relaxed" style="color: var(--color-stone-dark); max-width: 22rem;">
+          {{ t('preview.process.step_1_text') }}
+        </p>
+      </div>
+
+      <div>
+        <div class="preview-display" style="font-size: 3rem; line-height: 1; color: var(--color-ink); font-weight: 300;">02</div>
+        <h3 class="mt-4 text-sm font-semibold" style="letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink);">
+          {{ t('preview.process.step_2_label') }}
+        </h3>
+        <p class="mt-4 text-sm leading-relaxed" style="color: var(--color-stone-dark); max-width: 22rem;">
+          {{ t('preview.process.step_2_text') }}
+        </p>
+      </div>
+
+      <div>
+        <div class="preview-display" style="font-size: 3rem; line-height: 1; color: var(--color-ink); font-weight: 300;">03</div>
+        <h3 class="mt-4 text-sm font-semibold" style="letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-ink);">
+          {{ t('preview.process.step_3_label') }}
+        </h3>
+        <p class="mt-4 text-sm leading-relaxed" style="color: var(--color-stone-dark); max-width: 22rem;">
+          {{ t('preview.process.step_3_text') }}
+        </p>
+      </div>
+
+    </div>
+
+    <div class="mt-16">
+      <a href="{% if locale == 'en' %}/preview/en/kontakt{% else %}/preview/kontakt{% endif %}" class="preview-cta">
+        <span>{{ t('preview.process.cta') }}</span>
+        <span class="preview-cta-arrow">→</span>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+{# ============================================================
+   SEKTION 7 — ZWEI WEGE
+   Conversion-Pfade entzerrt. Visuell ungleich gewichtet:
+   Lead-Gen ist die Hauptbühne.
+============================================================ #}
+<section class="preview-section">
+  <div class="preview-container">
+
+    <div class="text-center max-w-2xl mx-auto">
+      <div class="flex items-center justify-center gap-3 mb-8">
+        <span class="preview-rule"></span>
+        <span class="preview-eyebrow">{{ t('preview.paths.eyebrow') }}</span>
+        <span class="preview-rule"></span>
+      </div>
+      <h2 class="preview-display" style="font-size: clamp(2.5rem, 5vw, 4rem); color: var(--color-ink);">
+        {{ t('preview.paths.headline') }}
+      </h2>
+    </div>
+
+    <div class="mt-16 grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+
+      {# Karte 1 — visuell schwerer, 3 Spalten #}
+      <div class="lg:col-span-3 p-10 lg:p-12" style="background: var(--color-ink); color: var(--color-cream); border-radius: 2px;">
+        <p class="preview-display" style="font-size: clamp(1.5rem, 2.5vw, 2rem); font-style: italic; color: var(--color-cream); opacity: 0.7;">
+          „{{ t('preview.paths.card_1_quote') }}"
+        </p>
+        <h3 class="mt-8 preview-display" style="font-size: clamp(1.75rem, 3vw, 2.5rem); color: var(--color-cream);">
+          {{ t('preview.paths.card_1_title') }}
+        </h3>
+        <p class="mt-6 text-base leading-relaxed" style="color: var(--color-cream); opacity: 0.8; max-width: 28rem;">
+          {{ t('preview.paths.card_1_text') }}
+        </p>
+        <a href="{% if locale == 'en' %}/preview/en/kontakt{% else %}/preview/kontakt{% endif %}"
+           class="mt-10 inline-flex items-center gap-2 text-sm font-medium"
+           style="color: var(--color-cream); border-bottom: 1px solid var(--color-cream); padding-bottom: 4px; text-decoration: none;">
+          {{ t('preview.paths.card_1_cta') }} <span>→</span>
+        </a>
+      </div>
+
+      {# Karte 2 — visuell leichter, 2 Spalten #}
+      <div class="lg:col-span-2 p-10 lg:p-12" style="background: var(--color-cream-deep); border-radius: 2px; border: 1px solid rgba(26,26,26,0.06);">
+        <p class="preview-display" style="font-size: 1.5rem; font-style: italic; color: var(--color-stone);">
+          „{{ t('preview.paths.card_2_quote') }}"
+        </p>
+        <h3 class="mt-8 preview-display" style="font-size: clamp(1.5rem, 2.5vw, 2rem); color: var(--color-ink);">
+          {{ t('preview.paths.card_2_title') }}
+        </h3>
+        <p class="mt-6 text-sm leading-relaxed" style="color: var(--color-stone-dark); max-width: 24rem;">
+          {{ t('preview.paths.card_2_text') }}
+        </p>
+        <a href="/{{ locale }}/shop"
+           class="mt-10 inline-flex items-center gap-2 text-sm font-medium"
+           style="color: var(--color-ink); border-bottom: 1px solid var(--color-ink); padding-bottom: 4px; text-decoration: none;">
+          {{ t('preview.paths.card_2_cta') }} <span>→</span>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
