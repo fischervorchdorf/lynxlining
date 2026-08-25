@@ -110,15 +110,22 @@ Zugang automatisch; der Code erkennt ein vorhandenes Refresh-Token selbst.
 Falls LinkedIn den Antrag ablehnt oder es bei Martins persönlichem Profil
 bleiben soll, gibt es zwei kostenlose Alternativen. Beide sind bereits eingebaut.
 
-### Einzelimport im Admin (kostenlos, ein Klick pro Beitrag)
+### Einzelimport im Admin (kostenlos, unter einer Minute pro Beitrag)
 
-*Admin → LinkedIn → „Einzelnen Beitrag übernehmen"* – dort den Link des Beitrags
-einfügen. Titel, Text und Bild werden übernommen, soweit LinkedIn sie an nicht
-angemeldete Besucher herausgibt; sonst öffnet sich das Formular mit bereits
-eingetragener URL zum Ausfüllen.
+*Admin → LinkedIn → Bereich „Beitrag übernehmen"*. Zwei Felder:
 
-Das ist der praktikabelste Weg ohne API: Martin postet ohnehin auf LinkedIn,
-und ein Link-Einfügen dauert weniger als eine Minute.
+- **Link** – aus LinkedIn über die drei Punkte am Beitrag → *Link zum Beitrag kopieren*
+- **Beitragstext** – den Text des Beitrags markieren, kopieren, einfügen
+
+**Empfohlen: beides ausfüllen.** Dann entsteht der Titel aus der ersten Zeile,
+der Anriss aus dem Rest, die englische Fassung wird gleich mitübersetzt, und das
+Bearbeiten-Formular öffnet sich fertig ausgefüllt zur Kontrolle. Nur das Bild
+muss noch hochgeladen werden.
+
+**Nur der Link** funktioniert auch: die Website versucht dann, Titel, Text und
+Bild selbst bei LinkedIn abzurufen (Open-Graph-Daten). LinkedIn gibt diese aber
+nicht zuverlässig an nicht angemeldete Besucher heraus – klappt es nicht, öffnet
+sich das leere Formular mit bereits eingetragener URL.
 
 ### Webhook (kostenlos, wenn ohnehin ein Automatisierungsdienst da ist)
 
@@ -144,15 +151,29 @@ Zusätzlich versteht der Server einen RSS-/Atom-/JSON-Feed über
 
 ## Englische Fassung
 
-Importierte Beiträge sind deutsch. Ist ein `ANTHROPIC_API_KEY` gesetzt, wird
-beim Import automatisch eine englische Fassung über die Claude API erzeugt
-(Titel, Anriss, Volltext), mit den Fachbegriffen des Verschleißschutzes
-(*Auskleidung → lining*, *Schüttgut → bulk material*, *Abrieb → abrasion*).
-Kosten: wenige Cent pro Beitrag.
+Importierte Beiträge sind deutsch. Die englische Fassung entsteht beim Import
+automatisch – auf einem von zwei Wegen:
 
-Ohne Schlüssel wird für Englisch der deutsche Text gespeichert und der Beitrag
-im Admin mit **„EN fehlt"** markiert – die Übersetzung lässt sich dann von Hand
-eintragen oder später per Knopfdruck (*Englisch übersetzen*) nachholen.
+| Weg | Voraussetzung | Kosten | Qualität |
+|---|---|---|---|
+| **Google Translate** (Standard) | keine | kostenlos | wörtlich, für Fachtexte grenzwertig |
+| **Claude** | `ANTHROPIC_API_KEY` gesetzt | wenige Cent pro Beitrag | kennt die Fachbegriffe |
+
+Google Translate ist derselbe Dienst, den der Knopf *„Alles automatisch
+übersetzen"* im Beitragsformular schon vorher genutzt hat. Er übersetzt
+wörtlich: aus *Auskleidung* wird eher *cladding* als *lining*, aus *Schüttgut*
+eher *bulk goods* als *bulk material*.
+
+Mit hinterlegtem `ANTHROPIC_API_KEY` übersetzt stattdessen Claude, mit den
+Fachbegriffen des Verschleißschutzes im Auftrag (*Auskleidung → lining*,
+*Schüttgut → bulk material*, *Abrieb → abrasion*, *Gleisschotter → track
+ballast*). Fällt Claude aus, wird automatisch auf Google zurückgefallen.
+
+Schlagen beide fehl, steht der deutsche Text auch auf Englisch und der Beitrag
+ist im Admin mit **„EN fehlt"** markiert – nachholbar per Knopfdruck
+(*Englisch übersetzen*) oder von Hand im Formular.
+
+Ganz abschalten: `LINKEDIN_AUTO_TRANSLATE=false`.
 
 ---
 
@@ -193,8 +214,8 @@ Dann werden sie versteckt angelegt und erscheinen erst nach Freigabe im Admin.
 | `LINKEDIN_FEED_URL` | – | Ersatzquelle: RSS-/Atom-/JSON-Feed |
 | `LINKEDIN_WEBHOOK_TOKEN` | – | Geheimnis für den Webhook. Leer = Webhook aus |
 | `LINKEDIN_AUTHOR_NAME` | `Martin F. Heidecker` | Autor importierter Beiträge |
-| `ANTHROPIC_API_KEY` | – | Schlüssel für die automatische Übersetzung |
-| `LINKEDIN_AUTO_TRANSLATE` | `true` | `false` = keine automatische Übersetzung |
+| `ANTHROPIC_API_KEY` | – | optional: Übersetzung über Claude statt Google Translate |
+| `LINKEDIN_AUTO_TRANSLATE` | `true` | `false` = gar keine automatische Übersetzung |
 
 ## Technische Einordnung
 
@@ -202,7 +223,8 @@ Dann werden sie versteckt angelegt und erscheinen erst nach Freigabe im Admin.
   (`/rest/organizationAcls`, `/rest/posts`, `/rest/images`)
 - `src/config/linkedin.js` – Speicherung, Deduplizierung, Bild-Download,
   Feed-Parser (RSS/Atom/JSON) als Ersatzquelle
-- `src/config/translate.js` – Übersetzung DE → EN über die Claude API
+- `src/config/translate.js` – Übersetzung DE → EN (Claude, sonst Google Translate);
+  liefert auch den Endpunkt `POST /admin/translate` für den Knopf im Formular
 - `src/routes/admin.js` – Verbinden/Trennen, Abrufen, Einzelimport, Nachübersetzen
 - `src/routes/api.js` – Webhook `POST /api/linkedin/webhook`
 - `src/server.js` – regelmäßiger Abruf, bevorzugt über die offizielle API

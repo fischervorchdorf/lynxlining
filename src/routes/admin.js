@@ -357,6 +357,7 @@ async function linkedinAutoStatus() {
     autoPublish: process.env.LINKEDIN_AUTO_PUBLISH !== 'false',
     api: await linkedinApi.getStatus(),
     canTranslate: translate.isEnabled(),
+    translateProvider: translate.activeProvider(),
     translateModel: translate.MODEL,
     lastImport: null,
     importedCount: 0,
@@ -486,9 +487,35 @@ router.post('/linkedin/:id/translate', requireAuth, async (req, res) => {
 // Einzelnen Beitrag \u00fcber seine LinkedIn-URL importieren
 router.post('/linkedin/import-url', requireAuth, async (req, res) => {
   const url = String(req.body.url || '').trim();
+  const text = String(req.body.text || '').trim();
 
-  if (!/^https:\/\/([a-z0-9-]+\.)*linkedin\.com\//i.test(url)) {
+  if (url && !/^https:\/\/([a-z0-9-]+\.)*linkedin\.com\//i.test(url)) {
     return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Bitte eine g\u00fcltige linkedin.com-URL angeben.'));
+  }
+  if (!url && !text) {
+    return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Bitte einen Link oder den Beitragstext angeben.'));
+  }
+
+  // Ist der Text da, wird er direkt verwendet - kein Abruf bei LinkedIn n\u00f6tig.
+  // Titel und Anriss entstehen aus dem Text, die \u00dcbersetzung l\u00e4uft mit.
+  if (text) {
+    try {
+      const result = await linkedin.savePost({
+        guid: linkedin.canonicalGuid(url) || '',
+        url,
+        text,
+        publishedAt: new Date()
+      }, 'text');
+
+      if (result.created) return res.redirect('/admin/linkedin/' + result.id);
+      if (result.reason === 'exists') {
+        return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Dieser Beitrag ist bereits vorhanden.'));
+      }
+      return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Beitrag konnte nicht angelegt werden.'));
+    } catch (err) {
+      console.error('LinkedIn Text-Import Fehler:', err.message);
+      return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Import fehlgeschlagen: ' + err.message));
+    }
   }
 
   try {
@@ -638,23 +665,7 @@ router.post('/translate', requireAuth, async (req, res) => {
   if (!text || !text.trim()) return res.json({ translated: '' });
 
   try {
-    const https = require('https');
-    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=${to}&dt=t&q=${encodeURIComponent(text)}`;
-
-    const translated = await new Promise((resolve, reject) => {
-      https.get(url, (response) => {
-        let data = '';
-        response.on('data', chunk => data += chunk);
-        response.on('end', () => {
-          try {
-            const parsed = JSON.parse(data);
-            const result = parsed[0].map(s => s[0]).join('');
-            resolve(result);
-          } catch (e) { reject(e); }
-        });
-      }).on('error', reject);
-    });
-
+    const translated = await translate.googleTranslate(text, from, to);
     res.json({ translated });
   } catch (err) {
     console.error('Übersetzungsfehler:', err.message);

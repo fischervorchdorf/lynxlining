@@ -59,12 +59,16 @@
           {% if autoStatus.canTranslate %}
             <span class="px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">Übersetzung aktiv</span>
             <span class="text-stone/60">
-              englische Fassung automatisch beim Import
+              {% if autoStatus.translateProvider == 'claude' %}
+                Claude – kennt die Fachbegriffe, wenige Cent pro Beitrag
+              {% else %}
+                Google Translate – kostenlos, wörtlicher. Für Fachtexte besser: ANTHROPIC_API_KEY setzen
+              {% endif %}
               {% if autoStatus.untranslatedCount %} &middot; {{ autoStatus.untranslatedCount }} noch ohne Übersetzung{% endif %}
             </span>
           {% else %}
-            <span class="px-2 py-0.5 rounded-full bg-stone/10 text-stone/50 text-xs font-medium">Übersetzung inaktiv</span>
-            <span class="text-stone/60">ANTHROPIC_API_KEY nicht gesetzt – englische Seite zeigt den deutschen Text</span>
+            <span class="px-2 py-0.5 rounded-full bg-stone/10 text-stone/50 text-xs font-medium">Übersetzung abgeschaltet</span>
+            <span class="text-stone/60">LINKEDIN_AUTO_TRANSLATE=false – englische Seite zeigt den deutschen Text</span>
           {% endif %}
         </p>
         <p class="text-stone/60">
@@ -107,16 +111,26 @@
     </div>
   {% endif %}
 
-  <form method="POST" action="/admin/linkedin/import-url" class="mt-5 pt-5 border-t border-black/5 flex gap-3 flex-wrap">
-    <input type="url" name="url" required placeholder="https://www.linkedin.com/posts/..."
-           class="flex-1 min-w-[280px] px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/30">
-    <button class="px-5 py-2.5 bg-stone/10 text-stone-dark rounded-lg font-semibold text-sm hover:bg-stone/20 transition-colors whitespace-nowrap">
-      Einzelnen Beitrag übernehmen
-    </button>
+  <form method="POST" action="/admin/linkedin/import-url" class="mt-5 pt-5 border-t border-black/5 space-y-3">
+    <div>
+      <label class="block text-xs font-semibold text-stone-dark mb-1">Beitrag übernehmen</label>
+      <input type="url" name="url" placeholder="https://www.linkedin.com/posts/... (Link zum Beitrag)"
+             class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/30">
+    </div>
+    <div>
+      <textarea name="text" rows="4" placeholder="Beitragstext hier einfügen – dann werden Titel und Kurztext automatisch daraus gebildet und die englische Fassung gleich mitübersetzt."
+                class="w-full px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/30"></textarea>
+    </div>
+    <div class="flex items-center gap-3 flex-wrap">
+      <button class="px-5 py-2.5 bg-stone/10 text-stone-dark rounded-lg font-semibold text-sm hover:bg-stone/20 transition-colors whitespace-nowrap">
+        Übernehmen
+      </button>
+      <span class="text-xs text-stone/50">
+        Am schnellsten: In LinkedIn den Beitragstext markieren, kopieren und hier einfügen – dazu den Link.
+        Nur mit Link versucht die Website, Titel, Text und Bild selbst bei LinkedIn zu holen; das gelingt nicht immer.
+      </span>
+    </div>
   </form>
-  <p class="mt-2 text-xs text-stone/50">
-    Beitrags-Link aus LinkedIn einfügen – Titel, Text und Bild werden, soweit LinkedIn sie herausgibt, automatisch übernommen.
-  </p>
 </div>
 
 <div class="flex justify-between items-center mb-6">
