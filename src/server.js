@@ -343,23 +343,40 @@ app.listen(PORT, () => {
     }, 24 * 60 * 60 * 1000);
   }
 
-  // LinkedIn Auto-Import (Feed-Polling)
-  // Der Feed stammt von einem Feed-Dienst wie rss.app; LinkedIn selbst bietet
-  // für persönliche Profile keinen öffentlichen Feed an. Details: docs/linkedin-automatik.md
-  if (process.env.LINKEDIN_FEED_URL) {
-    const { syncLinkedInFeed } = require('./config/linkedin');
-    const intervalMin = parseInt(process.env.LINKEDIN_SYNC_INTERVAL_MIN, 10) || 30;
+  // LinkedIn Auto-Import
+  // Bevorzugt die offizielle Community Management API (Unternehmensseite).
+  // Ist keine Verbindung hergestellt, wird ersatzweise ein Feed abgerufen,
+  // sofern LINKEDIN_FEED_URL gesetzt ist. Details: docs/linkedin-automatik.md
+  const linkedinApi = require('./config/linkedin-api');
+  const { syncLinkedInFeed } = require('./config/linkedin');
+  const linkedinIntervalMin = parseInt(process.env.LINKEDIN_SYNC_INTERVAL_MIN, 10) || 30;
 
+  async function syncLinkedIn() {
+    if (linkedinApi.isConfigured()) {
+      const status = await linkedinApi.getStatus();
+      if (status.connected) {
+        // Rechtzeitig daran erinnern, dass LinkedIn-Token nach 60 Tagen ablaufen
+        if (status.daysLeft !== null && status.daysLeft <= 7 && !status.hasRefreshToken) {
+          console.warn(`LinkedIn: Verbindung läuft in ${status.daysLeft} Tagen ab – im Admin erneuern`);
+        }
+        return linkedinApi.syncOrganizationPosts();
+      }
+    }
+    if (process.env.LINKEDIN_FEED_URL) return syncLinkedInFeed();
+    return { success: false, reason: 'not_connected' };
+  }
+
+  if (linkedinApi.isConfigured() || process.env.LINKEDIN_FEED_URL) {
     setTimeout(() => {
-      syncLinkedInFeed().then(r => console.log('LinkedIn initialer Sync:', r));
+      syncLinkedIn().then(r => console.log('LinkedIn initialer Sync:', r));
     }, 15000);
 
     setInterval(() => {
-      syncLinkedInFeed().catch(err => console.error('LinkedIn Sync Fehler:', err));
-    }, intervalMin * 60 * 1000);
+      syncLinkedIn().catch(err => console.error('LinkedIn Sync Fehler:', err));
+    }, linkedinIntervalMin * 60 * 1000);
 
-    console.log(`LinkedIn Auto-Import aktiv (alle ${intervalMin} Minuten)`);
+    console.log(`LinkedIn Auto-Import aktiv (alle ${linkedinIntervalMin} Minuten)`);
   } else if (process.env.LINKEDIN_WEBHOOK_TOKEN) {
-    console.log('LinkedIn Auto-Import: nur Webhook aktiv (kein LINKEDIN_FEED_URL gesetzt)');
+    console.log('LinkedIn Auto-Import: nur Webhook aktiv');
   }
 });

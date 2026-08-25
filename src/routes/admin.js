@@ -344,6 +344,8 @@ router.post('/instagram/:id/feature', requireAuth, async (req, res) => {
 
 const linkedin = require('../config/linkedin');
 const translate = require('../config/translate');
+const linkedinApi = require('../config/linkedin-api');
+const crypto = require('crypto');
 
 // Status des Auto-Imports für die Anzeige im Admin
 async function linkedinAutoStatus() {
@@ -353,6 +355,7 @@ async function linkedinAutoStatus() {
     hasWebhook: !!process.env.LINKEDIN_WEBHOOK_TOKEN,
     intervalMin: parseInt(process.env.LINKEDIN_SYNC_INTERVAL_MIN, 10) || 30,
     autoPublish: process.env.LINKEDIN_AUTO_PUBLISH !== 'false',
+    api: await linkedinApi.getStatus(),
     canTranslate: translate.isEnabled(),
     translateModel: translate.MODEL,
     lastImport: null,
@@ -393,17 +396,70 @@ router.get('/linkedin', requireAuth, async (req, res) => {
   });
 });
 
-// Feed jetzt abrufen (Button im Admin)
+// ---- Offizielle LinkedIn-API: verbinden / trennen ----
+
+router.get('/linkedin/connect', requireAuth, (req, res) => {
+  if (!linkedinApi.isConfigured()) {
+    return res.redirect('/admin/linkedin?msg=' + encodeURIComponent(
+      'LINKEDIN_CLIENT_ID und LINKEDIN_CLIENT_SECRET sind nicht gesetzt.'));
+  }
+
+  // state sch\u00fctzt den R\u00fcckweg gegen untergeschobene Anfragen
+  const state = crypto.randomBytes(16).toString('hex');
+  req.session.linkedinOauthState = state;
+  res.redirect(linkedinApi.getAuthUrl(state));
+});
+
+router.get('/linkedin/callback', requireAuth, async (req, res) => {
+  const { code, state, error, error_description } = req.query;
+  const expected = req.session.linkedinOauthState;
+  delete req.session.linkedinOauthState;
+
+  if (error) {
+    return res.redirect('/admin/linkedin?msg=' + encodeURIComponent(
+      'LinkedIn hat die Verbindung abgelehnt: ' + (error_description || error)));
+  }
+  if (!code || !state || state !== expected) {
+    return res.redirect('/admin/linkedin?msg=' + encodeURIComponent(
+      'Verbindung abgebrochen \u2013 bitte erneut versuchen.'));
+  }
+
+  try {
+    const result = await linkedinApi.exchangeCode(code);
+    const msg = result.organizations.length
+      ? `Verbunden mit "${result.organizations[0].name}".`
+      : 'Verbunden \u2013 es wurde aber keine verwaltete Unternehmensseite gefunden. ' +
+        'Bitte pr\u00fcfen, ob der angemeldete Nutzer Administrator der Seite ist.';
+    res.redirect('/admin/linkedin?msg=' + encodeURIComponent(msg));
+  } catch (err) {
+    console.error('LinkedIn OAuth Fehler:', err.message);
+    res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Verbindung fehlgeschlagen: ' + err.message));
+  }
+});
+
+router.post('/linkedin/disconnect', requireAuth, async (req, res) => {
+  await linkedinApi.disconnect();
+  res.redirect('/admin/linkedin?msg=' + encodeURIComponent('LinkedIn-Verbindung wurde getrennt.'));
+});
+
+// Beitr\u00e4ge jetzt abrufen: offizielle API bevorzugt, sonst Feed
 router.post('/linkedin/sync', requireAuth, async (req, res) => {
-  const result = await linkedin.syncLinkedInFeed();
+  const apiStatus = await linkedinApi.getStatus();
+  const result = apiStatus.connected
+    ? await linkedinApi.syncOrganizationPosts()
+    : await linkedin.syncLinkedInFeed();
 
   let msg;
   if (result.success) {
     msg = `${result.imported} neue Beitr\u00e4ge importiert, ${result.skipped} bereits vorhanden.`;
   } else if (result.reason === 'no_feed_url') {
-    msg = 'Kein Feed konfiguriert \u2013 bitte LINKEDIN_FEED_URL setzen.';
+    msg = 'Keine Quelle konfiguriert \u2013 bitte mit LinkedIn verbinden oder LINKEDIN_FEED_URL setzen.';
+  } else if (result.reason === 'token_expired') {
+    msg = 'Die LinkedIn-Verbindung ist abgelaufen \u2013 bitte neu verbinden.';
+  } else if (result.reason === 'no_organization') {
+    msg = 'Keine Unternehmensseite zugeordnet \u2013 bitte Verbindung erneuern.';
   } else {
-    msg = 'Sync fehlgeschlagen: ' + result.reason;
+    msg = 'Abruf fehlgeschlagen: ' + result.reason;
   }
 
   res.redirect('/admin/linkedin?msg=' + encodeURIComponent(msg));

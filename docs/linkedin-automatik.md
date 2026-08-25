@@ -1,99 +1,144 @@
 # LinkedIn-Beiträge automatisch auf die Homepage
 
-## Kurzfassung
+## Die kurze Antwort
 
-LinkedIn selbst gibt die Beiträge eines **persönlichen Profils** nicht heraus:
+**Ja, es gibt eine offizielle API – aber nur für eine LinkedIn-Unternehmensseite,
+nicht für Martins persönliches Profil.**
 
-- Es gibt **keinen öffentlichen RSS-Feed** für `linkedin.com/in/<profil>/recent-activity/`.
-- Die Seite ist hinter einer **Login-Wall**; ein Server, der sie ohne Anmeldung
-  abruft, bekommt eine Weiterleitung statt der Beiträge.
-- Automatisiertes Auslesen (Scraping) verstößt gegen die
-  **LinkedIn-Nutzungsbedingungen** und führt regelmäßig zur Sperre des Kontos.
+Das ist der entscheidende Unterschied zu Instagram. Bei Instagram kann man mit
+den eigenen Zugangsdaten ein Token erzeugen und die eigenen Beiträge auslesen.
+Bei LinkedIn geht das für persönliche Profile nicht:
 
-Die offizielle LinkedIn-API (Community Management API) liefert Beiträge nur für
-**Unternehmensseiten**, und auch das erst nach einem Partner-Antrag bei LinkedIn.
+- Die dafür nötige Berechtigung heißt **`r_member_social`**. LinkedIn vergibt
+  sie seit Jahren nicht mehr an neue Entwickler
+  ([Quelle](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/shares/posts-api)).
+- Das gilt unabhängig davon, wem das Profil gehört und wer die Zugangsdaten hat.
+  Auch mit Martins Passwort gäbe es keinen erlaubten Weg – die Anmeldung eines
+  Servers mit persönlichen Zugangsdaten verstößt gegen die
+  LinkedIn-Nutzungsbedingungen und führt regelmäßig zur Sperre des Kontos.
+  **Bitte deshalb keine LinkedIn-Zugangsdaten weitergeben.**
 
-Deshalb läuft die Automatik hier über einen der beiden folgenden Wege. Beide
-sind erlaubt, brauchen keinen LinkedIn-Partnerstatus und laufen nach der
-Einrichtung ohne weiteres Zutun.
-
-| Weg | Aufwand | Kosten | Empfehlung |
-|---|---|---|---|
-| **A – Feed-Dienst** (rss.app o. ä.) | 10 Minuten | ca. 8–20 €/Monat | für den laufenden Betrieb |
-| **B – Zapier/Make-Webhook** | 20 Minuten | ab 0 € (kleines Kontingent) | wenn ohnehin ein Zapier-Konto besteht |
-| **C – Einzelimport im Admin** | pro Beitrag ein Klick | 0 € | ohne laufende Kosten, aber nicht automatisch |
-
----
-
-## Weg A – Feed-Dienst (empfohlen)
-
-Ein Feed-Dienst hat den LinkedIn-Zugang und stellt die Beiträge als RSS-Feed
-bereit. Die Website ruft diesen Feed regelmäßig ab.
-
-1. Bei einem Feed-Dienst anmelden, z. B. [rss.app](https://rss.app),
-   [Feedspot](https://www.feedspot.com) oder [Fetchrss](https://fetchrss.com).
-2. Dort die Profil-URL eintragen:
-   `https://www.linkedin.com/in/martin-f-heidecker-951103204/recent-activity/all/`
-3. Der Dienst erzeugt eine Feed-Adresse, z. B. `https://rss.app/feeds/xxxxx.xml`.
-4. Diese Adresse in der Umgebungskonfiguration eintragen (in Coolify unter
-   *Environment Variables*):
-
-   ```
-   LINKEDIN_FEED_URL=https://rss.app/feeds/xxxxx.xml
-   LINKEDIN_SYNC_INTERVAL_MIN=30
-   LINKEDIN_AUTO_PUBLISH=true
-   ```
-
-5. Anwendung neu starten. Ab jetzt wird der Feed alle 30 Minuten geprüft; neue
-   Beiträge landen automatisch auf der News-Seite und der Startseite.
-
-**Hinweis:** Existiert eine LYNX-Lining-**Unternehmensseite** auf LinkedIn, ist
-sie die bessere Quelle – Unternehmensseiten sind öffentlich, die Feeds laufen
-stabiler und günstiger als Profil-Feeds.
+Für eine **Unternehmensseite** dagegen gibt es den offiziellen, kostenlosen Weg:
+die **Community Management API** mit der Berechtigung `r_organization_social`.
+Genau dieser Weg ist jetzt eingebaut.
 
 ---
 
-## Weg B – Webhook (Zapier, Make, n8n)
+## Was dafür gebraucht wird
 
-Statt zu pollen, meldet ein Automatisierungsdienst jeden neuen Beitrag aktiv an
-die Website.
+Alles Folgende ist kostenlos. Der einzige Aufwand ist die Freischaltung durch
+LinkedIn, die **1–4 Wochen** dauert.
 
-1. Ein Geheimnis erzeugen und als Umgebungsvariable setzen:
+### 1. Eine LinkedIn-Unternehmensseite für LYNX Lining
 
-   ```
-   LINKEDIN_WEBHOOK_TOKEN=<langes zufälliges Passwort>
-   ```
+Falls es noch keine gibt: unter *linkedin.com/company/setup/new* in etwa
+10 Minuten angelegt. Martin ist dann automatisch Super-Admin.
 
-2. In Zapier/Make einen Ablauf anlegen:
-   - **Auslöser:** neuer LinkedIn-Beitrag (bei Zapier offiziell nur für
-     Unternehmensseiten; für Profile über den RSS-Auslöser mit einem Feed aus Weg A)
-   - **Aktion:** *Webhooks → POST* an
-     `https://lynx-lining.com/api/linkedin/webhook`
-   - **Header:** `X-Webhook-Token: <dasselbe Geheimnis>`
-   - **Body (JSON):**
+Falls es schon eine gibt: bitte die URL nennen, z. B.
+`https://www.linkedin.com/company/lynx-lining/`.
 
-     ```json
-     {
-       "url": "https://www.linkedin.com/posts/...",
-       "text": "Der vollständige Beitragstext",
-       "image": "https://media.licdn.com/...",
-       "published_at": "2026-08-25T10:00:00Z"
-     }
-     ```
+Die Seite ist ohnehin sinnvoll – Unternehmensseiten sind für Firmenkommunikation
+gedacht, ein persönliches Profil ist es nicht.
 
-Die Antwort meldet, ob der Beitrag neu angelegt (`201`) oder bereits vorhanden
-war (`200` mit `created: false`). Ein Beitrag wird nie doppelt angelegt.
+### 2. Was Martin tun muss (ca. 20 Minuten, einmalig)
+
+| Schritt | Was | Wo |
+|---|---|---|
+| a | Bestätigen, dass er **Super-Admin** der Unternehmensseite ist | LinkedIn-Seite → *Verwalten* → *Administratoren* |
+| b | Eine **LinkedIn-App** anlegen und dabei die Unternehmensseite auswählen | [developer.linkedin.com/apps](https://www.linkedin.com/developers/apps) |
+| c | Die App **verifizieren** – LinkedIn erzeugt einen Bestätigungslink, den ein Seiten-Admin anklicken muss | in der App unter *Settings* |
+| d | Unter *Products* das Produkt **„Community Management API"** anfordern | in der App unter *Products* |
+| e | Das Antragsformular ausfüllen (Zweck: „Darstellung der eigenen Unternehmensbeiträge auf der Firmenwebsite lynx-lining.com") | Formular im Antrag |
+
+Danach prüft LinkedIn den Antrag. Rückmeldung kommt per E-Mail.
+
+### 3. Was wir von Martin brauchen
+
+Nach der Freischaltung nur **zwei Werte** aus der App (*Auth*-Tab):
+
+- **Client ID** – eine kurze Ziffernfolge
+- **Client Secret** – eine lange Zeichenkette
+
+Beide stehen in der App unter *Auth*. Bitte nicht per E-Mail oder Chat
+schicken, sondern direkt in Coolify unter *Environment Variables* eintragen
+(oder über einen Passwort-Manager übergeben).
+
+**Nicht** benötigt: LinkedIn-Passwort, E-Mail-Zugang oder sonstige persönliche
+Zugangsdaten. Das Client Secret ist ein reiner App-Schlüssel und lässt sich
+jederzeit in der App zurücksetzen.
+
+Zusätzlich muss in der App unter *Auth → Authorized redirect URLs* genau diese
+Adresse eingetragen sein:
+
+```
+https://lynx-lining.com/admin/linkedin/callback
+```
+
+### 4. Was wir dann tun
+
+1. `LINKEDIN_CLIENT_ID` und `LINKEDIN_CLIENT_SECRET` in Coolify eintragen,
+   Anwendung neu starten.
+2. Im Admin unter *LinkedIn* auf **„Mit LinkedIn verbinden"** klicken.
+3. Martin (oder ein anderer Seiten-Admin) meldet sich einmalig bei LinkedIn an
+   und bestätigt den Zugriff. Das Passwort wird dabei nur bei LinkedIn selbst
+   eingegeben, nie bei uns.
+4. Fertig. Ab dann werden die Beiträge der Unternehmensseite alle 30 Minuten
+   abgerufen und erscheinen automatisch auf der News-Seite und der Startseite.
 
 ---
 
-## Weg C – Einzelimport im Admin
+## Wichtig: alle 60 Tage neu verbinden
 
-Ohne laufende Kosten, dafür ein Klick pro Beitrag:
+LinkedIn begrenzt Zugänge auf **60 Tage**. Dauerhafte Refresh-Token gibt es nur
+für Marketing-Developer-Partner – ein Status, den kleine Firmen praktisch nicht
+bekommen ([Quelle](https://learn.microsoft.com/en-us/linkedin/shared/authentication/programmatic-refresh-tokens)).
 
-*Admin → LinkedIn → Feld „Einzelnen Beitrag übernehmen"* – dort den Link des
-Beitrags einfügen. Titel, Text und Bild werden übernommen, soweit LinkedIn sie
-an nicht angemeldete Besucher herausgibt. Gibt LinkedIn nichts heraus, öffnet
-sich das Formular mit der bereits eingetragenen URL zum Ausfüllen.
+Das ist eingeplant:
+
+- Der Admin-Bereich zeigt an, wie lange der Zugang noch gültig ist.
+- Ab 7 Tagen vor Ablauf erscheint ein deutlicher Hinweis, im Server-Log ebenso.
+- Erneuern heißt: einmal *Verbindung trennen*, dann *Mit LinkedIn verbinden* –
+  zwei Klicks, etwa 30 Sekunden, alle zwei Monate.
+
+Sollte LinkedIn der Firma später doch Partnerstatus geben, erneuert sich der
+Zugang automatisch; der Code erkennt ein vorhandenes Refresh-Token selbst.
+
+---
+
+## Wenn kein API-Zugang zustande kommt
+
+Falls LinkedIn den Antrag ablehnt oder es bei Martins persönlichem Profil
+bleiben soll, gibt es zwei kostenlose Alternativen. Beide sind bereits eingebaut.
+
+### Einzelimport im Admin (kostenlos, ein Klick pro Beitrag)
+
+*Admin → LinkedIn → „Einzelnen Beitrag übernehmen"* – dort den Link des Beitrags
+einfügen. Titel, Text und Bild werden übernommen, soweit LinkedIn sie an nicht
+angemeldete Besucher herausgibt; sonst öffnet sich das Formular mit bereits
+eingetragener URL zum Ausfüllen.
+
+Das ist der praktikabelste Weg ohne API: Martin postet ohnehin auf LinkedIn,
+und ein Link-Einfügen dauert weniger als eine Minute.
+
+### Webhook (kostenlos, wenn ohnehin ein Automatisierungsdienst da ist)
+
+`POST https://lynx-lining.com/api/linkedin/webhook`, abgesichert über
+`LINKEDIN_WEBHOOK_TOKEN` im Header `X-Webhook-Token`:
+
+```json
+{
+  "url": "https://www.linkedin.com/posts/...",
+  "text": "Der vollständige Beitragstext",
+  "image": "https://media.licdn.com/...",
+  "published_at": "2026-08-25T10:00:00Z"
+}
+```
+
+Ein Beitrag wird nie doppelt angelegt: `201` = neu, `200` mit
+`created: false` = war schon da.
+
+Zusätzlich versteht der Server einen RSS-/Atom-/JSON-Feed über
+`LINKEDIN_FEED_URL`, falls einmal eine kostenlose Feed-Quelle zur Verfügung steht.
 
 ---
 
@@ -101,43 +146,37 @@ sich das Formular mit der bereits eingetragenen URL zum Ausfüllen.
 
 Importierte Beiträge sind deutsch. Ist ein `ANTHROPIC_API_KEY` gesetzt, wird
 beim Import automatisch eine englische Fassung über die Claude API erzeugt
-(Titel, Anriss und Volltext) und für die englische Seite gespeichert:
-
-```
-ANTHROPIC_API_KEY=sk-ant-...
-LINKEDIN_AUTO_TRANSLATE=true
-```
-
-Die Übersetzung kennt die Fachbegriffe des Verschleißschutzes
-(*Auskleidung → lining*, *Schüttgut → bulk material*, *Abrieb → abrasion* …).
+(Titel, Anriss, Volltext), mit den Fachbegriffen des Verschleißschutzes
+(*Auskleidung → lining*, *Schüttgut → bulk material*, *Abrieb → abrasion*).
 Kosten: wenige Cent pro Beitrag.
 
 Ohne Schlüssel wird für Englisch der deutsche Text gespeichert und der Beitrag
-im Admin mit **„EN fehlt"** markiert. Die englische Fassung lässt sich dann im
-Formular von Hand eintragen – oder später per Knopfdruck
-(*Englisch übersetzen*) nachträglich erzeugen, sobald ein Schlüssel hinterlegt ist.
+im Admin mit **„EN fehlt"** markiert – die Übersetzung lässt sich dann von Hand
+eintragen oder später per Knopfdruck (*Englisch übersetzen*) nachholen.
 
 ---
 
-## Prüfen und Steuern
+## Steuerung im Admin
 
-Unter *Admin → LinkedIn* zeigt der Bereich **Automatischer Import** an, welcher
-Weg aktiv ist, wann zuletzt importiert wurde und wie viele Beiträge noch keine
-englische Fassung haben. Der Knopf **Jetzt abrufen** startet den Feed-Abruf
-sofort, ohne auf das nächste Intervall zu warten.
+Unter *Admin → LinkedIn* steht im Bereich **Automatischer Import**:
 
-Importierte Beiträge lassen sich wie manuell angelegte bearbeiten, verstecken
-und löschen. Ein bearbeiteter Beitrag wird vom Import **nicht überschrieben** –
-Korrekturen bleiben also erhalten.
+- ob die LinkedIn-Verbindung steht und welche Seite verbunden ist
+- wie lange der Zugang noch gültig ist
+- wann zuletzt importiert wurde und wie viele Beiträge noch keine englische
+  Fassung haben
+- **Jetzt abrufen** – holt Beiträge sofort, ohne aufs nächste Intervall zu warten
 
-Soll jeder Beitrag vor der Veröffentlichung gesichtet werden:
+Importierte Beiträge lassen sich bearbeiten, verstecken und löschen wie manuell
+angelegte. Ein bearbeiteter Beitrag wird beim nächsten Abruf **nicht
+überschrieben** – Korrekturen bleiben erhalten.
+
+Sollen Beiträge vor der Veröffentlichung gesichtet werden:
 
 ```
 LINKEDIN_AUTO_PUBLISH=false
 ```
 
-Dann werden importierte Beiträge versteckt angelegt und erscheinen erst nach
-einem Klick auf *Versteckt → Sichtbar* im Admin auf der Website.
+Dann werden sie versteckt angelegt und erscheinen erst nach Freigabe im Admin.
 
 ---
 
@@ -145,9 +184,13 @@ einem Klick auf *Versteckt → Sichtbar* im Admin auf der Website.
 
 | Variable | Standard | Bedeutung |
 |---|---|---|
-| `LINKEDIN_FEED_URL` | – | Feed-Adresse (RSS, Atom oder JSON Feed). Leer = Feed-Import aus |
+| `LINKEDIN_CLIENT_ID` | – | Client ID der LinkedIn-App |
+| `LINKEDIN_CLIENT_SECRET` | – | Client Secret der LinkedIn-App |
+| `LINKEDIN_REDIRECT_URI` | `<SITE_URL>/admin/linkedin/callback` | muss in der App identisch eingetragen sein |
+| `LINKEDIN_API_VERSION` | `202606` | LinkedIn-API-Version (YYYYMM) |
 | `LINKEDIN_SYNC_INTERVAL_MIN` | `30` | Abrufintervall in Minuten |
 | `LINKEDIN_AUTO_PUBLISH` | `true` | `false` = importierte Beiträge bleiben versteckt |
+| `LINKEDIN_FEED_URL` | – | Ersatzquelle: RSS-/Atom-/JSON-Feed |
 | `LINKEDIN_WEBHOOK_TOKEN` | – | Geheimnis für den Webhook. Leer = Webhook aus |
 | `LINKEDIN_AUTHOR_NAME` | `Martin F. Heidecker` | Autor importierter Beiträge |
 | `ANTHROPIC_API_KEY` | – | Schlüssel für die automatische Übersetzung |
@@ -155,14 +198,17 @@ einem Klick auf *Versteckt → Sichtbar* im Admin auf der Website.
 
 ## Technische Einordnung
 
-- `src/config/linkedin.js` – Feed-Abruf, Parser (RSS/Atom/JSON), Speicherung, Bild-Download
+- `src/config/linkedin-api.js` – OAuth und Community Management API
+  (`/rest/organizationAcls`, `/rest/posts`, `/rest/images`)
+- `src/config/linkedin.js` – Speicherung, Deduplizierung, Bild-Download,
+  Feed-Parser (RSS/Atom/JSON) als Ersatzquelle
 - `src/config/translate.js` – Übersetzung DE → EN über die Claude API
-- `src/routes/api.js` – Webhook-Endpunkt `POST /api/linkedin/webhook`
-- `src/routes/admin.js` – Sync-Knopf, Einzelimport, Nachübersetzen
-- `src/server.js` – Intervall-Abruf beim Start
-- `migrations/004_linkedin_auto_import.sql` – Spalten `source_guid`, `source`,
-  `imported_at`, `needs_translation` (die Anwendung legt sie beim Start selbst an)
+- `src/routes/admin.js` – Verbinden/Trennen, Abrufen, Einzelimport, Nachübersetzen
+- `src/routes/api.js` – Webhook `POST /api/linkedin/webhook`
+- `src/server.js` – regelmäßiger Abruf, bevorzugt über die offizielle API
+- `migrations/004_linkedin_auto_import.sql` – Herkunftsspalten (die Anwendung
+  legt sie beim Start selbst an)
 
 Doppelte Importe verhindert ein eindeutiger Schlüssel auf `source_guid`; als
-Kennung dient die LinkedIn-Aktivitäts-ID aus der Beitrags-URL, die unabhängig
-von Tracking-Parametern gleich bleibt.
+Kennung dient die LinkedIn-Beitrags-URN bzw. die Aktivitäts-ID aus der URL.
+Entwürfe und nicht öffentliche Beiträge werden übersprungen.
