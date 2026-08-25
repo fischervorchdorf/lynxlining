@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const db = require('../config/database');
 const { sendContactNotification, sendOrderNotification, sendInquiryNotification } = require('../config/mail');
+const crypto = require('crypto');
+const rateLimit = require('express-rate-limit');
 
 // Kontaktformular
 router.post('/contact', async (req, res) => {
@@ -186,5 +188,82 @@ router.post('/shop/inquiry', async (req, res) => {
     res.status(500).json({ error: 'Beim Senden der Anfrage ist ein Fehler aufgetreten.' });
   }
 });
+
+// ============================================================
+// LINKEDIN-WEBHOOK
+// ============================================================
+// Automatisierungsdienste (Zapier, Make, n8n, IFTTT) melden hier jeden neuen
+// LinkedIn-Beitrag. Absicherung über ein gemeinsames Geheimnis in
+// LINKEDIN_WEBHOOK_TOKEN – ohne gesetztes Token ist der Endpunkt deaktiviert.
+//
+// Beispiel:
+//   POST /api/linkedin/webhook
+//   Header: X-Webhook-Token: <LINKEDIN_WEBHOOK_TOKEN>
+//   Body:   { "url": "https://www.linkedin.com/posts/...",
+//             "text": "Beitragstext ...",
+//             "image": "https://media.licdn.com/...",
+//             "published_at": "2026-08-25T10:00:00Z" }
+
+const linkedin = require('../config/linkedin');
+
+const linkedinWebhookLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 30,
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+router.post('/linkedin/webhook', linkedinWebhookLimiter, async (req, res) => {
+  const expected = process.env.LINKEDIN_WEBHOOK_TOKEN;
+  if (!expected) {
+    return res.status(503).json({ error: 'LinkedIn-Webhook ist nicht konfiguriert.' });
+  }
+
+  const provided = req.get('X-Webhook-Token') || req.query.token || req.body.token || '';
+  if (!safeEquals(String(provided), expected)) {
+    console.warn('LinkedIn-Webhook: ungültiges Token von', req.ip);
+    return res.status(401).json({ error: 'Nicht autorisiert.' });
+  }
+
+  const body = req.body || {};
+  const url = String(body.url || body.link || body.permalink || '').trim();
+  const text = String(body.text || body.content || body.message || body.description || '').trim();
+
+  if (!url && !text) {
+    return res.status(400).json({ error: 'url oder text wird benötigt.' });
+  }
+  if (url && !/^https:\/\/([a-z0-9-]+\.)*linkedin\.com\//i.test(url)) {
+    return res.status(400).json({ error: 'url muss eine linkedin.com-Adresse sein.' });
+  }
+
+  try {
+    const result = await linkedin.savePost({
+      guid: body.id || body.guid || linkedin.canonicalGuid(url),
+      url,
+      title: String(body.title || '').trim(),
+      text,
+      image: String(body.image || body.image_url || body.thumbnail || '').trim(),
+      author: String(body.author || '').trim(),
+      publishedAt: body.published_at || body.date || null
+    }, 'webhook');
+
+    if (!result.created) {
+      return res.json({ success: true, created: false, reason: result.reason, id: result.id });
+    }
+    console.log('LinkedIn-Webhook: Beitrag importiert (ID ' + result.id + ')');
+    res.status(201).json({ success: true, created: true, id: result.id, slug: result.slug });
+  } catch (err) {
+    console.error('LinkedIn-Webhook Fehler:', err.message);
+    res.status(500).json({ error: 'Import fehlgeschlagen.' });
+  }
+});
+
+// Token-Vergleich in konstanter Zeit (verhindert Timing-Angriffe)
+function safeEquals(a, b) {
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  if (bufA.length !== bufB.length) return false;
+  return crypto.timingSafeEqual(bufA, bufB);
+}
 
 module.exports = router;

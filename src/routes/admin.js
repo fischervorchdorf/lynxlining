@@ -342,6 +342,44 @@ router.post('/instagram/:id/feature', requireAuth, async (req, res) => {
 // LINKEDIN
 // ============================================================
 
+const linkedin = require('../config/linkedin');
+const translate = require('../config/translate');
+const linkedinApi = require('../config/linkedin-api');
+const crypto = require('crypto');
+
+// Status des Auto-Imports für die Anzeige im Admin
+async function linkedinAutoStatus() {
+  const status = {
+    feedUrl: process.env.LINKEDIN_FEED_URL || '',
+    hasFeed: !!process.env.LINKEDIN_FEED_URL,
+    hasWebhook: !!process.env.LINKEDIN_WEBHOOK_TOKEN,
+    intervalMin: parseInt(process.env.LINKEDIN_SYNC_INTERVAL_MIN, 10) || 30,
+    autoPublish: process.env.LINKEDIN_AUTO_PUBLISH !== 'false',
+    api: await linkedinApi.getStatus(),
+    canTranslate: translate.isEnabled(),
+    translateProvider: translate.activeProvider(),
+    translateModel: translate.MODEL,
+    lastImport: null,
+    importedCount: 0,
+    untranslatedCount: 0
+  };
+
+  try {
+    const [rows] = await db.query(
+      "SELECT MAX(imported_at) AS last_import, COUNT(*) AS cnt FROM linkedin_posts WHERE source <> 'manual'"
+    );
+    if (rows.length) {
+      status.lastImport = rows[0].last_import;
+      status.importedCount = rows[0].cnt;
+    }
+
+    const [pending] = await db.query('SELECT COUNT(*) AS cnt FROM linkedin_posts WHERE needs_translation = 1');
+    if (pending.length) status.untranslatedCount = pending[0].cnt;
+  } catch (e) { /* Spalten existieren erst nach dem ersten Sync */ }
+
+  return status;
+}
+
 router.get('/linkedin', requireAuth, async (req, res) => {
   const [posts] = await db.query(`
     SELECT lp.*, lpt.title as title_de, lpt.excerpt as excerpt_de
@@ -349,11 +387,164 @@ router.get('/linkedin', requireAuth, async (req, res) => {
     LEFT JOIN linkedin_post_translations lpt ON lp.id = lpt.linkedin_post_id AND lpt.locale = 'de'
     ORDER BY lp.published_at DESC
   `).catch(() => [[]]);
-  res.render('admin/linkedin-list.njk', { title: 'LinkedIn', adminPage: 'linkedin', posts });
+  const autoStatus = await linkedinAutoStatus();
+  res.render('admin/linkedin-list.njk', {
+    title: 'LinkedIn',
+    adminPage: 'linkedin',
+    posts,
+    autoStatus,
+    flash: req.query.msg || null
+  });
+});
+
+// ---- Offizielle LinkedIn-API: verbinden / trennen ----
+
+router.get('/linkedin/connect', requireAuth, (req, res) => {
+  if (!linkedinApi.isConfigured()) {
+    return res.redirect('/admin/linkedin?msg=' + encodeURIComponent(
+      'LINKEDIN_CLIENT_ID und LINKEDIN_CLIENT_SECRET sind nicht gesetzt.'));
+  }
+
+  // state sch\u00fctzt den R\u00fcckweg gegen untergeschobene Anfragen
+  const state = crypto.randomBytes(16).toString('hex');
+  req.session.linkedinOauthState = state;
+  res.redirect(linkedinApi.getAuthUrl(state));
+});
+
+router.get('/linkedin/callback', requireAuth, async (req, res) => {
+  const { code, state, error, error_description } = req.query;
+  const expected = req.session.linkedinOauthState;
+  delete req.session.linkedinOauthState;
+
+  if (error) {
+    return res.redirect('/admin/linkedin?msg=' + encodeURIComponent(
+      'LinkedIn hat die Verbindung abgelehnt: ' + (error_description || error)));
+  }
+  if (!code || !state || state !== expected) {
+    return res.redirect('/admin/linkedin?msg=' + encodeURIComponent(
+      'Verbindung abgebrochen \u2013 bitte erneut versuchen.'));
+  }
+
+  try {
+    const result = await linkedinApi.exchangeCode(code);
+    const msg = result.organizations.length
+      ? `Verbunden mit "${result.organizations[0].name}".`
+      : 'Verbunden \u2013 es wurde aber keine verwaltete Unternehmensseite gefunden. ' +
+        'Bitte pr\u00fcfen, ob der angemeldete Nutzer Administrator der Seite ist.';
+    res.redirect('/admin/linkedin?msg=' + encodeURIComponent(msg));
+  } catch (err) {
+    console.error('LinkedIn OAuth Fehler:', err.message);
+    res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Verbindung fehlgeschlagen: ' + err.message));
+  }
+});
+
+router.post('/linkedin/disconnect', requireAuth, async (req, res) => {
+  await linkedinApi.disconnect();
+  res.redirect('/admin/linkedin?msg=' + encodeURIComponent('LinkedIn-Verbindung wurde getrennt.'));
+});
+
+// Beitr\u00e4ge jetzt abrufen: offizielle API bevorzugt, sonst Feed
+router.post('/linkedin/sync', requireAuth, async (req, res) => {
+  const apiStatus = await linkedinApi.getStatus();
+  const result = apiStatus.connected
+    ? await linkedinApi.syncOrganizationPosts()
+    : await linkedin.syncLinkedInFeed();
+
+  let msg;
+  if (result.success) {
+    msg = `${result.imported} neue Beitr\u00e4ge importiert, ${result.skipped} bereits vorhanden.`;
+  } else if (result.reason === 'no_feed_url') {
+    msg = 'Keine Quelle konfiguriert \u2013 bitte mit LinkedIn verbinden oder LINKEDIN_FEED_URL setzen.';
+  } else if (result.reason === 'token_expired') {
+    msg = 'Die LinkedIn-Verbindung ist abgelaufen \u2013 bitte neu verbinden.';
+  } else if (result.reason === 'no_organization') {
+    msg = 'Keine Unternehmensseite zugeordnet \u2013 bitte Verbindung erneuern.';
+  } else {
+    msg = 'Abruf fehlgeschlagen: ' + result.reason;
+  }
+
+  res.redirect('/admin/linkedin?msg=' + encodeURIComponent(msg));
+});
+
+// Einzelnen Beitrag nachtr\u00e4glich ins Englische \u00fcbersetzen
+router.post('/linkedin/:id/translate', requireAuth, async (req, res) => {
+  const result = await linkedin.translateExistingPost(req.params.id);
+
+  let msg;
+  if (result.success) {
+    msg = 'Englische Fassung wurde erstellt.';
+  } else if (result.reason === 'no_api_key') {
+    msg = '\u00dcbersetzung nicht m\u00f6glich \u2013 ANTHROPIC_API_KEY ist nicht gesetzt.';
+  } else if (result.reason === 'not_found') {
+    msg = 'Kein deutscher Text vorhanden, der \u00fcbersetzt werden k\u00f6nnte.';
+  } else {
+    msg = '\u00dcbersetzung fehlgeschlagen \u2013 bitte sp\u00e4ter erneut versuchen.';
+  }
+
+  res.redirect('/admin/linkedin?msg=' + encodeURIComponent(msg));
+});
+
+// Einzelnen Beitrag \u00fcber seine LinkedIn-URL importieren
+router.post('/linkedin/import-url', requireAuth, async (req, res) => {
+  const url = String(req.body.url || '').trim();
+  const text = String(req.body.text || '').trim();
+
+  if (url && !/^https:\/\/([a-z0-9-]+\.)*linkedin\.com\//i.test(url)) {
+    return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Bitte eine g\u00fcltige linkedin.com-URL angeben.'));
+  }
+  if (!url && !text) {
+    return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Bitte einen Link oder den Beitragstext angeben.'));
+  }
+
+  // Ist der Text da, wird er direkt verwendet - kein Abruf bei LinkedIn n\u00f6tig.
+  // Titel und Anriss entstehen aus dem Text, die \u00dcbersetzung l\u00e4uft mit.
+  if (text) {
+    try {
+      const result = await linkedin.savePost({
+        guid: linkedin.canonicalGuid(url) || '',
+        url,
+        text,
+        publishedAt: new Date()
+      }, 'text');
+
+      if (result.created) return res.redirect('/admin/linkedin/' + result.id);
+      if (result.reason === 'exists') {
+        return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Dieser Beitrag ist bereits vorhanden.'));
+      }
+      return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Beitrag konnte nicht angelegt werden.'));
+    } catch (err) {
+      console.error('LinkedIn Text-Import Fehler:', err.message);
+      return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Import fehlgeschlagen: ' + err.message));
+    }
+  }
+
+  try {
+    const result = await linkedin.importFromUrl(url);
+    if (result.success) {
+      // Direkt ins Formular, damit Titel/Text vor der Ver\u00f6ffentlichung gepr\u00fcft werden k\u00f6nnen
+      return res.redirect('/admin/linkedin/' + result.id);
+    }
+    if (result.reason === 'exists') {
+      return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Dieser Beitrag ist bereits vorhanden.'));
+    }
+    // LinkedIn liefert Metadaten nicht an ausgeloggte Clients: leeres Formular mit URL
+    return res.redirect('/admin/linkedin/neu?url=' + encodeURIComponent(url) + '&msg=' +
+      encodeURIComponent('LinkedIn hat keine Vorschaudaten geliefert \u2013 bitte Titel und Text erg\u00e4nzen.'));
+  } catch (err) {
+    console.error('LinkedIn URL-Import Fehler:', err.message);
+    return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Import fehlgeschlagen: ' + err.message));
+  }
 });
 
 router.get('/linkedin/neu', requireAuth, (req, res) => {
-  res.render('admin/linkedin-form.njk', { title: 'Neuer LinkedIn-Beitrag', adminPage: 'linkedin', post: null, isNew: true });
+  res.render('admin/linkedin-form.njk', {
+    title: 'Neuer LinkedIn-Beitrag',
+    adminPage: 'linkedin',
+    post: null,
+    isNew: true,
+    prefillUrl: req.query.url || '',
+    flash: req.query.msg || null
+  });
 });
 
 router.get('/linkedin/:id', requireAuth, async (req, res) => {
@@ -474,23 +665,7 @@ router.post('/translate', requireAuth, async (req, res) => {
   if (!text || !text.trim()) return res.json({ translated: '' });
 
   try {
-    const https = require('https');
-    const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=${to}&dt=t&q=${encodeURIComponent(text)}`;
-
-    const translated = await new Promise((resolve, reject) => {
-      https.get(url, (response) => {
-        let data = '';
-        response.on('data', chunk => data += chunk);
-        response.on('end', () => {
-          try {
-            const parsed = JSON.parse(data);
-            const result = parsed[0].map(s => s[0]).join('');
-            resolve(result);
-          } catch (e) { reject(e); }
-        });
-      }).on('error', reject);
-    });
-
+    const translated = await translate.googleTranslate(text, from, to);
     res.json({ translated });
   } catch (err) {
     console.error('Übersetzungsfehler:', err.message);
