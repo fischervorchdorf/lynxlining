@@ -72,22 +72,20 @@ const OUTPUT_SCHEMA = {
  * @returns {Promise<{title: string, excerpt: string, content: string}|null>} null, wenn nicht möglich
  */
 async function translatePost(post) {
-  if (!isEnabled()) return null;
+  if (!isEnabled()) return { ok: false, error: 'Übersetzung ist abgeschaltet (LINKEDIN_AUTO_TRANSLATE=false)' };
 
   const title = String(post.title || '').trim();
   const excerpt = String(post.excerpt || '').trim();
   const content = String(post.content || '').trim();
-  if (!title && !excerpt && !content) return null;
+  if (!title && !excerpt && !content) return { ok: false, error: 'Kein Text vorhanden' };
 
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return translateWithGoogle({ title, excerpt, content });
+  if (process.env.ANTHROPIC_API_KEY) {
+    const claude = await translateWithClaude({ title, excerpt, content });
+    if (claude) return { ok: true, provider: 'claude', translation: claude };
+    // Claude nicht erreichbar – lieber eine wörtliche Übersetzung als deutscher Text
+    console.log('Übersetzung: weiche auf Google Translate aus');
   }
 
-  const claude = await translateWithClaude({ title, excerpt, content });
-  if (claude) return claude;
-
-  // Claude nicht erreichbar – lieber eine wörtliche Übersetzung als deutscher Text
-  console.log('Übersetzung: weiche auf Google Translate aus');
   return translateWithGoogle({ title, excerpt, content });
 }
 
@@ -146,20 +144,60 @@ async function translateWithClaude({ title, excerpt, content }) {
  * Beitragsformular nutzt. Inoffiziell und ohne Zusicherung – schlägt er fehl,
  * wird null zurückgegeben und der Beitrag bleibt deutsch.
  */
-async function translateWithGoogle({ title, excerpt, content }) {
-  try {
-    const [t, e, c] = await Promise.all([
-      googleTranslate(title),
-      googleTranslate(excerpt),
-      googleTranslate(content)
-    ]);
+async function translateWithGoogle(fields) {
+  const translation = {};
+  const errors = [];
 
-    if (!t) return null;
-    return { title: t, excerpt: e || '', content: c || '' };
-  } catch (err) {
-    console.warn('Google-Übersetzung fehlgeschlagen:', err.message);
-    return null;
+  // Bewusst nacheinander statt parallel: der Google-Endpunkt drosselt
+  // gleichzeitige Anfragen aus demselben Netz und antwortet dann mit 429.
+  for (const field of ['title', 'excerpt', 'content']) {
+    const source = fields[field];
+
+    try {
+      translation[field] = await googleTranslateWithRetry(source);
+    } catch (err) {
+      errors.push(`${field}: ${err.message}`);
+      // Deutscher Text als Notnagel, damit ein Teilerfolg nicht verloren geht
+      translation[field] = source;
+    }
   }
+
+  if (errors.length) {
+    console.warn('Google-Übersetzung unvollständig:', errors.join(' | '));
+  }
+
+  // Ohne übersetzten Titel ist das Ergebnis unbrauchbar
+  if (errors.some(e => e.startsWith('title'))) {
+    return { ok: false, error: 'Google Translate: ' + errors.join(' | ') };
+  }
+
+  return {
+    ok: true,
+    provider: 'google',
+    translation,
+    partial: errors.length > 0,
+    error: errors.length ? errors.join(' | ') : null
+  };
+}
+
+/** Ein Wiederholungsversuch, da der Endpunkt gelegentlich kurzzeitig drosselt. */
+async function googleTranslateWithRetry(text, attempts = 2) {
+  let lastError;
+
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await googleTranslate(text);
+    } catch (err) {
+      lastError = err;
+      if (i < attempts - 1) await sleep(1500);
+    }
+  }
+
+  throw lastError;
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /** Einzelnen Text über Google Translate übersetzen (de -> en). */

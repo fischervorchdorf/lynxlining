@@ -471,14 +471,17 @@ router.post('/linkedin/:id/translate', requireAuth, async (req, res) => {
   const result = await linkedin.translateExistingPost(req.params.id);
 
   let msg;
-  if (result.success) {
-    msg = 'Englische Fassung wurde erstellt.';
+  if (result.success && result.partial) {
+    msg = `Teilweise \u00fcbersetzt (${result.provider}). Nicht \u00fcbersetzt: ${result.error}`;
+  } else if (result.success) {
+    msg = `Englische Fassung wurde erstellt (${result.provider}).`;
   } else if (result.reason === 'no_api_key') {
-    msg = '\u00dcbersetzung nicht m\u00f6glich \u2013 ANTHROPIC_API_KEY ist nicht gesetzt.';
+    msg = '\u00dcbersetzung ist abgeschaltet (LINKEDIN_AUTO_TRANSLATE=false).';
   } else if (result.reason === 'not_found') {
     msg = 'Kein deutscher Text vorhanden, der \u00fcbersetzt werden k\u00f6nnte.';
   } else {
-    msg = '\u00dcbersetzung fehlgeschlagen \u2013 bitte sp\u00e4ter erneut versuchen.';
+    // Konkreten Grund anzeigen statt eines pauschalen Hinweises
+    msg = '\u00dcbersetzung fehlgeschlagen: ' + (result.error || 'unbekannter Fehler');
   }
 
   res.redirect('/admin/linkedin?msg=' + encodeURIComponent(msg));

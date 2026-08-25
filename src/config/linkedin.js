@@ -186,10 +186,12 @@ async function savePost(item, source) {
   const content = item.text || excerpt;
   const german = { title, excerpt, content };
 
-  // Englische Fassung übersetzen lassen. Schlägt das fehl (kein API-Key,
-  // Rate-Limit, Netzwerkfehler), wird der deutsche Text gespeichert und der
-  // Beitrag als übersetzungsbedürftig markiert.
-  const english = await translatePost(german);
+  // Englische Fassung übersetzen lassen. Schlägt das fehl (Rate-Limit,
+  // Netzwerkfehler), wird der deutsche Text gespeichert und der Beitrag als
+  // übersetzungsbedürftig markiert.
+  const translation = await translatePost(german);
+  const english = translation.ok ? translation.translation : null;
+  if (!translation.ok) console.warn('Übersetzung beim Import fehlgeschlagen:', translation.error);
 
   const [result] = await db.query(
     `INSERT INTO linkedin_posts
@@ -602,8 +604,10 @@ async function translateExistingPost(postId) {
   );
   if (!rows.length) return { success: false, reason: 'not_found' };
 
-  const english = await translatePost(rows[0]);
-  if (!english) return { success: false, reason: 'translation_failed' };
+  const result = await translatePost(rows[0]);
+  if (!result.ok) return { success: false, reason: 'translation_failed', error: result.error };
+
+  const english = result.translation;
 
   await db.query(
     `INSERT INTO linkedin_post_translations (linkedin_post_id, locale, title, excerpt, content)
@@ -611,9 +615,10 @@ async function translateExistingPost(postId) {
      ON DUPLICATE KEY UPDATE title = VALUES(title), excerpt = VALUES(excerpt), content = VALUES(content)`,
     [postId, english.title, english.excerpt, english.content]
   );
-  await db.query('UPDATE linkedin_posts SET needs_translation = 0 WHERE id = ?', [postId]);
+  // Bei Teilerfolg (ein Feld blieb deutsch) bleibt die Markierung stehen
+  await db.query('UPDATE linkedin_posts SET needs_translation = ? WHERE id = ?', [result.partial ? 1 : 0, postId]);
 
-  return { success: true };
+  return { success: true, provider: result.provider, partial: !!result.partial, error: result.error || null };
 }
 
 module.exports = {
