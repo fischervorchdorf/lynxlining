@@ -342,6 +342,40 @@ router.post('/instagram/:id/feature', requireAuth, async (req, res) => {
 // LINKEDIN
 // ============================================================
 
+const linkedin = require('../config/linkedin');
+const translate = require('../config/translate');
+
+// Status des Auto-Imports für die Anzeige im Admin
+async function linkedinAutoStatus() {
+  const status = {
+    feedUrl: process.env.LINKEDIN_FEED_URL || '',
+    hasFeed: !!process.env.LINKEDIN_FEED_URL,
+    hasWebhook: !!process.env.LINKEDIN_WEBHOOK_TOKEN,
+    intervalMin: parseInt(process.env.LINKEDIN_SYNC_INTERVAL_MIN, 10) || 30,
+    autoPublish: process.env.LINKEDIN_AUTO_PUBLISH !== 'false',
+    canTranslate: translate.isEnabled(),
+    translateModel: translate.MODEL,
+    lastImport: null,
+    importedCount: 0,
+    untranslatedCount: 0
+  };
+
+  try {
+    const [rows] = await db.query(
+      "SELECT MAX(imported_at) AS last_import, COUNT(*) AS cnt FROM linkedin_posts WHERE source <> 'manual'"
+    );
+    if (rows.length) {
+      status.lastImport = rows[0].last_import;
+      status.importedCount = rows[0].cnt;
+    }
+
+    const [pending] = await db.query('SELECT COUNT(*) AS cnt FROM linkedin_posts WHERE needs_translation = 1');
+    if (pending.length) status.untranslatedCount = pending[0].cnt;
+  } catch (e) { /* Spalten existieren erst nach dem ersten Sync */ }
+
+  return status;
+}
+
 router.get('/linkedin', requireAuth, async (req, res) => {
   const [posts] = await db.query(`
     SELECT lp.*, lpt.title as title_de, lpt.excerpt as excerpt_de
@@ -349,11 +383,85 @@ router.get('/linkedin', requireAuth, async (req, res) => {
     LEFT JOIN linkedin_post_translations lpt ON lp.id = lpt.linkedin_post_id AND lpt.locale = 'de'
     ORDER BY lp.published_at DESC
   `).catch(() => [[]]);
-  res.render('admin/linkedin-list.njk', { title: 'LinkedIn', adminPage: 'linkedin', posts });
+  const autoStatus = await linkedinAutoStatus();
+  res.render('admin/linkedin-list.njk', {
+    title: 'LinkedIn',
+    adminPage: 'linkedin',
+    posts,
+    autoStatus,
+    flash: req.query.msg || null
+  });
+});
+
+// Feed jetzt abrufen (Button im Admin)
+router.post('/linkedin/sync', requireAuth, async (req, res) => {
+  const result = await linkedin.syncLinkedInFeed();
+
+  let msg;
+  if (result.success) {
+    msg = `${result.imported} neue Beitr\u00e4ge importiert, ${result.skipped} bereits vorhanden.`;
+  } else if (result.reason === 'no_feed_url') {
+    msg = 'Kein Feed konfiguriert \u2013 bitte LINKEDIN_FEED_URL setzen.';
+  } else {
+    msg = 'Sync fehlgeschlagen: ' + result.reason;
+  }
+
+  res.redirect('/admin/linkedin?msg=' + encodeURIComponent(msg));
+});
+
+// Einzelnen Beitrag nachtr\u00e4glich ins Englische \u00fcbersetzen
+router.post('/linkedin/:id/translate', requireAuth, async (req, res) => {
+  const result = await linkedin.translateExistingPost(req.params.id);
+
+  let msg;
+  if (result.success) {
+    msg = 'Englische Fassung wurde erstellt.';
+  } else if (result.reason === 'no_api_key') {
+    msg = '\u00dcbersetzung nicht m\u00f6glich \u2013 ANTHROPIC_API_KEY ist nicht gesetzt.';
+  } else if (result.reason === 'not_found') {
+    msg = 'Kein deutscher Text vorhanden, der \u00fcbersetzt werden k\u00f6nnte.';
+  } else {
+    msg = '\u00dcbersetzung fehlgeschlagen \u2013 bitte sp\u00e4ter erneut versuchen.';
+  }
+
+  res.redirect('/admin/linkedin?msg=' + encodeURIComponent(msg));
+});
+
+// Einzelnen Beitrag \u00fcber seine LinkedIn-URL importieren
+router.post('/linkedin/import-url', requireAuth, async (req, res) => {
+  const url = String(req.body.url || '').trim();
+
+  if (!/^https:\/\/([a-z0-9-]+\.)*linkedin\.com\//i.test(url)) {
+    return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Bitte eine g\u00fcltige linkedin.com-URL angeben.'));
+  }
+
+  try {
+    const result = await linkedin.importFromUrl(url);
+    if (result.success) {
+      // Direkt ins Formular, damit Titel/Text vor der Ver\u00f6ffentlichung gepr\u00fcft werden k\u00f6nnen
+      return res.redirect('/admin/linkedin/' + result.id);
+    }
+    if (result.reason === 'exists') {
+      return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Dieser Beitrag ist bereits vorhanden.'));
+    }
+    // LinkedIn liefert Metadaten nicht an ausgeloggte Clients: leeres Formular mit URL
+    return res.redirect('/admin/linkedin/neu?url=' + encodeURIComponent(url) + '&msg=' +
+      encodeURIComponent('LinkedIn hat keine Vorschaudaten geliefert \u2013 bitte Titel und Text erg\u00e4nzen.'));
+  } catch (err) {
+    console.error('LinkedIn URL-Import Fehler:', err.message);
+    return res.redirect('/admin/linkedin?msg=' + encodeURIComponent('Import fehlgeschlagen: ' + err.message));
+  }
 });
 
 router.get('/linkedin/neu', requireAuth, (req, res) => {
-  res.render('admin/linkedin-form.njk', { title: 'Neuer LinkedIn-Beitrag', adminPage: 'linkedin', post: null, isNew: true });
+  res.render('admin/linkedin-form.njk', {
+    title: 'Neuer LinkedIn-Beitrag',
+    adminPage: 'linkedin',
+    post: null,
+    isNew: true,
+    prefillUrl: req.query.url || '',
+    flash: req.query.msg || null
+  });
 });
 
 router.get('/linkedin/:id', requireAuth, async (req, res) => {

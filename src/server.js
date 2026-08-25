@@ -342,4 +342,24 @@ app.listen(PORT, () => {
       refreshToken().catch(err => console.error('Instagram Token Refresh Fehler:', err));
     }, 24 * 60 * 60 * 1000);
   }
+
+  // LinkedIn Auto-Import (Feed-Polling)
+  // Der Feed stammt von einem Feed-Dienst wie rss.app; LinkedIn selbst bietet
+  // für persönliche Profile keinen öffentlichen Feed an. Details: docs/linkedin-automatik.md
+  if (process.env.LINKEDIN_FEED_URL) {
+    const { syncLinkedInFeed } = require('./config/linkedin');
+    const intervalMin = parseInt(process.env.LINKEDIN_SYNC_INTERVAL_MIN, 10) || 30;
+
+    setTimeout(() => {
+      syncLinkedInFeed().then(r => console.log('LinkedIn initialer Sync:', r));
+    }, 15000);
+
+    setInterval(() => {
+      syncLinkedInFeed().catch(err => console.error('LinkedIn Sync Fehler:', err));
+    }, intervalMin * 60 * 1000);
+
+    console.log(`LinkedIn Auto-Import aktiv (alle ${intervalMin} Minuten)`);
+  } else if (process.env.LINKEDIN_WEBHOOK_TOKEN) {
+    console.log('LinkedIn Auto-Import: nur Webhook aktiv (kein LINKEDIN_FEED_URL gesetzt)');
+  }
 });

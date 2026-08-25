@@ -2,8 +2,80 @@
 
 {% block admin_content %}
 
+{% if flash %}
+  <div class="mb-6 px-5 py-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">{{ flash }}</div>
+{% endif %}
+
+<!-- Auto-Import -->
+<div class="bg-white rounded-xl border border-black/5 shadow-sm p-6 mb-6">
+  <div class="flex items-start justify-between gap-6 flex-wrap">
+    <div>
+      <h2 class="font-semibold text-stone-dark flex items-center gap-2">
+        <svg class="w-5 h-5 text-[#0A66C2]" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+        Automatischer Import
+      </h2>
+
+      <div class="mt-3 space-y-1.5 text-sm">
+        <p class="flex items-center gap-2">
+          {% if autoStatus.hasFeed %}
+            <span class="px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">Feed aktiv</span>
+            <span class="text-stone/60">alle {{ autoStatus.intervalMin }} Minuten</span>
+          {% else %}
+            <span class="px-2 py-0.5 rounded-full bg-stone/10 text-stone/50 text-xs font-medium">Feed inaktiv</span>
+            <span class="text-stone/60">LINKEDIN_FEED_URL nicht gesetzt</span>
+          {% endif %}
+        </p>
+        <p class="flex items-center gap-2">
+          {% if autoStatus.hasWebhook %}
+            <span class="px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">Webhook aktiv</span>
+            <span class="text-stone/60">POST /api/linkedin/webhook</span>
+          {% else %}
+            <span class="px-2 py-0.5 rounded-full bg-stone/10 text-stone/50 text-xs font-medium">Webhook inaktiv</span>
+            <span class="text-stone/60">LINKEDIN_WEBHOOK_TOKEN nicht gesetzt</span>
+          {% endif %}
+        </p>
+        <p class="flex items-center gap-2">
+          {% if autoStatus.canTranslate %}
+            <span class="px-2 py-0.5 rounded-full bg-green-100 text-green-700 text-xs font-medium">Übersetzung aktiv</span>
+            <span class="text-stone/60">
+              englische Fassung automatisch beim Import
+              {% if autoStatus.untranslatedCount %} &middot; {{ autoStatus.untranslatedCount }} noch ohne Übersetzung{% endif %}
+            </span>
+          {% else %}
+            <span class="px-2 py-0.5 rounded-full bg-stone/10 text-stone/50 text-xs font-medium">Übersetzung inaktiv</span>
+            <span class="text-stone/60">ANTHROPIC_API_KEY nicht gesetzt – englische Seite zeigt den deutschen Text</span>
+          {% endif %}
+        </p>
+        <p class="text-stone/60">
+          {{ autoStatus.importedCount }} automatisch importierte Beiträge
+          {% if autoStatus.lastImport %} &middot; zuletzt {{ autoStatus.lastImport | formatDate('de') }}{% endif %}
+          &middot; neue Beiträge werden
+          {% if autoStatus.autoPublish %}sofort veröffentlicht{% else %}versteckt angelegt und warten auf Freigabe{% endif %}
+        </p>
+      </div>
+    </div>
+
+    <form method="POST" action="/admin/linkedin/sync">
+      <button class="px-5 py-2.5 bg-[#0A66C2] text-white rounded-lg font-semibold text-sm hover:bg-[#08519B] transition-colors whitespace-nowrap">
+        Jetzt abrufen
+      </button>
+    </form>
+  </div>
+
+  <form method="POST" action="/admin/linkedin/import-url" class="mt-5 pt-5 border-t border-black/5 flex gap-3 flex-wrap">
+    <input type="url" name="url" required placeholder="https://www.linkedin.com/posts/..."
+           class="flex-1 min-w-[280px] px-4 py-2.5 border border-black/10 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#0A66C2]/30">
+    <button class="px-5 py-2.5 bg-stone/10 text-stone-dark rounded-lg font-semibold text-sm hover:bg-stone/20 transition-colors whitespace-nowrap">
+      Einzelnen Beitrag übernehmen
+    </button>
+  </form>
+  <p class="mt-2 text-xs text-stone/50">
+    Beitrags-Link aus LinkedIn einfügen – Titel, Text und Bild werden, soweit LinkedIn sie herausgibt, automatisch übernommen.
+  </p>
+</div>
+
 <div class="flex justify-between items-center mb-6">
-  <p class="text-sm text-stone">LinkedIn-Beiträge manuell verwalten und auf der News-Seite anzeigen.</p>
+  <p class="text-sm text-stone">LinkedIn-Beiträge verwalten und auf der News-Seite anzeigen.</p>
   <a href="/admin/linkedin/neu" class="px-5 py-2.5 bg-[#D64545] text-white rounded-lg font-semibold text-sm hover:bg-[#C13B3B] transition-colors">
     + Neuer Beitrag
   </a>
@@ -38,11 +110,19 @@
               <a href="/admin/linkedin/{{ post.id }}" class="font-medium text-stone-dark hover:text-[#D64545] transition-colors">
                 {{ post.title_de or '(Ohne Titel)' }}
               </a>
+              {% if post.needs_translation %}
+                <span class="ml-2 px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 text-xs font-medium align-middle">EN fehlt</span>
+              {% endif %}
               {% if post.excerpt_de %}
                 <p class="text-xs text-stone/60 mt-1 line-clamp-1" style="display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;">{{ post.excerpt_de }}</p>
               {% endif %}
             </td>
-            <td class="px-6 py-4 text-sm text-stone">{{ post.author_name }}</td>
+            <td class="px-6 py-4 text-sm text-stone">
+              {{ post.author_name }}
+              {% if post.source and post.source != 'manual' %}
+                <span class="block mt-1 text-xs text-[#0A66C2]">automatisch ({{ post.source }})</span>
+              {% endif %}
+            </td>
             <td class="px-6 py-4 text-sm text-stone/60">{{ post.published_at }}</td>
             <td class="px-6 py-4">
               <form method="POST" action="/admin/linkedin/{{ post.id }}/toggle">
@@ -55,6 +135,13 @@
             <td class="px-6 py-4">
               <div class="flex items-center gap-2">
                 <a href="/admin/linkedin/{{ post.id }}" class="px-3 py-1.5 bg-stone/5 rounded-lg text-xs font-medium text-stone hover:bg-stone/10 transition-colors">Bearbeiten</a>
+                {% if autoStatus.canTranslate %}
+                  <form method="POST" action="/admin/linkedin/{{ post.id }}/translate">
+                    <button class="px-3 py-1.5 bg-[#0A66C2]/10 rounded-lg text-xs font-medium text-[#0A66C2] hover:bg-[#0A66C2]/20 transition-colors">
+                      {% if post.needs_translation %}Englisch übersetzen{% else %}EN neu übersetzen{% endif %}
+                    </button>
+                  </form>
+                {% endif %}
                 <form method="POST" action="/admin/linkedin/{{ post.id }}/delete" onsubmit="return confirm('Diesen LinkedIn-Beitrag wirklich löschen?')">
                   <button class="px-3 py-1.5 bg-red-50 rounded-lg text-xs font-medium text-red-500 hover:bg-red-100 transition-colors">Löschen</button>
                 </form>
