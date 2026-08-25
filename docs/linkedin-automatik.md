@@ -154,20 +154,34 @@ Zusätzlich versteht der Server einen RSS-/Atom-/JSON-Feed über
 Importierte Beiträge sind deutsch. Die englische Fassung entsteht beim Import
 automatisch – auf einem von zwei Wegen:
 
-| Weg | Voraussetzung | Kosten | Qualität |
+| Weg | Voraussetzung | Kosten | Zuverlässigkeit |
 |---|---|---|---|
-| **Google Translate** (Standard) | keine | kostenlos | wörtlich, für Fachtexte grenzwertig |
-| **Claude** | `ANTHROPIC_API_KEY` gesetzt | wenige Cent pro Beitrag | kennt die Fachbegriffe |
+| **Google Translate** | keine | kostenlos | **auf Servern oft blockiert** |
+| **Claude** (empfohlen) | `ANTHROPIC_API_KEY` | wenige Cent pro Beitrag | zuverlässig, kennt die Fachbegriffe |
 
-Google Translate ist derselbe Dienst, den der Knopf *„Alles automatisch
-übersetzen"* im Beitragsformular schon vorher genutzt hat. Er übersetzt
-wörtlich: aus *Auskleidung* wird eher *cladding* als *lining*, aus *Schüttgut*
-eher *bulk goods* als *bulk material*.
+**Wichtig zu Google Translate:** Der genutzte Endpunkt ist nicht offiziell
+dokumentiert und für Browser gedacht. Anfragen aus Rechenzentren beantwortet
+Google häufig dauerhaft mit `HTTP 429` – so auch auf dem Server von
+lynx-lining.com. Der Knopf *„Alles automatisch übersetzen"* im Beitragsformular
+nutzt denselben Endpunkt und ist davon genauso betroffen.
 
-Mit hinterlegtem `ANTHROPIC_API_KEY` übersetzt stattdessen Claude, mit den
-Fachbegriffen des Verschleißschutzes im Auftrag (*Auskleidung → lining*,
-*Schüttgut → bulk material*, *Abrieb → abrasion*, *Gleisschotter → track
-ballast*). Fällt Claude aus, wird automatisch auf Google zurückgefallen.
+Trifft die Sperre zu, meldet der Admin das im Klartext. Ein Wiederholen bringt
+nichts – es handelt sich nicht um eine kurzzeitige Drosselung, sondern um eine
+Sperre der Server-IP-Adresse.
+
+### Claude einrichten (der zuverlässige Weg)
+
+1. Auf [console.anthropic.com](https://console.anthropic.com) anmelden
+   (dasselbe Konto wie für Claude Code) → *API Keys* → *Create Key*
+2. Guthaben aufladen – der kleinste Betrag reicht für Jahre
+3. Den Schlüssel in Coolify als `ANTHROPIC_API_KEY` eintragen, Anwendung neu starten
+
+Claude übersetzt dann mit den Fachbegriffen des Verschleißschutzes im Auftrag
+(*Auskleidung → lining*, *Schüttgut → bulk material*, *Abrieb → abrasion*,
+*Gleisschotter → track ballast*). Kosten: rund 2–3 Cent pro Beitrag.
+
+Fällt Claude einmal aus, wird auf Google zurückgefallen – dort, wo Google
+erreichbar ist.
 
 Schlagen beide fehl, steht der deutsche Text auch auf Englisch und der Beitrag
 ist im Admin mit **„EN fehlt"** markiert – nachholbar per Knopfdruck

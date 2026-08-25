@@ -672,7 +672,15 @@ router.post('/translate', requireAuth, async (req, res) => {
     res.json({ translated });
   } catch (err) {
     console.error('Übersetzungsfehler:', err.message);
-    res.status(500).json({ error: 'Übersetzung fehlgeschlagen' });
+
+    // Konkreten Grund durchreichen, damit im Formular nicht wortlos nichts passiert
+    const blocked = err.message.includes('429');
+    res.status(500).json({
+      error: blocked
+        ? 'Google Translate nimmt von diesem Server keine Anfragen mehr an (429). ' +
+          'Dauerhafte Lösung: ANTHROPIC_API_KEY hinterlegen, dann übersetzt Claude.'
+        : err.message
+    });
   }
 });
 

@@ -126,14 +126,35 @@ async function translateField(fromName, toId) {
       body: JSON.stringify({ text: source.value, from: 'de', to: 'en' })
     });
     const data = await res.json();
+
     if (data.translated) {
       target.value = data.translated;
       target.style.borderColor = '#22c55e';
       setTimeout(() => target.style.borderColor = '', 2000);
+      return true;
     }
+
+    // Fehler nicht verschlucken – sonst sieht es aus, als passiere gar nichts
+    showTranslateError(data.error || 'Der Übersetzungsdienst hat nichts zurückgegeben.');
+    target.style.borderColor = '#f59e0b';
+    return false;
   } catch (err) {
-    console.error('Übersetzung fehlgeschlagen:', err);
+    showTranslateError('Der Übersetzungsdienst ist nicht erreichbar: ' + err.message);
+    return false;
   }
+}
+
+function showTranslateError(message) {
+  let box = document.getElementById('translateError');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'translateError';
+    box.className = 'mb-6 px-5 py-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800';
+    const form = document.querySelector('form');
+    form.parentNode.insertBefore(box, form);
+  }
+  box.textContent = 'Übersetzung fehlgeschlagen: ' + message;
+  box.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 async function translateAll() {

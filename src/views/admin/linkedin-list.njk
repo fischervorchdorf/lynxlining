@@ -62,7 +62,8 @@
               {% if autoStatus.translateProvider == 'claude' %}
                 Claude – kennt die Fachbegriffe, wenige Cent pro Beitrag
               {% else %}
-                Google Translate – kostenlos, wörtlicher. Für Fachtexte besser: ANTHROPIC_API_KEY setzen
+                Google Translate – kostenlos, aber von Servern oft blockiert.
+                Zuverlässig und fachlich besser: ANTHROPIC_API_KEY hinterlegen
               {% endif %}
               {% if autoStatus.untranslatedCount %} &middot; {{ autoStatus.untranslatedCount }} noch ohne Übersetzung{% endif %}
             </span>

@@ -168,7 +168,16 @@ async function translateWithGoogle(fields) {
 
   // Ohne übersetzten Titel ist das Ergebnis unbrauchbar
   if (errors.some(e => e.startsWith('title'))) {
-    return { ok: false, error: 'Google Translate: ' + errors.join(' | ') };
+    const blocked = errors.every(e => e.includes('429'));
+    return {
+      ok: false,
+      error: blocked
+        // Bei einer IP-Sperre hilft kein weiterer Versuch – auf den stabilen Weg hinweisen
+        ? 'Google Translate nimmt von diesem Server keine Anfragen mehr an (429). ' +
+          'Dauerhafte Lösung: ANTHROPIC_API_KEY in den Umgebungsvariablen hinterlegen, ' +
+          'dann übersetzt Claude statt Google.'
+        : 'Google Translate: ' + errors.join(' | ')
+    };
   }
 
   return {
@@ -212,7 +221,19 @@ async function googleTranslate(text, from = 'de', to = 'en') {
   const timer = setTimeout(() => controller.abort(), 15000);
 
   try {
-    const res = await fetch(url, { signal: controller.signal });
+    // Ohne Browser-Kennung weist Google Anfragen aus Rechenzentren häufiger ab
+    const res = await fetch(url, {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36',
+        'Accept': '*/*',
+        'Accept-Language': 'de,en;q=0.9'
+      }
+    });
+
+    if (res.status === 429) {
+      throw new Error('Google sperrt diesen Server (429)');
+    }
     if (!res.ok) throw new Error('HTTP ' + res.status);
 
     const parsed = await res.json();
