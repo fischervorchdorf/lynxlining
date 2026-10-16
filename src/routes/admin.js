@@ -37,11 +37,14 @@ router.get('/login', (req, res) => {
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   try {
-    const [users] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
-    if (!users.length) return res.render('admin/login.njk', { title: 'Admin Login', layout: false, error: 'Ungültiger Benutzername oder Passwort' });
-    const user = users[0];
-    const valid = await bcrypt.compare(password, user.password_hash);
-    if (!valid) return res.render('admin/login.njk', { title: 'Admin Login', layout: false, error: 'Ungültiger Benutzername oder Passwort' });
+    // Login per Benutzername ODER E-Mail-Adresse
+    const login = (username || '').trim();
+    const [users] = await db.query('SELECT * FROM users WHERE username = ? OR email = ? ORDER BY username = ? DESC', [login, login, login]);
+    let user = null;
+    for (const candidate of users) {
+      if (await bcrypt.compare(password || '', candidate.password_hash)) { user = candidate; break; }
+    }
+    if (!user) return res.render('admin/login.njk', { title: 'Admin Login', layout: false, error: 'Ungültiger Benutzername/E-Mail oder Passwort' });
     req.session.userId = user.id;
     req.session.username = user.username;
     req.session.role = user.role;
