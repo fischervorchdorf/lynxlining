@@ -1,0 +1,9 @@
+{% extends "layouts/admin.njk" %}
+
+{% block admin_content %}
+<div class="bg-white rounded-xl border border-black/5 shadow-sm px-6 py-16 text-center text-stone max-w-xl">
+  <p class="text-lg text-[#1E1E1E] font-semibold mb-2">Kein Zugriff</p>
+  <p class="mb-6">Die Benutzerverwaltung ist nur für Admins. Bitte einen Admin, dir die Rechte zu geben.</p>
+  <a href="/admin" class="text-[#D64545] font-medium hover:underline">Zum Dashboard &rarr;</a>
+</div>
+{% endblock %}

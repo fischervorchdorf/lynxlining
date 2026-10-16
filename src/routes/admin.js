@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const path = require('path');
 const db = require('../config/database');
-const { requireAuth } = require('../middleware/auth');
+const { requireAuth, requireAdmin } = require('../middleware/auth');
 
 // Multer für Bild-Uploads
 const fs = require('fs');
@@ -1051,6 +1051,111 @@ router.get('/api/stats/referrers', requireAuth, async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// ============================================================
+// BENUTZER & ADMINRECHTE (nur Rolle "admin")
+// ============================================================
+
+const USER_ROLES = ['admin', 'editor'];
+
+async function countAdmins() {
+  const [rows] = await db.query("SELECT COUNT(*) AS count FROM users WHERE role = 'admin'");
+  return rows[0].count;
+}
+
+function validateUserInput({ username, email, password, role }, { isNew }) {
+  const errors = [];
+  if (isNew && (!username || !/^[a-zA-Z0-9._-]{3,50}$/.test(username))) {
+    errors.push('Benutzername: 3–50 Zeichen, nur Buchstaben, Ziffern, Punkt, Binde- und Unterstrich.');
+  }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('Bitte eine gültige E-Mail-Adresse angeben.');
+  if (!USER_ROLES.includes(role)) errors.push('Ungültige Rolle.');
+  if (isNew && (!password || password.length < 10)) errors.push('Passwort: mindestens 10 Zeichen.');
+  if (!isNew && password && password.length < 10) errors.push('Neues Passwort: mindestens 10 Zeichen.');
+  return errors;
+}
+
+router.get('/benutzer', requireAdmin, async (req, res) => {
+  const [users] = await db.query('SELECT id, username, email, role, created_at FROM users ORDER BY role = "admin" DESC, username');
+  res.render('admin/users-list.njk', {
+    title: 'Benutzer', adminPage: 'benutzer', users,
+    currentUserId: req.session.userId, notice: req.query.ok, error: req.query.fehler
+  });
+});
+
+router.get('/benutzer/neu', requireAdmin, (req, res) => {
+  res.render('admin/user-form.njk', { title: 'Neuer Benutzer', adminPage: 'benutzer', item: { role: 'editor' }, isNew: true });
+});
+
+router.post('/benutzer', requireAdmin, async (req, res) => {
+  const username = (req.body.username || '').trim();
+  const email = (req.body.email || '').trim();
+  const { password, role } = req.body;
+  const item = { username, email, role };
+  const errors = validateUserInput({ username, email, password, role }, { isNew: true });
+  if (!errors.length) {
+    const [exists] = await db.query('SELECT id FROM users WHERE username = ?', [username]);
+    if (exists.length) errors.push('Dieser Benutzername ist bereits vergeben.');
+  }
+  if (errors.length) {
+    return res.status(400).render('admin/user-form.njk', { title: 'Neuer Benutzer', adminPage: 'benutzer', item, isNew: true, errors });
+  }
+  const hash = await bcrypt.hash(password, 12);
+  await db.query('INSERT INTO users (username, email, password_hash, role) VALUES (?, ?, ?, ?)', [username, email, hash, role]);
+  res.redirect('/admin/benutzer?ok=' + encodeURIComponent(`Benutzer „${username}" angelegt.`));
+});
+
+router.get('/benutzer/:id', requireAdmin, async (req, res) => {
+  const [rows] = await db.query('SELECT id, username, email, role FROM users WHERE id = ?', [req.params.id]);
+  if (!rows.length) return res.redirect('/admin/benutzer');
+  res.render('admin/user-form.njk', {
+    title: 'Benutzer bearbeiten', adminPage: 'benutzer', item: rows[0], isNew: false,
+    isSelf: rows[0].id === req.session.userId
+  });
+});
+
+router.post('/benutzer/:id', requireAdmin, async (req, res) => {
+  const [rows] = await db.query('SELECT id, username, email, role FROM users WHERE id = ?', [req.params.id]);
+  if (!rows.length) return res.redirect('/admin/benutzer');
+  const target = rows[0];
+  const isSelf = target.id === req.session.userId;
+  const email = (req.body.email || '').trim();
+  const { password, role } = req.body;
+  const item = { ...target, email, role };
+  const errors = validateUserInput({ email, password, role }, { isNew: false });
+  if (!errors.length && target.role === 'admin' && role !== 'admin' && (await countAdmins()) <= 1) {
+    errors.push('Das ist der letzte Admin – bitte zuerst einem anderen Benutzer Adminrechte geben.');
+  }
+  if (errors.length) {
+    return res.status(400).render('admin/user-form.njk', { title: 'Benutzer bearbeiten', adminPage: 'benutzer', item, isNew: false, isSelf, errors });
+  }
+  if (password) {
+    const hash = await bcrypt.hash(password, 12);
+    await db.query('UPDATE users SET email = ?, role = ?, password_hash = ? WHERE id = ?', [email, role, hash, target.id]);
+  } else {
+    await db.query('UPDATE users SET email = ?, role = ? WHERE id = ?', [email, role, target.id]);
+  }
+  if (isSelf) {
+    req.session.role = role;
+    // Wer sich selbst die Adminrechte entzieht, landet nicht auf einer gesperrten Seite.
+    if (role !== 'admin') return res.redirect('/admin');
+  }
+  res.redirect('/admin/benutzer?ok=' + encodeURIComponent(`Benutzer „${target.username}" gespeichert.`));
+});
+
+router.post('/benutzer/:id/delete', requireAdmin, async (req, res) => {
+  const [rows] = await db.query('SELECT id, username, role FROM users WHERE id = ?', [req.params.id]);
+  if (!rows.length) return res.redirect('/admin/benutzer');
+  const target = rows[0];
+  if (target.id === req.session.userId) {
+    return res.redirect('/admin/benutzer?fehler=' + encodeURIComponent('Du kannst dich nicht selbst löschen.'));
+  }
+  if (target.role === 'admin' && (await countAdmins()) <= 1) {
+    return res.redirect('/admin/benutzer?fehler=' + encodeURIComponent('Der letzte Admin kann nicht gelöscht werden.'));
+  }
+  await db.query('DELETE FROM users WHERE id = ?', [target.id]);
+  res.redirect('/admin/benutzer?ok=' + encodeURIComponent(`Benutzer „${target.username}" gelöscht.`));
 });
 
 module.exports = router;

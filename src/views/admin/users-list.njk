@@ -1,0 +1,65 @@
+{% extends "layouts/admin.njk" %}
+
+{% block admin_content %}
+
+{% if notice %}
+  <div class="mb-6 px-4 py-3 rounded-lg bg-green-50 border border-green-200 text-sm text-green-800">{{ notice }}</div>
+{% endif %}
+{% if error %}
+  <div class="mb-6 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700">{{ error }}</div>
+{% endif %}
+
+<div class="flex justify-between items-center mb-6">
+  <p class="text-sm text-stone">
+    <strong class="text-[#1E1E1E]">Admin</strong>: voller Zugriff inkl. Benutzerverwaltung ·
+    <strong class="text-[#1E1E1E]">Redakteur</strong>: alles außer Benutzerverwaltung
+  </p>
+  <a href="/admin/benutzer/neu" class="px-5 py-2.5 bg-[#D64545] text-white rounded-lg font-semibold text-sm hover:bg-[#C13B3B] transition-colors">
+    + Neuer Benutzer
+  </a>
+</div>
+
+<div class="bg-white rounded-xl border border-black/5 shadow-sm">
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="border-b border-black/5 bg-[#FAFAF9]">
+          <th class="text-left px-6 py-3 font-semibold text-stone text-xs uppercase tracking-wider">Benutzername</th>
+          <th class="text-left px-6 py-3 font-semibold text-stone text-xs uppercase tracking-wider">E-Mail</th>
+          <th class="text-left px-6 py-3 font-semibold text-stone text-xs uppercase tracking-wider">Rolle</th>
+          <th class="text-left px-6 py-3 font-semibold text-stone text-xs uppercase tracking-wider">Angelegt</th>
+          <th class="w-40"></th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-black/5">
+        {% for u in users %}
+          <tr class="hover:bg-[#FAFAF9] transition-colors">
+            <td class="px-6 py-3 font-medium text-[#1E1E1E]">
+              {{ u.username }}
+              {% if u.id == currentUserId %}<span class="ml-1 text-xs text-stone">(du)</span>{% endif %}
+            </td>
+            <td class="px-6 py-3 text-stone">{{ u.email }}</td>
+            <td class="px-6 py-3">
+              {% if u.role == 'admin' %}
+                <span class="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-700">Admin</span>
+              {% else %}
+                <span class="inline-block px-2 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">Redakteur</span>
+              {% endif %}
+            </td>
+            <td class="px-6 py-3 text-stone text-xs">{{ u.created_at }}</td>
+            <td class="px-6 py-3 text-right space-x-2">
+              <a href="/admin/benutzer/{{ u.id }}" class="text-xs text-[#D64545] font-medium hover:underline">Bearbeiten</a>
+              {% if u.id != currentUserId %}
+                <form method="POST" action="/admin/benutzer/{{ u.id }}/delete" class="inline" onsubmit="return confirm('Benutzer {{ u.username }} wirklich löschen?')">
+                  <button class="text-xs text-stone/40 hover:text-red-500 font-medium">Löschen</button>
+                </form>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
